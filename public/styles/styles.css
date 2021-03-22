@@ -1,0 +1,975 @@
+
+html {
+    scroll-behavior: smooth;
+}
+body {
+    background-color: black;
+    color: white;
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+    min-height: 100vh;
+    font-family: 'Source Sans Pro',sans-serif;
+    box-sizing: border-box;
+    border-collapse: collapse;
+    display: flex;
+    flex-direction: column;
+}
+a {
+    text-decoration: none;
+}
+.logo {
+    width: 70%;
+    margin-bottom: 15px;
+    padding-top: 5px;
+}
+.main-nav {
+    margin: 0;
+    width: 15%;
+    position: fixed;
+    height: 100%;
+}
+.main-nav ul{
+    list-style: none;
+    padding: 0;
+    font-size: 22px;
+}
+
+.main-nav ul li {
+    margin:0;
+    margin-left: 2px ;
+    width: 100%;
+}
+.main-nav ul li ul{
+    margin:0;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 90%;
+    font-size: 18px;
+}
+.main-nav ul li ul li{
+    padding-left: 10px;
+}
+.main-nav ul a {
+    padding-right: 35px;
+}
+
+.main-nav ul a:hover {
+    color: rgb(220, 39, 62);
+    transition: all ease 0.5s;
+}
+
+.main-nav ul li .active {
+    color: rgb(220, 39, 62);
+}
+
+
+.main-nav a, .user-section a {
+    text-decoration: none;
+    color: white;
+
+}
+
+main {
+    margin: 15px;
+    margin-left: 15%;
+    padding-top: 5%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.tool-bar {
+    background-color: rgb(220, 39, 62);
+    width: 100%;
+    font-size: 22px;
+    display: flex;
+    margin-bottom: 15px;
+    height: 30px;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    padding: 8px 0px;
+    z-index: 5;
+}
+
+.tool-bar .title {
+    font-size: 25px;
+}
+
+.tool-bar .user-section{
+}
+
+.tool-bar .tools-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+}
+
+.main-tile {
+    min-height: 75px;
+    background-color: rgb(117, 115, 115);
+    height: fit-content;
+    padding: 15px;
+    border-radius: 15px;
+    height: 100%;
+}
+/*there is such a thing as calc, you can do calc(20px+10%) for say grid gap*/
+/*may need to adjust min/max grid sizes in smaller screens*/
+.grid-container, .grid-container-narrow {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    row-gap: 50px;
+    column-gap: 15px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+.mono-tile {
+    width: 55%;
+}
+.grid-container-2 {
+    display: grid;
+    grid-template-columns: 325px 325px;
+    justify-content: center;
+    row-gap: 85px;
+    column-gap: 50px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.tile-1-3 {
+    grid-column: 1/3;
+}
+
+.tile-2-4 {
+    grid-column: 2/4;
+}
+
+.tile-all-columns {
+    grid-column: 1/-1
+}
+
+.user-section {
+
+}
+.user-section ul{
+    list-style: none;
+    margin-top: 10px;
+    padding: 0px;
+    background-color: rgb(220, 39, 62);
+    border: rgb(220, 39, 62) 1px solid;
+    transition: all ease 0.5s;
+    color: #ffffff;
+}
+.user-section ul:hover {
+    border: rgb(82, 78, 78) 1px solid;
+    border-top: rgb(220, 39, 62) 1px solid;
+    transition: all ease 0.5s;
+}
+
+.opened {
+    border: rgb(82, 78, 78) 1px solid;
+    border-bottom: rgb(220, 39, 62) 1px solid;
+}
+.user-section a li {
+    text-align: center;
+    padding: 3px 0px;
+    border-bottom: 1px solid rgb(82, 78, 78);
+    transition: all ease 0.5s;
+}
+/*border is currently broken*/
+.user-section ul li:last-of-type {
+    border-bottom: none;
+}
+
+.mobile-nav button, .main-nav-button {
+    background-color: rgba(220, 39, 62, 0);
+    border: none;
+    transition: all ease 0.5s;
+    outline: none;
+    cursor: pointer;
+}
+.tool-button {
+}
+
+.main-nav ul li div {
+    display: flex;
+    justify-content: space-between;
+}
+.side-bar-tab li:nth-child(even), tr:nth-child(even) {
+    background-color: rgb(82, 78, 78);
+}
+.side-bar-tab li:nth-child(odd), tr:nth-child(odd){
+    background-color: rgb(138, 134, 134);
+}
+
+.background-form {
+    width: 100%;
+}
+
+.mobile-nav button:focus {
+    transition: all ease 0.7s;
+    -ms-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+.rotated {
+    transition: all ease 0.7s;
+    -ms-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+.main-tile-button-container {
+    display:flex;
+    width: 85%;
+    justify-content: space-between;
+}
+
+.margin-top {
+    margin-top: 10px;
+}
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+.justified-center {
+    justify-content: center;
+}
+.justified-center h3 {
+    width: 85%;
+}
+.main-tile-button-container-single {
+    grid-column: span 2;
+    display: flex;
+    justify-content: center;
+}
+
+.ph-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    font-family: 'Source Sans Pro',sans-serif;
+    color: white;
+    border-radius: 3.75rem;
+    border: 1px solid red;
+    font-size: 20px;
+    outline: none;
+    font-weight: 600;
+    padding: 10px;
+    text-align: center;
+    width: 120px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.ph-button-large {
+    width: 200px;
+    font-size: 25px;
+}
+
+.ph-button img, .tool-icon {
+    width:20px;
+}
+
+.ph-button-standard {
+    background-color: rgb(220, 39, 62);
+    border-color: rgb(220, 39, 62);
+    transition: all ease 0.4s;
+}
+
+.ph-button-important {
+    background-color: rgb(255, 0, 128);
+    border-color: rgb(255, 0, 128);
+}
+
+.ph-button:not([disabled]):hover, .user-section li:hover, .user-section li:hover a{
+    color: rgb(220, 39, 62);
+    transition: all ease 0.5s;
+    background-color: white;
+}
+
+.ph-button:focus, input:focus, select:focus, textarea:focus {
+    box-shadow: 0 0 1px 3px rgb(82, 78, 78);
+    outline: none;
+    border: none;
+    border: 1px solid rgba(220, 39, 62, 0);
+}
+
+.ph-button:disabled {
+    opacity: 0.3;
+    cursor:default;
+}
+
+.ph-button-rounded {
+    border-radius: 50%;
+    width:25px;
+    height: 25px;
+}
+
+/*need to ad animation when display is changed to none maybe change to visabiility?*/
+.top-button {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    animation-name: fadeIn;
+    animation-duration: 0.3s;
+    padding: 5px;
+    z-index: 99;
+}
+
+.opaque {
+}
+.center-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-select {
+    min-width: 200px;
+    font-size: 18px;
+    line-height: 1.3em;
+    padding: 0.4em 1.5em 0.4em 0.5em;
+    background-color: rgb(220, 39, 62);
+    color: white;
+    border-radius: 10px;
+    border: 1px solid  rgb(138, 134, 134);
+    font-weight: 700;
+    outline: none;
+    margin-bottom: 5px;
+}
+.main-select-large {
+    width: 25vw;
+    font-size: 20px;
+    padding: 1.5rem 1.0rem;
+    text-align: center;
+    text-align-last: center;
+    -moz-text-align-last: center;
+}
+
+.main-select-large option {
+    padding: 1.5rem 1.0rem;
+}
+
+.select-label {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.main-select:hover {
+    border: 1px solid rgb(82, 78, 78);
+}
+
+.main-select:focus {
+    box-shadow: 0 0 1px 3px rgb(82, 78, 78);
+}
+
+.main-select option {
+    font-weight: normal;
+}
+
+.modal {
+    display: none;
+    z-index: 95;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    padding-top: 25px;
+    background-color: rgba(0,0,0,0.8);
+    animation-name: fadeIn;
+    animation-duration: 0.4s;
+    justify-content: center;
+    align-items: center;
+}
+
+/*height changed to min height, should fix close button falling out of menu*/
+.modal-internal {
+    z-index: 99;
+    width: 85%;
+    min-height: 75%;
+    border-radius: 12px;
+    background-color: #000000;
+    animation-name: scaleIn;
+    animation-duration: 0.3s;
+    border: 2px solid rgb(82, 78, 78);
+}
+/*there are rowspan and colspan attribute for tables which do what you imagine they would*/
+table, th, td {
+    border-collapse: collapse;
+    border: 2px solid white;
+}
+th {
+    font-size: 20px;
+}
+th, td {
+    padding: 10px;
+}
+
+.table-button-holder {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.table-button-holder button, .table-button-holder a, .table-button-holder form {
+    margin: 2px;
+}
+
+.table-button {
+    padding: 0px 2px;
+    height: 48px;
+}
+
+.wide-table {
+    width: 85%;
+    margin-bottom: 10px;
+}
+
+.confirmation-banner {
+    width: 90%;
+    background: rgba(127, 255, 255, 0.75);
+    border-radius: 10px;
+    border: 3px solid rgba(37, 71, 77, 0.75);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.confirmation-banner p {
+    margin: 10px;
+}
+
+.confirmation-banner h1 {
+    font-size: 32px;
+    text-align: center;
+}
+
+.anchor {
+    text-decoration: underline;
+    color: darkblue;
+}
+
+.anchor:hover {
+    color: rgb(220, 39, 62);
+    transition: all ease 0.5s;
+}
+
+input[type=checkbox].ph-checkbox {
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+    border: 2px solid gold;
+}
+input:checked ~ .checkmark {
+    background-color: rgb(220, 39, 62);
+  }
+.checkmark {
+    position: absolute;
+    height: 25px;
+    width: 25px;
+    background-color: white;
+    border-radius: 10px;
+  }
+
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
+  .checkmark:hover {
+    box-shadow: 0 0 1px 3px rgb(220, 39, 62);
+  }
+
+  .ph-checkbox-label:hover .checkmark {
+    box-shadow: 0 0 1px 3px rgb(220, 39, 62);
+  }
+
+  .checkmark:focus {
+    box-shadow: 0 0 1px 3px rgb(82, 78, 78);
+  }
+
+  input:checked ~ .checkmark:after {
+    display: block;
+  }
+
+  .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+.ph-checkbox-label {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 0px;
+}
+
+@-webkit-keyframes fadeIn {
+    from {opacity: 0}
+    to {opacity: 1}
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0}
+    to {opacity: 1}
+  }
+
+  @keyframes scaleIn {
+    from {transform: scale(0)}
+    to {transform: scale(1)}
+  }
+
+
+.modal-title {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    font-size: 22px;
+    background-color: rgb(220, 39, 62);
+    border-bottom: none;
+    padding: 18px 0px;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.modal-title .close-X {
+    font-size: 18px;
+    color: rgb(82, 78, 78);
+    position:absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background-color: rgb(220, 39, 62);
+}
+
+.modal-title .close-X:hover {
+    color: white;
+    transition: all 1s ease;
+}
+.modal-content {
+    border-radius: 0px 0px 10px 10px;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-center {
+    width: 85%;
+    min-height: 85%;
+}
+
+.modal-center a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.grid-2-col, .grid-2-col-wide {
+    margin: 15px;
+    margin-top: 0px;
+    padding-top: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 15px;
+    column-gap: 15px;
+}
+
+.grid-2-col-wide {
+    font-size: 23px;
+    width: 85%;
+}
+
+.grid-2-col-wide input, .grid-2-col-wide select, .grid-2-col-wide option, .grid-2-col-wide textarea  {
+    border-radius: 10px;
+    padding: 5px 0px;
+    transition: all ease 0.5s;
+    /*add invis border so forms dont move around as border changes*/
+    border: 1px solid rgba(220, 39, 62, 0);
+}
+.grid-2-col-wide input, .grid-2-col-wide select, .grid-2-col-wide option, .grid-2-col-wide label, .grid-2-col-wide textarea {
+    font-size: 22px;
+}
+select {
+    /*text-align: center;
+    text-align-last: center;
+    -moz-text-align-last: center;*/
+}
+.grid-2-col-wide .input-error {
+    border: rgb(220, 39, 62) 1px solid;
+}
+/*apparently there is no good way to center align text in an option box crazy!*/
+option {
+    text-align: center;
+}
+
+.grid-2-col .center-button-container {
+    /* display grid fixes it not being centered for some damn reason*/
+    display: grid;
+    justify-content: center;
+    grid-column: span 2;
+}
+
+.footer {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-self: flex-end;
+    position: relative;
+    bottom: 0;
+  }
+
+.footer p {
+    margin-right: 25px;
+}
+.main-tile h2 {
+    font-size: 32px;
+    text-align: center;
+}
+.pos-rel {
+    position: relative;
+}
+.testing-h2 {
+    position: absolute;
+    top: 0px;
+    background-color: rgb(220, 39, 62);
+    border-radius: 10px;
+    width: 100%;
+    margin-top: 0px;
+    padding: 10px 0px;
+    height: 45px;
+}
+
+.testing-h2 + form {
+    margin-top: 45px;
+}
+.menu-icon {
+    margin: 10px 0px;
+    width: 100px;
+    padding: 25px;
+}
+
+.login {
+    justify-content: center;
+    align-items: center;
+    background-image: url("/images/taste_freedom.jpg");
+    background-size: 100% 100%;
+    background-repeat:no-repeat;
+    background-position: center;
+}
+.login-holder {
+    width: 100%;
+}
+.login-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 10px;
+    background-color: rgba(70, 65, 65, 0.8);
+    width: 25%;
+    margin-top: 10%;
+    min-height: 75%;
+    padding-bottom: 5px;
+}
+.fill-top {
+    border-radius: 10px;
+    background-color: rgb(220, 39, 62);
+    width: 100%;
+    border-bottom: none;
+    border-radius: 10px 10px 0px 0px;
+}
+.margin-top-10 {
+    margin-top: 15px;
+}
+.login input, .login label {
+    font-size: 25px;
+    margin-bottom: 12px;
+}
+
+.login input {
+    width: 85%;
+    border-radius: 10px;
+    border: 1px solid rgba(220, 39, 62, 0);
+    text-align: center;
+    transition: all ease 0.5s;
+    padding: 3px 0px;
+}
+
+.login .logo {
+    width: 95px;
+    height: 95px;
+}
+
+.align-center {
+    display: flex;
+    align-content: center;
+}
+
+.row-space-between {
+    width: 85%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.row-space-between input {
+    outline: none;
+    justify-content: flex-end;
+    width: min-content;
+}
+
+.mobile-nav, .main-nav-tab, .hidden-tab, .mobile-only {
+    display: none;
+}
+.tile-title {
+    width: 100%;
+}
+.error-text {
+    color: rgb(220, 39, 62);
+}
+.small-error-text {
+    padding-top: 3px;
+    font-size: 1.0rem;
+}
+
+.small-error-text:focus {
+    color: white;
+}
+
+
+textarea {
+    width: 100%;
+    min-height: 180px;
+}
+
+.span-table-rows {
+    text-align: center;
+}
+
+.right-aligned {
+    margin-top: 15px;
+    text-align: right;
+    width: 100%;
+    font-size: small;
+}
+
+.right-aligned a {
+    text-decoration: underline;
+    color: rgb(220, 39, 62);
+}
+
+input[type=number] {
+    width: 100%;
+}
+
+.spaced-inputs input {
+    margin-top: 5px;
+}
+
+.spaced-inputs .margin-blocked {
+    margin-top: 0px;
+}
+@media only screen and (max-width: 1400px) {
+    .main-nav ul {
+        font-size: 20px;
+    }
+    .main-nav ul li ul{
+        font-size: 16px;
+    }
+    .tile-1-3, .tile-2-4 {
+        grid-column: auto;
+    }
+    .login-box {
+        width: 30%;
+    }
+}
+
+@media only screen and (max-width: 1225px) {
+    main, .logo {
+        margin: 0px;
+        padding: 0px;
+        width: 100%;
+    }
+    main {
+    }
+    .main-nav ul, .user-section{
+        display: none;
+    }
+    .tool-bar {
+        margin: 0px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+
+    }
+    .tool-bar .title {
+        margin-right: 10px;
+    }
+    .logo-mobile-holder {
+        padding-top: 10px;
+        width: 100vw;
+        display: flex;
+        justify-content: space-between;
+    }
+    .logo, .mobile-nav {
+        width: 95px;
+        height: 95px;
+    }
+    .main-nav {
+        position: relative;
+        height: auto;
+    }
+    .mobile-nav {
+        display: flex;
+    }
+
+    .mobile-nav img {
+        width: 50px;
+    }
+    .footer {
+        padding-top: 25px;
+        font-size: 12px;
+    }
+
+    .login-box {
+        width: 45%;
+    }
+
+}
+
+@media only screen and (max-width: 900px) {
+    .ph-button {
+        font-size: 18px;
+    }
+    .ph-button-large {
+        font-size: 25px;
+        width: 225px;
+    }
+    .tool-bar {
+        position: sticky;
+        top: 0;
+        padding-top: 10px;
+    }
+
+    .mob-hidden {
+        display: none;
+    }
+    .mobile-only {
+        display: block;
+    }
+
+    .login-box {
+        width: 55%;
+    }
+
+    table {
+        width: 85%;
+    }
+
+    .modal-center a button {
+        width: 150px;
+    }
+
+}
+
+@media only screen and (max-width: 750px) {
+    .grid-container-2 {
+        grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+        row-gap: 50px;
+    }
+
+    .grid-2-col-wide input, .grid-2-col-wide select, .grid-2-col-wide option, .grid-2-col-wide textarea  {
+        padding: 10px 0px;
+    }
+
+    .grid-2-col-wide input, .grid-2-col-wide select, .grid-2-col-wide option, .grid-2-col-wide label, .grid-2-col-wide textarea  {
+        font-size: 20px;
+    }
+
+    .login-box {
+        width: 65%;
+    }
+
+    .grid-2-col-wide {
+        grid-template-columns: 1fr;
+        width: 100%;
+
+    }
+    .grid-2-col-wide, .justified-center h3 {
+        max-width: 300px;
+    }
+    .grid-2-col-wide .input-error, .grid-2-col-wide input {
+        width: 100%;
+    }
+    .mobile-2-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    .small-error-text {
+        max-width: 300px;
+    }
+
+    .mono-tile {
+        width: 85%;
+    }
+    th {
+        font-size: 18px;
+    }
+
+    .table-button-holder {
+        flex-direction: column;
+    }
+    .table-button {
+        padding: 0px;
+    }
+    .modal-center a button{
+        max-width: 100px;
+    }
+
+}
+
+@media only screen and (max-width: 400px) {
+    .login-box {
+            width: 75%;
+        }
+    .login-label {
+        font-size: 3.0vh;
+    }
+    th, td {
+        padding: 3px;
+    }
+    th {
+        font-size: 16px;
+        word-wrap: break-word;
+    }
+    td {
+        font-size: 15px;
+        word-wrap: break-word;
+    }
+
+}
