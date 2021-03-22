@@ -2,7 +2,7 @@
 @section('title', $title)
 
 @section('content')
-<div class="grid-container testing-github">
+<div class="grid-container">
     @for($i = 0; $i <= $dateDif; $i++)
     <div class="main-tile justified-center center-column">
         @if($i == 0)
