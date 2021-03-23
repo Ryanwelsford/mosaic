@@ -106,14 +106,20 @@ main {
     justify-content: space-evenly;
 
 }
-
+/*Updated the background for main content boxes, darker background with linear gradient*/
 .main-tile {
     min-height: 75px;
-    background-color: rgb(117, 115, 115);
+    background: rgb(41,39,39);
+    background: linear-gradient(65deg, rgba(41,39,39,1) 0%, rgba(69,62,62,1) 48%, rgba(41,39,39,1) 100%);
+    border: solid 1px rgb(56, 54, 54);
     height: fit-content;
     padding: 15px;
     border-radius: 15px;
     height: 100%;
+}
+/*updated colours for input darkened the background slightly*/
+input, .checkmark, select, textarea {
+    background-color: rgb(218, 218, 218);
 }
 /*there is such a thing as calc, you can do calc(20px+10%) for say grid gap*/
 /*may need to adjust min/max grid sizes in smaller screens*/
@@ -485,7 +491,6 @@ input:checked ~ .checkmark {
     position: absolute;
     height: 25px;
     width: 25px;
-    background-color: white;
     border-radius: 10px;
   }
 
