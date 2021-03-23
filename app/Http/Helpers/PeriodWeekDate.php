@@ -93,6 +93,7 @@ class PeriodWeekDate
     }
 
     //calculate period of given carbon date.
+    //bug when requesting dates before base date period is displaed incorrectly
     private function periodCalc(Carbon $dateInput)
     {
         //base date given by client

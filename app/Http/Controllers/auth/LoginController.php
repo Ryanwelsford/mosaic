@@ -7,13 +7,20 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+/********************************************************
+ *Controller is repsonsible for ensuring a user can login and authorising users to the correct account
+ *
+ ********************************************************/
+
 class LoginController extends Controller
 {
+    //constructor ensures that only non-logged in users can use the login controller, therefore if you are already logged in you cannot reach the login page
     public function __construct()
     {
         $this->middleware('guest');
     }
 
+    //display login page
     public function index(Request $request)
     {
         $user = old();
@@ -25,10 +32,13 @@ class LoginController extends Controller
         ]);
     }
 
+    //validate user login request, check for authorisation, route as required
     public function authorise(Request $request)
     {
+        //from the global request function pull only the specified named inputs
         $loginDetails = $request->only("email", "password");
 
+        //ensure email and password have been entered by user
         $this->validate($request, [
             'email' => 'required',
             'password' => 'required'
@@ -39,11 +49,9 @@ class LoginController extends Controller
 
         if (Auth::attempt($loginDetails)) {
             //therefore login success
-            echo "Test";
             return redirect()->route('product.home');
         } else {
             //login failed
-
             return back()->with('loginError', "Invalid login details");
         }
         //dd(Hash::make($request->user['password']));

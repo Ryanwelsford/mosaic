@@ -9,19 +9,27 @@ use Illuminate\Http\Request;
 use App\Http\Helpers\MyClassess;
 use App\Http\Helpers\ModelValidator;
 
+/********************************************************
+ *Stores handle the day to day operation of client requried tasks
+ *This controller allows for the CRUD operations of the store class
+ ********************************************************/
+
 class StoreController extends Controller
 {
+
+    //produce menu options for each allowed class function
     public function home()
     {
 
         $title = "Stores Home";
 
         $newRoute = route("store.new");
+        $viewRoute = route("store.view");
 
         $menuitems = [
             ["title" => "New Store", "anchor" => $newRoute, "img" => "/images/icons/new-256.png"],
-            ["title" => "Edit Store", "anchor" => "/test", "img" => "/images/icons/edit-256.png"],
-            ["title" => "Search Stores", "anchor" => "/test", "img" => "/images/icons/search-256.png"]
+            ["title" => "Edit Store", "anchor" => $viewRoute, "img" => "/images/icons/edit-256.png"],
+            ["title" => "Search Stores", "anchor" => $viewRoute, "img" => "/images/icons/search-256.png"]
         ];
 
         return view('menu', [

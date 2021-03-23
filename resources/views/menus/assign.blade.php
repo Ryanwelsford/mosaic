@@ -77,7 +77,7 @@
 
                                 <td class=>
                                     <label class="table-button-holder">
-                                        <div class="ph-checkbox-label mob-hidden">
+                                        <div class="ph-checkbox-label mob-hidden" onclick="updateDivText(this)">
                                             @if(isset($menuListings[$product->id]))
                                                 {{ "Remove" }}
                                             @else
@@ -86,7 +86,7 @@
                                         </div>
                                         <label class="ph-checkbox-label">
                                             <input class="ph-checkbox" type="checkbox" name="menuListings[]" value ="{{ $product->id }}" @if(isset($menuListings[$product->id])){{ "checked" }}@endif>
-                                            <span class="checkmark"></span>
+                                            <span onclick="updateText(this)"class="checkmark"></span>
                                         </label>
                                     </label>
                                 </td>
@@ -97,8 +97,8 @@
                 @endforeach
 
                 <div class="main-tile-button-container">
-                    <button id="previous" class="ph-button ph-button-standard" onclick="">Previous</button>
-                    <button id="next" class="ph-button ph-button-standard" onclick="">Next</button>
+                    <button id="previous" class="ph-button ph-button-standard" type="button" onclick="next()">Previous</button>
+                    <button id="next" class="ph-button ph-button-standard" type="button" onclick="previous()">Next</button>
                 </div>
                 <div class="main-tile-button-container center-column margin-top">
                     <button form="menuAssign" type="submit" class="ph-button ph-button-important">Submit</button>
@@ -199,6 +199,32 @@
         if(idToScroll !== null) {
             console.log(idToScroll);
             idToScroll.scrollIntoView({behavior: 'smooth'});
+        }
+    }
+
+    function next() {
+        console.log("next");
+    }
+
+    function previous() {
+
+    }
+
+    function updateText(element) {
+        parent = element.parentNode.parentNode
+        div = parent.getElementsByTagName("div")[0];
+        updateDivText(div);
+    }
+
+    function updateDivText(div) {
+        if(div.innerText == "Select") {
+            div.innerText = "Remove";
+            return
+        }
+
+        if(div.innerText == "Remove") {
+            div.innerText = "Select";
+            return
         }
     }
 </script>
