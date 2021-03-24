@@ -18,6 +18,9 @@
     </div>
     <div class="main-tile tile-all-columns center-column">
         <h2>Product Details</h2>
+        @if(session("confirmation"))
+            <p>{{ session("confirmation") }}</p>
+        @endif
         <table class="wide-table">
             <th>
                 <p class="mob-hidden">Product Name</p>

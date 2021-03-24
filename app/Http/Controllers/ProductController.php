@@ -131,10 +131,11 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         //remove product cascade delete removes all associated units as well.
+        $message = "Product " . $product->name . " successfully deleted";
         $product->delete();
 
         //send back to previous page
-        return back();
+        return back()->with("confirmation", $message);
     }
 
     public function confirm(Product $product)
