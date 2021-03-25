@@ -84,6 +84,8 @@ class WasteListController extends Controller
     //confirmation screen after successful update/creation
     public function confirm(?Wastelist $wastelist)
     {
+        //?Wastelist means a null wastlist can be sent to the method
+        //this doesnt actually matter, the confirm message does not have its own route (and doesnt need to), this prevents a random confirmation page being accessible at any point
         if ($wastelist == null) {
         }
 
@@ -102,12 +104,12 @@ class WasteListController extends Controller
         return view("wastelist.view", ["title" => $title, "wastelists" => $wastelists]);
     }
 
-    //delete method for wastelists passed
+    //delete method for wastelists passed, should probably have archive here or softdeletes instead
     public function destroy(Wastelist $wastelist)
     {
         $wastelist->delete();
-
+        $message = "Wastelist " . ucfirst($wastelist->name) . " has been successfully deleted";
         //return to view screen
-        return back();
+        return back()->with("confirmation", $message);
     }
 }
