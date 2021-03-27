@@ -16,10 +16,12 @@ class ProductController extends Controller
 
         $title = "Products Home";
 
+        $viewRoute = Route("product.new");
+
         $menuitems = [
             ["title" => "New Product", "anchor" => route("product.new"), "img" => "/images/icons/new-256.png"],
-            ["title" => "Edit Product", "anchor" => "/test", "img" => "/images/icons/edit-256.png"],
-            ["title" => "View Product", "anchor" => route("product.view"), "img" => "/images/icons/view-256.png"],
+            ["title" => "Edit Product", "anchor" => $viewRoute, "img" => "/images/icons/edit-256.png"],
+            ["title" => "View Product", "anchor" => $viewRoute, "img" => "/images/icons/view-256.png"],
             ["title" => "Product Reports", "anchor" => "/test", "img" => "/images/icons/report-256.png"]
         ];
 
