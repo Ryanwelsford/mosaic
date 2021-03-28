@@ -99,9 +99,15 @@ class WasteListController extends Controller
     //view all wastelists with options to edit and delete, need to add search and validation features in the future
     public function view()
     {
+        if (session("confirmation")) {
+            $message = session("confirmation");
+        } else {
+            $message = false;
+        }
+
         $wastelists = Wastelist::orderBy('created_at', 'desc')->get();
         $title = "Display Waste Lists";
-        return view("wastelist.view", ["title" => $title, "wastelists" => $wastelists]);
+        return view("wastelist.view", ["title" => $title, "wastelists" => $wastelists, "message" => $message]);
     }
 
     //delete method for wastelists passed, should probably have archive here or softdeletes instead

@@ -5,9 +5,11 @@
 <div class="grid-container">
 <div class="main-tile tile-all-columns center-column">
     <h2>Waste List Details</h2>
-    @if(session("confirmation"))
-        <p>{{ session("confirmation") }}</p>
+
+    @if($message)
+        <x-confirmation-message :message="$message"></x-confirmation-message>
     @endif
+
     <table class="wide-table">
         <th>
             <p class="mob-hidden">Name</p>

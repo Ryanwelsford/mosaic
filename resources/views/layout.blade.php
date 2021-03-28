@@ -397,4 +397,16 @@
             }
         }
 
+
+    function closeDiv(event, type="DIV") {
+
+        let parentElement, clickedElement = event.target;
+        parentElement = clickedElement.parentNode;
+
+        while(parentElement.tagName !== type) {
+            parentElement = parentElement.parentNode;
+        }
+
+        parentElement.remove();
+    }
 </script>
