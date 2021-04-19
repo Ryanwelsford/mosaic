@@ -17,6 +17,19 @@ class Menu extends Model
         'status'
     ];
 
+    protected $searchable = [
+        'id',
+        'name',
+        'description',
+        'status',
+        'created_at'
+    ];
+
+    public function searchable()
+    {
+        return $this->searchable;
+    }
+
     public function fillItem($id, $name, $description, $status)
     {
         $this->id = $id;
@@ -40,7 +53,8 @@ class Menu extends Model
         }
     }
 
-    public function products() {
+    public function products()
+    {
         return $this->belongsToMany(Product::class);
     }
 }

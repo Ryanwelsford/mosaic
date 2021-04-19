@@ -97,7 +97,6 @@ main {
     display: flex;
     margin-bottom: 15px;
     height: 30px;
-    justify-content: space-between;
     position: sticky;
     top: 0;
     padding: 8px 0px;
@@ -105,17 +104,32 @@ main {
 }
 
 .tool-bar .title {
-    font-size: 25px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .tool-bar .user-section{
+
 }
 
 .tool-bar .tools-section {
+
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+    margin-left: 1rem;
 
+}
+.bar-tool-button {
+    background-color: rgba(0,0,0,0.0);
+    border: 1px solid rgba(0,0,0,0.0);
+    font-size: 1.2rem;
+    color: white;
+    transition: all ease 0.5s;
+}
+.bar-tool-button:hover, .bar-tool-button:focus {
+    box-shadow: 0 0 1px 3px rgb(199, 193, 193);
+    transition: all ease 0.5s;
 }
 /*Updated the background for main content boxes, darker background with linear gradient*/
 .main-tile {
@@ -210,8 +224,6 @@ input, .checkmark, select, textarea {
     transition: all ease 0.5s;
     outline: none;
     cursor: pointer;
-}
-.tool-button {
 }
 
 .main-nav ul li div {
@@ -431,6 +443,14 @@ input, .checkmark, select, textarea {
     animation-name: scaleIn;
     animation-duration: 0.3s;
     border: 2px solid rgb(82, 78, 78);
+}
+
+.small-modal {
+    width: 50%;
+}
+
+.vert-center {
+    margin-top: 10%;
 }
 /*there are rowspan and colspan attribute for tables which do what you imagine they would*/
 table, th, td {
@@ -662,7 +682,10 @@ option {
     justify-content: center;
     grid-column: span 2;
 }
-
+.centered {
+    margin-left: auto;
+    margin-right: auto;
+}
 .footer {
     width: 100%;
     display: flex;
@@ -831,7 +854,29 @@ input[type=number] {
     font-size: 0.8rem;
     text-align: right;
 }
+.search-form {
+    width: 85%;
+    font-size: 1.2rem;
+    margin-bottom: 0.6rem;
+}
+.search-form input {
+    width: 100%;
+}
 
+.search-with-button {
+    display:flex;
+}
+.red-border {
+    border: 2px solid red;
+}
+
+.highlight {
+    border: rgb(218, 218, 218) 10px solid;
+}
+
+.italics {
+    font-style: italic;
+}
 @media only screen and (max-width: 1400px) {
     .main-nav ul {
         font-size: 20px;
@@ -932,6 +977,10 @@ input[type=number] {
         width: 150px;
     }
 
+    .small-modal {
+        width: 75%;
+    }
+
 }
 
 @media only screen and (max-width: 750px) {
@@ -959,6 +1008,9 @@ input[type=number] {
     }
     .grid-2-col-wide, .justified-center h3 {
         max-width: 300px;
+    }
+    .search-form {
+        max-width: 85%;
     }
     .grid-2-col-wide .input-error, .grid-2-col-wide input {
         width: 100%;

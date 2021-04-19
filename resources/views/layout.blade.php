@@ -4,6 +4,7 @@
 
     <link rel="stylesheet" href="/styles/styles.css">
     <link rel="icon" href="/images/phr-logo.svg" sizes="16x16" type="image/png">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
     <title>
         @hasSection("title")
             @yield("title")
@@ -250,7 +251,11 @@
     <main>
         <!--should move this around so tool bar is in its own section with maybe a yield tools?-->
         <div class="tool-bar">
+            @hasSection ('tools')
+                <div class="tools-section"> @yield('tools') </div>
+            @else
             <div class="tools-section">Tool a tool b <img class="tool-icon" src = '/images/icons/search-3-48.png'></div>
+            @endif
             <div class="title">
                 @hasSection ('title')
                     @yield('title')
@@ -484,6 +489,31 @@
                 mobileNav.classList.add(className);
             }
         }
+    }
+
+    function centerOn(id, highlight = true) {
+        element = document.getElementById(id);
+        element.focus();
+        let test = element.classList.contains("highlight");
+        if(highlight && !test) {
+            element.classList.add("highlight");
+        }
+    }
+    function openOrCloseModal(id) {
+        let modal = document.getElementById(id);
+        if(modal.style.display == "flex") {
+            modal.style.display = "none";
+        }
+        //otherwise open modal
+        else {
+            //changed to display flex in order to center modal in page
+            modal.style.display = "flex";
+        }
+    }
+
+    function searchModal() {
+        //if modal is already open
+        openOrCloseModal("search-modal");
     }
 
     setupNav();

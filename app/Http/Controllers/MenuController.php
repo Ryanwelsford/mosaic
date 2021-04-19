@@ -100,7 +100,7 @@ class MenuController extends Controller
             return $this->copy($menu, $copy);
         } else {
             //otherwise send to assign products
-            return $this->assign($menu);
+            return $this->assign($menu, $request);
         }
     }
 
@@ -116,7 +116,7 @@ class MenuController extends Controller
         return $this->confirm($menu);
     }
 
-    public function assign(Menu $menu)
+    public function assign(Menu $menu, Request $request)
     {
         $productController = new ProductController;
         $categories = $productController->buildCategories();
@@ -124,6 +124,10 @@ class MenuController extends Controller
 
         if ($menu == null) {
             return redirect(route("menu.new"));
+        }
+
+        if (isset($request->menu_id)) {
+            $menu = Menu::find($request->menu_id);
         }
 
         $menu->products()->get();
@@ -177,12 +181,31 @@ class MenuController extends Controller
     }
 
     //display all menus with options to edit, delete and copy eventually
-    public function view()
+    public function view(Request $request)
     {
-        $menus = Menu::orderby('created_at')->get();
+        //TODO break this function down into a class
         $title = "View Menus";
+        $menu = new Menu;
+        $searchFields = $menu->searchable();
 
-        return view("menus.view", ['title' => $title, 'menus' => $menus]);
+        $query = Menu::query();
+        if (isset($request->search)) {
+
+            foreach ($searchFields as $field) {
+                $query->orWhere($field, "LIKE", "%" . $request->search . "%");
+            }
+
+            if (isset($request->sort)) {
+                $menus = $query->orderby($request->sort, "desc")->get();
+            } else {
+                $menus = $query->orderby('id', "desc")->get();
+            }
+        } else {
+            $menus = Menu::orderby('created_at')->get();
+        }
+        $search = $request->search;
+
+        return view("menus.view", ['title' => $title, 'menus' => $menus, "search" => $search, "searchFields" => $searchFields]);
     }
 
     public function confirm(Menu $menu)
