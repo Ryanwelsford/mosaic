@@ -23,6 +23,10 @@ a {
     margin-bottom: 15px;
     padding-top: 5px;
 }
+.logo-container {
+    display: flex;
+    justify-content: center;
+}
 .main-nav {
     margin: 0;
     width: 15%;
@@ -59,10 +63,17 @@ a {
     transition: all ease 0.5s;
 }
 
+
 .main-nav ul li .active {
     color: rgb(220, 39, 62);
 }
+.main-nav ul li .active:hover {
+    color: rgb(255, 0, 128);
+}
 
+.modal-nav-button.active {
+    background-color: rgb(255, 0, 128);
+}
 
 .main-nav a, .user-section a {
     text-decoration: none;

@@ -21,7 +21,7 @@ use App\Http\Controllers\StockOnHandController;
 
 /******************************
  *Web routes, get, post, delete routes in use so far
- *routes can be named in order to be easily useable and prevent changes being need in multiple locations
+ *routes can be named in order to be easily useable and prevent changes being needed in multiple locations
  ******************************/
 
 //route for homepage, should default to some form of dashboard
@@ -71,6 +71,7 @@ Route::get('/store/view', [StoreController::class, 'view'])->name('store.view');
 Route::delete('/store/destroy/{store}', [StoreController::class, 'destroy'])->name('store.destroy');
 
 //Waste List routes
+//TODO change waste list routes to wastelist/home etc
 Route::get('/waste/list/home', [WasteListController::class, 'home'])->name('wastelist.home');
 Route::get('/waste/list/new', [WasteListController::class, 'store'])->name('wastelist.new');
 Route::post('/waste/list/new', [WasteListController::class, 'save']);

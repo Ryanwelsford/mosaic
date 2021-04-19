@@ -38,13 +38,13 @@
             <li>
                 <div>
                 <a class=""href="{{ route('product.home') }}">Products</a>
-                    <button onclick="openNavTab(event, 'products')" class="main-nav-button">
+                    <button onclick="openNavTab(event, 'product')" class="main-nav-button">
                         <image src="/images/side-arrow.png"></image>
                     </button>
                 </div>
 
 
-                <ul id="products" class="main-nav-tab side-bar-tab">
+                <ul id="product" class="main-nav-tab side-bar-tab">
                     <li><a href="{{ route('product.new') }}">New Product</a></li>
                     <li><a href="{{ route('product.view') }}">Edit Product</a></li>
                     <li><a href="{{ route('product.view') }}">View Products</a></li>
@@ -56,13 +56,13 @@
             <li>
                 <div>
                    <a class=""href="{{ route('menu.home') }}">Menus</a>
-                    <button onclick="openNavTab(event, 'menus')" class="main-nav-button">
+                    <button onclick="openNavTab(event, 'menu')" class="main-nav-button">
                         <image src="/images/side-arrow.png"></image>
                     </button>
                 </div>
 
 
-                <ul id="menus" class="main-nav-tab side-bar-tab">
+                <ul id="menu" class="main-nav-tab side-bar-tab">
                     <li><a href="{{ route("menu.new") }}">New Menu</a></li>
                     <li><a href="{{ route("menu.view") }}">Edit Menu</a></li>
                     <li><a href="{{ route("menu.view") }}">View Menus</a></li>
@@ -75,13 +75,13 @@
             <li>
                 <div>
                    <a class=""href="{{ route('wastelist.home') }}">Waste Lists</a>
-                    <button onclick="openNavTab(event, 'wastelists')" class="main-nav-button">
+                    <button onclick="openNavTab(event, 'wastelist')" class="main-nav-button">
                         <image src="/images/side-arrow.png"></image>
                     </button>
                 </div>
 
 
-                <ul id="wastelists" class="main-nav-tab side-bar-tab">
+                <ul id="wastelist" class="main-nav-tab side-bar-tab">
                     <li><a href="{{ route('wastelist.new') }}">New Waste List</a></li>
                     <li><a href="{{ route('wastelist.view') }}">Edit Waste List</a></li>
                     <li><a href="{{ route('wastelist.view') }}">View Waste Lists</a></li>
@@ -92,13 +92,13 @@
             <li>
                 <div>
                    <a class=""href="{{ route('store.home') }}">Stores</a>
-                    <button onclick="openNavTab(event, 'stores')" class="main-nav-button">
+                    <button onclick="openNavTab(event, 'store')" class="main-nav-button">
                         <image src="/images/side-arrow.png"></image>
                     </button>
                 </div>
 
 
-                <ul id="stores" class="main-nav-tab side-bar-tab">
+                <ul id="store" class="main-nav-tab side-bar-tab">
                     <li><a href="{{ route("store.new") }}">New Store</a></li>
                     <li><a href="{{ route("store.view") }}">Edit Store</a></li>
                     <li><a href="{{ route("store.view") }}">View Stores</a></li>
@@ -110,7 +110,7 @@
         <!--In theory this is login check for store then display store tools-->
             <li>
                 <div>
-                   <a class="active"href="{{ route('inventory.home') }}">Inventory</a>
+                   <a href="{{ route('inventory.home') }}">Inventory</a>
                     <button onclick="openNavTab(event, 'inventory')" class="main-nav-button">
                         <image src="/images/side-arrow.png"></image>
                     </button>
@@ -129,13 +129,13 @@
             <li>
                 <div>
                     <a href="{{ route('order.home') }}">Ordering</a>
-                    <button onclick="openNavTab(event, 'ordering')" class="main-nav-button">
+                    <button onclick="openNavTab(event, 'order')" class="main-nav-button">
                         <image src="/images/side-arrow.png"></image>
                     </button>
                 </div>
 
 
-                <ul id="ordering" class="main-nav-tab side-bar-tab">
+                <ul id="order" class="main-nav-tab side-bar-tab">
                     <li><a href="">New Order</a></li>
                     <li><a href="">Edit Order</a></li>
                     <li><a href="">View Orders</a></li>
@@ -163,13 +163,13 @@
             <li>
                 <div>
                     <a href="{{ route("waste.home") }}">Waste</a>
-                    <button onclick="openNavTab(event, 'Waste')" class="main-nav-button">
+                    <button onclick="openNavTab(event, 'waste')" class="main-nav-button">
                             <image src="/images/side-arrow.png"></image>
                     </button>
                 </div>
 
 
-                <ul id="Waste" class="main-nav-tab side-bar-tab">
+                <ul id="waste" class="main-nav-tab side-bar-tab">
                     <li><a href="">Test</a></li>
                     <li><a href="">Test</a></li>
                     <li><a href="">Test</a></li>
@@ -179,13 +179,13 @@
             <li>
                 <div>
                     <a href="{{ route('forecasting.home') }}">Forecasting</a>
-                    <button onclick="openNavTab(event, 'Forecasting')" class="main-nav-button">
+                    <button onclick="openNavTab(event, 'forecasting')" class="main-nav-button">
                         <image src="/images/side-arrow.png"></image>
                     </button>
                 </div>
 
 
-                <ul id="Forecasting" class="main-nav-tab side-bar-tab">
+                <ul id="forecasting" class="main-nav-tab side-bar-tab">
                     <li><a href="{{ route("forecasting.date") }}">New Forecast</a></li>
                     <li><a href="">Edit Forecast</a></li>
                     <li><a href="">View Forecast</a></li>
@@ -197,13 +197,13 @@
             <li>
                 <div>
                     <a href="{{ route('soh.home') }}">Stock-on-hand</a>
-                    <button onclick="openNavTab(event, 'SOH')" class="main-nav-button">
+                    <button onclick="openNavTab(event, 'StockOnHand')" class="main-nav-button">
                         <image src="/images/side-arrow.png"></image>
                     </button>
                 </div>
 
 
-                <ul id="SOH" class="main-nav-tab side-bar-tab">
+                <ul id="StockOnHand" class="main-nav-tab side-bar-tab">
                     <li><a href="">New Soh Count</a></li>
                     <li><a href="">Edit Soh Count</a></li>
                     <li><a href="">View Soh</a></li>
@@ -214,11 +214,11 @@
             <li>
                 <div>
                     <a href=" {{ route('dates.home') }}">Dates</a>
-                    <button onclick="openNavTab(event, 'Dates')" class="main-nav-button">
+                    <button onclick="openNavTab(event, 'dates')" class="main-nav-button">
                         <image src="/images/side-arrow.png"></image>
                     </button>
                 </div>
-                <ul id="Dates" class="main-nav-tab side-bar-tab">
+                <ul id="dates" class="main-nav-tab side-bar-tab">
                     <li><a href="">New Date</a></li>
                     <li><a href="">Edit Date</a></li>
                     <li><a href="">Search Dates</a></li>
@@ -229,13 +229,13 @@
             <li>
                 <div>
                     <a href=" {{ route('product.home') }}">Products</a>
-                    <button onclick="openNavTab(event, 'Products')" class="main-nav-button">
+                    <button onclick="openNavTab(event, 'product')" class="main-nav-button">
                     <image id="Products_arrow"  src="/images/side-arrow.png"></image>
                     </button>
                 </div>
 
 
-                <ul id="Products" class="main-nav-tab side-bar-tab">
+                <ul id="product" class="main-nav-tab side-bar-tab">
                     <li><a href="{{ route('product.new') }}">New Product</a></li>
                     <li><a href="">Edit Product</a></li>
                     <li><a href="{{ route('product.view') }}">View Product</a></li>
@@ -287,7 +287,7 @@
                 <div class="modal-content">
                     <div class="grid-2-col modal-center">
                         @if(!$adminNav)
-                        <a href="{{ route('inventory.home') }}"><button class="ph-button ph-button-standard">Inventory</button></a>
+                        <a href="{{ route('inventory.home') }}"><button class="ph-button ph-button-standard modal-nav-button">Inventory</button></a>
                         <a href="{{ route('order.home') }}"><button class="ph-button ph-button-standard">Ordering</button></a>
                         <a href="{{ route('receiving.home') }}"><button class="ph-button ph-button-standard">Receiving</button></a>
                         <a href="{{ route('waste.home') }}"><button class="ph-button ph-button-standard">Waste</button></a>
@@ -296,13 +296,13 @@
                         <a href="{{ route('dates.home') }}"><button class="ph-button ph-button-standard">Dates</button></a>
 
                         @else
-                        <a href="{{ route('product.home') }}"><button class="ph-button ph-button-standard">Products</button></a>
-                        <a href="{{ route('menu.home') }}"><button class="ph-button ph-button-standard">Menu</button></a>
-                        <a href="{{ route('wastelist.home') }}"><button class="ph-button ph-button-standard">Waste List</button></a>
-                        <a href="{{ route('store.home') }}"><button class="ph-button ph-button-standard">Store</button></a>
+                        <a href="{{ route('product.home') }}"><button id="alt-product" class="ph-button ph-button-standard modal-nav-button">Products</button></a>
+                        <a href="{{ route('menu.home') }}"><button id="alt-menu" class="ph-button ph-button-standard modal-nav-button">Menu</button></a>
+                        <a href="{{ route('wastelist.home') }}"><button id="alt-wastelist" class="ph-button ph-button-standard modal-nav-button">Waste List</button></a>
+                        <a href="{{ route('store.home') }}"><button id="alt-store" class="ph-button ph-button-standard modal-nav-button">Store</button></a>
 
                         @endif
-                        <a href="{{ "/test" }}"><button class="ph-button ph-button-standard">User</button></a>
+                        <a href="{{ "/test" }}"><button id="alt-user" class="ph-button ph-button-standard modal-nav-button">User</button></a>
                         <div class="center-button-container"><button class="ph-button ph-button-important" onclick="OpenModalNav(event)">Close</button></div>
                     </div>
                 </div>
@@ -320,6 +320,43 @@
 <script>
 
     //https://www.w3schools.com/howto/howto_js_tabs.asp
+    var selectList = Array(5);
+    //these should be alphabetical
+
+    selectList['Chilled'] = ["Toppings", "Cheese", "Soft Beverages", "Salads", "Beer", "Wine/Spirits"]
+    selectList['Dry'] = ["Food", "Sauces"]
+    selectList['Frozen'] =  ["Toppings", "Cheese", "Pasta", "Desserts", "Starters", "Dough", "Other"]
+    selectList["Other"] = ["Other", "Goody Bags", "Paper", "Cleaning", "Ops Supplies", "Cutlery and Crockery"]
+
+    function updateSelect() {
+
+    //test = Object.keys(categories)
+    let main, updated, current;
+
+    main = document.getElementById("mainSelect");
+    updated = document.getElementById("updatedSelect");
+
+    current = main.options[main.selectedIndex].value;
+
+    if(current in selectList) {
+        //remove all current options.
+        while(updated.options.length > 0) {
+        updated.remove(0);
+        }
+
+    //create new options based on list
+        for(let o = 0; o <selectList[current].length; o++) {
+            newOption = document.createElement("option");
+            newOption.value = selectList[current][o];
+            newOption.text = selectList[current][o];
+
+            updated.appendChild(newOption);
+        }
+    }
+
+
+}
+
     function openNavTab(evt, tabId, classN = "rotated") {
         // Declare all variables
         let i, tabcontent, tablinks, alreadyOpen;
@@ -409,4 +446,46 @@
 
         parentElement.remove();
     }
+
+    function setupNav() {
+        let comps, url = window.location.pathname;
+        className = "active";
+        comps = url.split("/");
+        //first split is always empty as starts with /
+        if(comps[1] != "") {
+            //second section is controller in use
+            controller = comps[1];
+
+            //waste list fix
+            //could change this to have a comps[2] check instead of just for waste?
+            if(controller == "waste" && comps[2] == "list") {
+                controller = controller+comps[2];
+            }
+
+            ul = document.getElementById(controller);
+            console.log(ul);
+
+
+            //in case not found
+            if(ul == null) {
+                return;
+            }
+
+            parentLi = ul.parentNode;
+            anchor = parentLi.getElementsByTagName("a");
+
+            if(anchor.length > 0) {
+                anchor = anchor[0];
+                anchor.classList.add(className);
+            }
+
+            mobileNav = document.getElementById("alt-"+controller);
+
+            if(mobileNav != null) {
+                mobileNav.classList.add(className);
+            }
+        }
+    }
+
+    setupNav();
 </script>

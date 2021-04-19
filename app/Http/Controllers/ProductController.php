@@ -16,7 +16,7 @@ class ProductController extends Controller
 
         $title = "Products Home";
 
-        $viewRoute = Route("product.new");
+        $viewRoute = Route("product.view");
 
         $menuitems = [
             ["title" => "New Product", "anchor" => route("product.new"), "img" => "/images/icons/new-256.png"],
@@ -102,11 +102,10 @@ class ProductController extends Controller
     public function buildCategories()
     {
         $categories = [
-            'Chilled' => ["Toppings", "Cheese", "Soft Beverages", "Salads"],
-            "Drinks" => [],
-            "Dry" => [],
-            "Frozen" => [],
-            "Other" => []
+            'Chilled' => ["Toppings", "Cheese", "Soft Beverages", "Salads", "Beer", "Wine/Spirits"],
+            "Dry" => ["Food", "Sauces"],
+            "Frozen" => ["Toppings", "Cheese", "Pasta", "Desserts", "Starters", "Dough", "Other"],
+            "Other" => ["Other", "Goody Bags", "Paper", "Cleaning", "Ops Supplies", "Cutlery and Crockery"]
         ];
         return $categories;
     }

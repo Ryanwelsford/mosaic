@@ -34,12 +34,15 @@
                 </select>
                 <label >Sub-Category:</label>
                 <select name="subcategory" id="updatedSelect">
-                    <option>Dough</option>
-                    <option>Cheese</option>
-                    <option>Toppings</option>
-                    <option>Desserts</option>
-                    <option>Pasta</option>
-                    <option>Starters</option>
+                    @if(isset($product->category))
+                        @foreach($categories[$product->category] as $key => $value)
+                            <option @if($product->subcategory == $value) {{ "selected" }} @endif value="{{ $value }}">{{ $value }}</option>
+                        @endforeach
+                    @else
+                        @foreach($categories["Chilled"] as $key => $value)
+                            <option value="{{ $value }}">{{ $value }}</option>
+                        @endforeach
+                    @endif
                 </select>
             </div>
 
@@ -116,40 +119,6 @@
 
     }
 
-    function updateSelect() {
-        //let categories = JSON.parse('<?php echo $encoded?>');
-
-        //test = Object.keys(categories)
-        let main, updated, current;
-
-        main = document.getElementById("mainSelect");
-        updated = document.getElementById("updatedSelect");
-
-        current = main.options[main.selectedIndex].value;
-
-        var selectList = Array(5);
-        //these should be alphabetical
-        selectList['Frozen'] = ["Toppings", "Cheese", "Starters", "extra"];
-        selectList['Dry'] = ["test", "test2"];
-        console.log(selectList);
-        if(current in selectList) {
-            //remove all current options.
-            while(updated.options.length > 0) {
-            updated.remove(0);
-            }
-
-        //create new options based on list
-            for(let o = 0; o <selectList[current].length; o++) {
-                newOption = document.createElement("option");
-                newOption.value = selectList[current][o];
-                newOption.text = selectList[current][o];
-
-                updated.appendChild(newOption);
-            }
-        }
-
-
-    }
 
     //replace this function with one that creates a new item with each/pack as the select option
     function duplicate(dupeTarget, parent, max) {

@@ -5,12 +5,12 @@
 <div class="grid-container">
     <div class="main-tile tile-all-columns center-column">
         <label class="select-label">Select a Category</label>
-        <select id="category" class="main-select main-select-large" placeholder="Select from the list">
+        <select id="mainSelect" class="main-select main-select-large" placeholder="Select from the list">
             @foreach($categories as $key=>$category)
             <option value= "{{ $key }}">{{ $key }}</option>
             @endforeach
         </select>
-        <select class="main-select main-select-large" placeholder="Select from the list">
+        <select id="updatedSelect" class="main-select main-select-large" placeholder="Select from the list">
             @foreach($categories['Chilled'] as $option)
                 <option value= "{{ $option }}">{{ $option }}</option>
             @endforeach
@@ -78,9 +78,10 @@
 </div>
 <x-top-button></x-top-button>
 <script>
-    let main = document.getElementById("category");
+    let main = document.getElementById("mainSelect");
     main.onchange = function(event) {
         redrawTable();
+        updateSelect();
     }
 
     function redrawTable() {
@@ -98,6 +99,43 @@
                 elements[i-1].remove();
             }
         }
+    }
+
+    function addTableTr() {
+
+    }
+
+    function updateSelect() {
+        //let categories = JSON.parse();
+
+        //test = Object.keys(categories)
+        let main, updated, current;
+
+        main = document.getElementById("mainSelect");
+        updated = document.getElementById("updatedSelect");
+
+        current = main.options[main.selectedIndex].value;
+
+        var selectList = Array(5);
+        //these should be alphabetical
+        console.log(selectList);
+        if(current in selectList) {
+            //remove all current options.
+            while(updated.options.length > 0) {
+            updated.remove(0);
+            }
+
+        //create new options based on list
+            for(let o = 0; o <selectList[current].length; o++) {
+                newOption = document.createElement("option");
+                newOption.value = selectList[current][o];
+                newOption.text = selectList[current][o];
+
+                updated.appendChild(newOption);
+            }
+        }
+
+
     }
 </script>
 @endsection
