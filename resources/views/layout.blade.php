@@ -322,7 +322,7 @@
     //https://www.w3schools.com/howto/howto_js_tabs.asp
     var selectList = Array(5);
     //these should be alphabetical
-
+    //update this list if required
     selectList['Chilled'] = ["Toppings", "Cheese", "Soft Beverages", "Salads", "Beer", "Wine/Spirits"]
     selectList['Dry'] = ["Food", "Sauces"]
     selectList['Frozen'] =  ["Toppings", "Cheese", "Pasta", "Desserts", "Starters", "Dough", "Other"]
@@ -463,7 +463,6 @@
             }
 
             ul = document.getElementById(controller);
-            console.log(ul);
 
 
             //in case not found

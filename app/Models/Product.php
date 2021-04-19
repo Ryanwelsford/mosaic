@@ -20,7 +20,7 @@ class Product extends Model
 
     public function units()
     {
-        return $this->hasMany(Unit::class);
+        return $this->hasOne(Unit::class);
     }
 
     public function fillItem($id, $name, $code, $category, $subcategory)

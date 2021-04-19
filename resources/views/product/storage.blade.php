@@ -13,7 +13,7 @@
                 <input name="id" type="hidden" value="@if(isset($product->id)) {{ $product->id }} @endif">
                 <label>Name: @error('name') <span class="error-text">*</span> @enderror</label>
                 <div>
-                    <input name="name" class="@error('name') input-error @enderror" type="text" value="@if(isset($product->name)){{ $product->name }} @endif">
+                    <input name="name" class="@error('name') input-error @enderror"type="text" value="@if(isset($product->name)){{ $product->name }} @endif">
                     @error('name')
                         <div class="small-error-text error-text">{{ $message }} </div>
                     @enderror
@@ -49,58 +49,22 @@
             <div class="center-column hidden-tab tab">
 
                 <h2 class="tile-title tile-all-columns">Product Units</h2>
+                <div class="main-tile-button-container" id="duplicateHolder"><a id="duplicate" onclick="duplicate('dupe', 'target', ['dupe', 3])" class="ph-button ph-button-standard ph-button-rounded">+</a><a id="duplicate" onclick="removeDupe('dupe')" class="ph-button ph-button-standard ph-button-rounded">-</a></div>
 
                 <!--form needs to be updated to only have Case, then each, then pack set the select to a type text and mark as readonly-->
                 <form method="POST" action="{{ route("product.new") }}">
                     <div class="center-column" id="target">
-                        <div class="grid-2-col-wide">
-                            <label>Case Details:</label>
-                            <label>Case</label>
-
-                            <label>Description: @error('case.description')<span class="error-text">*</span>@enderror</label>
-
-                            <div>
-                                <input class="@error('case.description') input-error @enderror" name="case[description]"type="text" value="@if(isset($case['description'])){{$case['description']}}@endif">
-                                @error('case.description')
-                                    <div class="small-error-text error-text">{{ $message }} </div>
-                                @enderror
-                            </div>
-
-                            <label>Case Price: @error('case.price')<span class="error-text">*</span>@enderror</label>
-
-                            <div>
-                                <input name="case[price]"type="number" step="0.01" min="0.00" value="@if(isset($case['price'])){{$case['price']}}@endif">
-                                @error('case.price')
-                                    <div class="small-error-text error-text">{{ $message }} </div>
-                                @enderror
-                            </div>
-
-                            <label>Quanitity per Case: @error('case.quantity')<span class="error-text">*</span>@enderror</label>
-                            <div>
-                                <input name="case[quantity]"type="number" step="1" min="0" value="@if(isset($case['quantity'])){{$case['quantity']}}@endif">
-                                @error('case.quantity')
-                                    <div class="small-error-text error-text">{{ $message }} </div>
-                                @enderror
-                            </div>
-
-                            <div class="form-note tile-all-columns">Enter the number of items per case</div>
-                            <label class="margin-top-2">Pack Details:</label>
-
-                            <select name="pack[details]" id="packSelect"class=" margin-top-2" onchange="revealUnits()">
-                                <option @if(isset($pack['details']) && $pack['details'] == "none" ){{ "selected" }} @endif value="none">N/A</option>
-                                <option @if(isset($pack['details']) && $pack['details'] == "Pack" ){{ "selected" }} @endif value="Pack">Required</option>
+                        <div id="dupe" class="dupe grid-2-col-wide">
+                            <label>Unit Type:</label>
+                            <select name="unit[type][]">
+                                <option>Case</option>
+                                <option>Pack</option>
+                                <option>Each</option>
                             </select>
-                            <div class="form-note tile-all-columns">If no pack information is required leave as N/A</div>
-
-                            <div id="packTab" class="tile-all-columns @if((isset($pack['details']) && $pack['details'] == "none") || !isset($pack['details'])){{ "hidden" }} @endif">
-                                <div class="grid-2-col-wide full-width">
-                                    <label>Pack Description: @error('unit["description"]') {{  "*" }} @enderror</label>
-                                    <input name="pack[description]"type="text" value="@if(isset($pack['description'])){{$pack['description']}}@endif">
-                                    <label>Packs per Case:</label>
-                                    <input name="pack[quantity]" type="number" step="1" min="0"
-                                    value="@if(isset($pack['quantity'])){{intval($pack['quantity'])}}@endif">
-                                </div>
-                            </div>
+                            <label>Description: @error('unit["description"]') {{  "*" }} @enderror</label>
+                            <input  name="unit[description][]"type="text" value="">
+                            <label>Case Price:</label>
+                            <input name="unit[price][]"type="number" step="0.01">
                         </div>
                     </div>
                 </form>
@@ -119,20 +83,6 @@
 </div>
 
 <script>
-
-    function revealUnits() {
-        let select = document.getElementById("packSelect");
-        let div = document.getElementById("packTab");
-
-        let current = select.options[select.selectedIndex].value;
-
-        if(current == "none") {
-            div.classList.add("hidden");
-        }
-        else {
-            div.classList.remove("hidden")
-        }
-    }
     function openTab(which) {
         let openTab, tabs, tracker, buttonP, buttonN;
 

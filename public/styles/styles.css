@@ -170,6 +170,10 @@ input, .checkmark, select, textarea {
 .user-section {
 
 }
+
+.margin-top-2 {
+    margin-top: 2rem;
+}
 .user-section ul{
     list-style: none;
     margin-top: 10px;
@@ -766,7 +770,7 @@ option {
     width: min-content;
 }
 
-.mobile-nav, .main-nav-tab, .hidden-tab, .mobile-only {
+.mobile-nav, .main-nav-tab, .hidden-tab, .mobile-only, .hidden {
     display: none;
 }
 .tile-title {
@@ -817,6 +821,17 @@ input[type=number] {
 .spaced-inputs .margin-blocked {
     margin-top: 0px;
 }
+
+.full-width {
+    width: 100%;
+    margin-left: 0px;
+}
+
+.form-note {
+    font-size: 0.8rem;
+    text-align: right;
+}
+
 @media only screen and (max-width: 1400px) {
     .main-nav ul {
         font-size: 20px;

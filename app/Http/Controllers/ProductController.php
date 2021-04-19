@@ -39,8 +39,22 @@ class ProductController extends Controller
 
         $modelValidator = new ModelValidator(Product::class, $request->id, old());
         $product = $modelValidator->validate();
-
+        $case = $pack = null;
         $title = "New Product";
+
+        //therefore edit is required
+        if ($product != null && empty(old())) {
+            $units = $product->units()->get()[0];
+            $output = $units->splitUnit();
+            $case = $output[0];
+            $pack = $output[1];
+        }
+
+        if (!empty(old())) {
+            $full = old();
+            $case = $full['case'];
+            $pack = $full['pack'];
+        }
 
         return view(
             'product.new',
@@ -48,7 +62,9 @@ class ProductController extends Controller
                 "title" => $title,
                 "product" => $product,
                 "categories" => $categories,
-                "encoded" => $encoded
+                "encoded" => $encoded,
+                "case" => $case,
+                "pack" => $pack
             ]
         );
     }
@@ -61,19 +77,24 @@ class ProductController extends Controller
 
         $this->validate($request, [
             'name' => ['required', \Illuminate\Validation\Rule::unique('products')->ignore($id)],
-            'code' => 'required|unique:products|numeric'
+            'code' => ['required', \Illuminate\Validation\Rule::unique('products')->ignore($id), 'numeric'],
+            'case.description' => ['required'],
+            'case.price' => ['required'],
+            'case.quantity' => ['required']
         ]);
-
-        $unittype = $request->unit['type'];
-        $unitdesc = $request->unit['description'];
-        $unitprice = $request->unit['price'];
 
         //create product
         $product = new Product;
+        $unit = new Unit;
+        $case = $request->case;
+        $pack = $request->pack;
 
+        //therefore is an edit
         if (isset($id)) {
             $product = Product::find($id);
+            $unit = $product->units()->get();
         }
+
 
         $product->fillItem($id, $request->name, $request->code, $request->category, $request->subcategory);
         //create can be used to save the product in one line. However save can be used when updating
@@ -82,16 +103,8 @@ class ProductController extends Controller
 
         //create units
         //todo update units creation to associate with precreated units rather than creating a new one everytime
-
-        for ($i = 0; $i < count($unittype); $i++) {
-            Unit::create([
-                'unittype' => $unittype[$i],
-                'description' => $unitdesc[$i],
-                'price' => $unitprice[$i],
-                'product_id' => $product->id
-            ]);
-        }
-
+        $unit->fillItem($case, $pack, $product->id);
+        $unit->save();
         //currently wraps back around to the new page
         //return $this->store($request);
 
@@ -101,6 +114,7 @@ class ProductController extends Controller
 
     public function buildCategories()
     {
+        //changes here need to be reflectd in js script
         $categories = [
             'Chilled' => ["Toppings", "Cheese", "Soft Beverages", "Salads", "Beer", "Wine/Spirits"],
             "Dry" => ["Food", "Sauces"],
