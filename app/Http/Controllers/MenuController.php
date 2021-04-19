@@ -7,6 +7,7 @@ use App\Models\Menu;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Helpers\ModelValidator;
+use App\Http\Helpers\ModelSearch;
 use App\Http\Controllers\ProductController;
 
 //TODO create copy method to allow for a new menu to be created from a base menu, copying all the product mappings
@@ -187,23 +188,11 @@ class MenuController extends Controller
         $title = "View Menus";
         $menu = new Menu;
         $searchFields = $menu->searchable();
-
-        $query = Menu::query();
-        if (isset($request->search)) {
-
-            foreach ($searchFields as $field) {
-                $query->orWhere($field, "LIKE", "%" . $request->search . "%");
-            }
-
-            if (isset($request->sort)) {
-                $menus = $query->orderby($request->sort, "desc")->get();
-            } else {
-                $menus = $query->orderby('id', "desc")->get();
-            }
-        } else {
-            $menus = Menu::orderby('created_at')->get();
-        }
         $search = $request->search;
+        $sort = $request->sort;
+
+        $modelSearch = new ModelSearch(Menu::class, $searchFields);
+        $menus = $modelSearch->search($search, $sort);
 
         return view("menus.view", ['title' => $title, 'menus' => $menus, "search" => $search, "searchFields" => $searchFields]);
     }

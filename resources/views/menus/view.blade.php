@@ -23,8 +23,9 @@
 
         @if(isset($search))
             <p>Displaying {{$menus->count()}} results for... <span class="italics">{{ $search }}</span></p>
-        @else
+        @endif
 
+        @if($menus->count() >= 1)
         <table class="wide-table">
             <th>
                 <p class="mob-hidden">Menu Name</p>
