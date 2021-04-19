@@ -96,7 +96,7 @@
                 <div class="modal-center">
                     <form class="search-form grid-2-col-wide centered" method="GET" action="{{ route("menu.view") }}">
                         <label>Search Menus</label>
-                        <input name="search" value="@if(isset($search)) {{ $search }} @endif" type ="text" class=" "  id="search-bar" placeholder="Search here">
+                        <input name="search" value="@if(isset($search)){{$search}}@endif" type ="text" class=" "  id="search-bar" placeholder="Search here">
                         <label>Sort by</label>
                         <select name="sort">
                             @foreach($searchFields as $field)

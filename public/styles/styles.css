@@ -654,8 +654,9 @@ input:checked ~ .checkmark {
 }
 
 .grid-2-col-wide input, .grid-2-col-wide select, .grid-2-col-wide option, .grid-2-col-wide textarea  {
+    box-sizing: border-box;
     border-radius: 10px;
-    padding: 5px 0px;
+    padding: 5px 0px 5px 5px;
     transition: all ease 0.5s;
     /*add invis border so forms dont move around as border changes*/
     border: 1px solid rgba(220, 39, 62, 0);
@@ -990,7 +991,7 @@ input[type=number] {
     }
 
     .grid-2-col-wide input, .grid-2-col-wide select, .grid-2-col-wide option, .grid-2-col-wide textarea  {
-        padding: 10px 0px;
+        padding: 10px 0px 10px 5px;
     }
 
     .grid-2-col-wide input, .grid-2-col-wide select, .grid-2-col-wide option, .grid-2-col-wide label, .grid-2-col-wide textarea  {
