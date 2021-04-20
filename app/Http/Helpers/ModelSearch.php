@@ -42,6 +42,15 @@ class ModelSearch
         return $query->get();
     }
 
+    //when ordering only, using a sort function rather than a search
+    public function sortOnly($sort, $sortDirection)
+    {
+        $query = $this->returnType::query();
+        $this->sort($query, $sort, $sortDirection);
+
+        return $query->get();
+    }
+
     //build query string concatenating where clauses for single entry search forms
     private function queryConstruct($searchValue)
     {

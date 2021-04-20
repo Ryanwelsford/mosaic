@@ -109,7 +109,7 @@ main {
 }
 
 .tool-bar .user-section{
-
+    margin-right: 1rem;
 }
 
 .tool-bar .tools-section {
@@ -126,6 +126,7 @@ main {
     font-size: 1.2rem;
     color: white;
     transition: all ease 0.5s;
+    padding: 1px;
 }
 .bar-tool-button:hover, .bar-tool-button:focus {
     box-shadow: 0 0 1px 3px rgb(199, 193, 193);
@@ -505,7 +506,9 @@ th, td {
     font-size: 32px;
     text-align: center;
 }
-
+.confirmation-banner.table-fit {
+    width: 85%;
+}
 .anchor {
     text-decoration: underline;
     color: darkblue;
@@ -758,6 +761,10 @@ option {
 .margin-top-10 {
     margin-top: 15px;
 }
+
+.margin-bottom-2 {
+    margin-bottom: 2rem;
+}
 .login input, .login label {
     font-size: 25px;
     margin-bottom: 12px;
@@ -862,6 +869,7 @@ input[type=number] {
 }
 .search-form input {
     width: 100%;
+    margin-right: 0.5rem;
 }
 
 .search-with-button {

@@ -12,7 +12,7 @@
         <form class="search-form grid-2-col-wide table-width-match" method="GET" action="{{ route("menu.view") }}">
             <label>Search Menus</label>
             <div class="search-with-button">
-                <input name="search" type ="text" class=" "  id="search-bar" placeholder="Search here" value="@if(isset($search)){{$search}}@endif">
+                <input name="search" type ="text" class=""  id="search-bar" placeholder="Search here" value="@if(isset($search)){{$search}}@endif">
                 <button type ="submit" class="ph-button ph-button-standard">Search</button>
             </div>
         </form>
@@ -22,7 +22,7 @@
         @endif
 
         @if(isset($search))
-            <p>Displaying {{$menus->count()}} results for... <span class="italics">{{ $search }}</span></p>
+            <p>Displaying {{$menus->count()}} results for... <span class="italics">{{ $search }}</span> @if(isset($sort)) {{ "sorted by ".$sort }} @endif</p>
         @endif
 
         @if($menus->count() >= 1)

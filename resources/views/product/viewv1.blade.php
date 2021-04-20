@@ -1,38 +1,26 @@
 @extends('layout')
 @section('title', $title)
 
-@section('tools')
-    <button class="bar-tool-button" onclick="searchModal()"><span class="mobile-hidden">Search</span> <i class="fas fa-search"></i></button>
-@endsection
-
 @section('content')
 <div class="grid-container">
     <div class="main-tile tile-all-columns center-column">
-        <form class="search-form grid-2-col-wide table-width-match" method="GET" action="{{ route("product.view") }}">
-            <label>Search Products  </label>
-            <div class="search-with-button">
-                <input name="search" type ="text" class=" "  id="search-bar" placeholder="Search here" value="@if(isset($search)){{$search}}@endif">
-                <button type ="submit" class="ph-button ph-button-standard">Search</button>
-            </div>
-        </form>
+        <label class="select-label">Select a Category</label>
+        <select id="mainSelect" class="main-select main-select-large" placeholder="Select from the list">
+            @foreach($categories as $key=>$category)
+            <option value= "{{ $key }}">{{ $key }}</option>
+            @endforeach
+        </select>
+        <select id="updatedSelect" class="main-select main-select-large" placeholder="Select from the list">
+            @foreach($categories['Chilled'] as $option)
+                <option value= "{{ $option }}">{{ $option }}</option>
+            @endforeach
+        </select>
     </div>
     <div class="main-tile tile-all-columns center-column">
         <h2>Product Details</h2>
         @if(session("confirmation"))
-        <div class ="confirmation-banner table-fit margin-bottom-2">
-            <h3>{{ session("confirmation") }}</h3>
-        </div>
+            <p>{{ session("confirmation") }}</p>
         @endif
-
-        @if($products->count() < 1 && !isset($search))
-            <p>No menus currently exist, create a new menu <a href="{{ route("product.new") }}">here</a></p>
-        @endif
-
-        @if(isset($search))
-            <p>Displaying {{$products->count()}} results for... <span class="italics">{{ $search }}</span> @if(isset($sort)) {{ "sorted by ".$sort }} @endif</p>
-        @endif
-
-
         <table class="wide-table">
             <th>
                 <p class="mob-hidden">Product Name</p>
@@ -87,30 +75,14 @@
         </table>
     </div>
 
-    <section class="modal" id="search-modal">
-        <div class="modal-internal small-modal">
-            <div class="modal-title">Search Menus <button onclick="searchModal()" class="close-X">X</button></div>
-            <div class="modal-content vert-center">
-                <div class="modal-center">
-                    <form class="search-form grid-2-col-wide centered" method="GET" action="{{ route("product.view") }}">
-                        <label>Search Menus</label>
-                        <input name="search" value="@if(isset($search)){{$search}}@endif" type ="text" class=" "  id="search-bar" placeholder="Search here">
-                        <label>Sort by</label>
-                        <select name="sort">
-                            @foreach($searchFields as $field)
-                                <option value="{{ $field }}">{{str_replace("_", " ", $field)}}</option>
-                            @endforeach
-                        </select>
-                        <input type="submit" class="ph-button ph-button-standard tile-all-columns">
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
 </div>
 <x-top-button></x-top-button>
 <script>
+    let main = document.getElementById("mainSelect");
+    main.onchange = function(event) {
+        redrawTable();
+        updateSelect();
+    }
 
     function redrawTable() {
         removeTag("tr", 1);

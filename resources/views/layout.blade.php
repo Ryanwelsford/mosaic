@@ -264,22 +264,17 @@
             <div class ="user-section">
                 @auth
                     {{ auth()->user()->getCorrectName() }}
+                    <button onclick="openNavTab(event, 'Users', 'rotated')" class="main-nav-button tool-button"><image class="" id="Products_arrow"  src="/images/side-arrow.png"></image></button>
+                    <ul id="Users" class="main-nav-tab user-tab">
+                        <a href="{{ route('logout.index') }}"><li>Logout</li></a>
+                        <a href=""><li>Settings</li></a>
+                    </ul>
                 @endauth
 
                 @guest
-                    {{ "Not Logged" }}
+                    <a class="bar-tool-button" href="{{ route('login') }}">Login <i class="fas fa-sign-in-alt"></i></a>
                 @endguest
-                <button onclick="openNavTab(event, 'Users', 'rotated')" class="main-nav-button tool-button"><image class="" id="Products_arrow"  src="/images/side-arrow.png"></image></button>
-                <ul id="Users" class="main-nav-tab user-tab">
-                    @auth
-                    <a href="{{ route('logout.index') }}"><li>Logout</li></a>
-                    <a href=""><li>Settings</li></a>
-                    @endauth
 
-                    @guest
-                    <a href="{{ route('login') }}"><li>Login</li></a>
-                    @endguest
-                </ul>
             </div>
         </div>
 

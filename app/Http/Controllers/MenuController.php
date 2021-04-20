@@ -193,8 +193,9 @@ class MenuController extends Controller
 
         $modelSearch = new ModelSearch(Menu::class, $searchFields);
         $menus = $modelSearch->search($search, $sort);
+        //$menus = $modelSearch->sortOnly($sort, "ASC");
 
-        return view("menus.view", ['title' => $title, 'menus' => $menus, "search" => $search, "searchFields" => $searchFields]);
+        return view("menus.view", ['title' => $title, 'menus' => $menus, "search" => $search, "sort" => $sort, "searchFields" => $searchFields]);
     }
 
     public function confirm(Menu $menu)

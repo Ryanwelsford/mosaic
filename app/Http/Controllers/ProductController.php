@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Helpers\ModelValidator;
+use stdClass;
+use Exception;
 use App\Models\Unit;
 use App\Models\Product;
-use Exception;
 use Illuminate\Http\Request;
-use stdClass;
+use App\Http\Helpers\ModelSearch;
+use App\Http\Helpers\ModelValidator;
 
 class ProductController extends Controller
 {
@@ -127,17 +128,25 @@ class ProductController extends Controller
     //todo add pagination ability to full list of product. add list of tabs seperating units then all for switching with selects
     //enable display of all products with their details
     //need to add a check to test what happens when there are 0 products to display
-    public function view()
+    public function view(Request $request)
     {
         // all products
-        $products = Product::orderBy('name')->get();
+        $product = new Product;
+        $searchFields = $product->getSearchable();
+
         $title = "Display Products";
-        $categories = $this->buildCategories();
+        $search = $request->search;
+        $sort = $request->sort;
+        $modelSearch = new ModelSearch(Product::class, $searchFields, "name");
+        $products = $modelSearch->search($search, $sort);
+
 
         return view("product.view", [
             "products" => $products,
             "title" => $title,
-            "categories" => $categories
+            "search" => $search,
+            "sort" => $sort,
+            "searchFields" => $searchFields
         ]);
     }
 

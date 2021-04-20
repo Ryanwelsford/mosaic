@@ -18,6 +18,14 @@ class Product extends Model
         'subcategory'
     ];
 
+    protected $searchable = [
+        'id',
+        'name',
+        'code',
+        'category',
+        'subcategory'
+    ];
+
     public function units()
     {
         return $this->hasOne(Unit::class);
@@ -35,5 +43,10 @@ class Product extends Model
     public function menus()
     {
         return $this->belongsToMany(Menu::class);
+    }
+
+    public function getSearchable()
+    {
+        return $this->searchable;
     }
 }
