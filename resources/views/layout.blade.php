@@ -255,7 +255,7 @@
                 <div class="tools-section"> @yield('tools') </div>
             @else
             <div class="tools-section">
-                <button class="bar-tool-button">Home <i class="fas fa-home"></i> </button>
+                <button class="bar-tool-button">Home <i class="fas fa-home"></i></button>
             </div>
             @endif
             <div class="title">

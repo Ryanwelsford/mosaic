@@ -107,7 +107,8 @@ Route::get('/forecasting/home', [ForecastingController::class, 'home'])->name('f
 Route::get('/forecasting/date/select', [ForecastingController::class, 'dateSelect'])->name('forecasting.date');
 Route::get('/forecasting/new', [ForecastingController::class, 'store'])->name('forecasting.new');
 
-
+//order routes
+Route::get('/order/new', [OrderController::class, 'store'])->name('order.new');
 
 //wth is this route
 Route::get('/product/confirm', [ProductController::class, 'home'])->name('product.home');

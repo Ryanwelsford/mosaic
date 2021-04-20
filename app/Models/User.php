@@ -77,4 +77,14 @@ class User extends Authenticatable
 
         return $output;
     }
+
+    public function isStore()
+    {
+        $output = false;
+        if ($this->privelleges == "store") {
+            $output = true;
+        }
+
+        return $output;
+    }
 }
