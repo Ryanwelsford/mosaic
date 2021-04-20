@@ -109,6 +109,9 @@ Route::get('/forecasting/new', [ForecastingController::class, 'store'])->name('f
 
 //order routes
 Route::get('/order/new', [OrderController::class, 'store'])->name('order.new');
+Route::post('/order/new', [OrderController::class, 'pick']);
+
+Route::post('/order/save', [OrderController::class, 'save'])->name("order.save");
 
 //wth is this route
 Route::get('/product/confirm', [ProductController::class, 'home'])->name('product.home');

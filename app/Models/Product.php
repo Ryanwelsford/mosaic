@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Unit;
+use App\Models\Order;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -48,5 +49,9 @@ class Product extends Model
     public function getSearchable()
     {
         return $this->searchable;
+    }
+
+    public function orders() {
+        return $this->belongsToMany(Order::class);
     }
 }

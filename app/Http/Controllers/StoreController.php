@@ -152,4 +152,12 @@ class StoreController extends Controller
 
         return back();
     }
+
+
+    //TODO add settings panel to change things like menu and delivery days?
+    public function settings()
+    {
+
+        $title = "Store Settings";
+    }
 }

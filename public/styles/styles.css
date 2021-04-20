@@ -578,6 +578,10 @@ input:checked ~ .checkmark {
     padding: 5px 0px;
 }
 
+.justify-right {
+    justify-content: flex-end;
+}
+
 @-webkit-keyframes fadeIn {
     from {opacity: 0}
     to {opacity: 1}
@@ -657,7 +661,7 @@ input:checked ~ .checkmark {
     width: 85%;
 }
 
-.grid-2-col-wide input, .grid-2-col-wide select, .grid-2-col-wide option, .grid-2-col-wide textarea  {
+.grid-2-col-wide input, .grid-2-col-wide select, .grid-2-col-wide option, .grid-2-col-wide textarea, .table-input  {
     box-sizing: border-box;
     border-radius: 10px;
     padding: 5px 0px 5px 5px;
@@ -665,7 +669,7 @@ input:checked ~ .checkmark {
     /*add invis border so forms dont move around as border changes*/
     border: 1px solid rgba(220, 39, 62, 0);
 }
-.grid-2-col-wide input, .grid-2-col-wide select, .grid-2-col-wide option, .grid-2-col-wide label, .grid-2-col-wide textarea {
+.grid-2-col-wide input, .grid-2-col-wide select, .grid-2-col-wide option, .grid-2-col-wide label, .grid-2-col-wide textarea, .table-input {
     font-size: 22px;
 }
 select {
@@ -842,7 +846,7 @@ textarea {
     color: rgb(220, 39, 62);
 }
 
-input[type=number] {
+input[type=number], input[type=date] {
     width: 100%;
 }
 
@@ -879,6 +883,9 @@ input[type=number] {
 .red-border {
     border: 2px solid red;
 }
+.gold-border {
+    border: 2px solid gold;
+}
 
 .highlight {
     border: rgb(218, 218, 218) 10px solid;
@@ -886,6 +893,28 @@ input[type=number] {
 
 .italics {
     font-style: italic;
+}
+
+.table-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 3px 3px;
+    text-align: center;
+}
+
+.reduced-table td, .reduced-table th {
+    padding: 3px 3px;
+    margin: 0px;
+    text-align: center;
+}
+.reduced-table .table-breaker {
+    margin: 5px;
+}
+.reduced-table .table-breaker h5 {
+    font-size: 20px;
+}
+.reduced-table .table-breaker h3 {
+    font-size: 18px;
 }
 @media only screen and (max-width: 1400px) {
     .main-nav ul {
@@ -999,11 +1028,11 @@ input[type=number] {
         row-gap: 50px;
     }
 
-    .grid-2-col-wide input, .grid-2-col-wide select, .grid-2-col-wide option, .grid-2-col-wide textarea  {
+    .grid-2-col-wide input, .grid-2-col-wide select, .grid-2-col-wide option, .grid-2-col-wide textarea, .table-input  {
         padding: 10px 0px 10px 5px;
     }
 
-    .grid-2-col-wide input, .grid-2-col-wide select, .grid-2-col-wide option, .grid-2-col-wide label, .grid-2-col-wide textarea  {
+    .grid-2-col-wide input, .grid-2-col-wide select, .grid-2-col-wide option, .grid-2-col-wide label, .grid-2-col-wide textarea, .table-input  {
         font-size: 20px;
     }
 
