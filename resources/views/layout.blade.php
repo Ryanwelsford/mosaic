@@ -254,7 +254,9 @@
             @hasSection ('tools')
                 <div class="tools-section"> @yield('tools') </div>
             @else
-            <div class="tools-section">Tool a tool b <img class="tool-icon" src = '/images/icons/search-3-48.png'></div>
+            <div class="tools-section">
+                <button class="bar-tool-button">Home <i class="fas fa-home"></i> </button>
+            </div>
             @endif
             <div class="title">
                 @hasSection ('title')
@@ -263,12 +265,8 @@
             </div>
             <div class ="user-section">
                 @auth
-                    {{ auth()->user()->getCorrectName() }}
-                    <button onclick="openNavTab(event, 'Users', 'rotated')" class="main-nav-button tool-button"><image class="" id="Products_arrow"  src="/images/side-arrow.png"></image></button>
-                    <ul id="Users" class="main-nav-tab user-tab">
-                        <a href="{{ route('logout.index') }}"><li>Logout</li></a>
-                        <a href=""><li>Settings</li></a>
-                    </ul>
+                    <a href="#" class="bar-tool-button">{{ auth()->user()->getCorrectName() }} <i class="fas fa-user-cog"></i></a>
+                    <a class="bar-tool-button" href="{{ route('logout.index') }}">Logout <i class="fas fa-sign-in-alt"></i></a>
                 @endauth
 
                 @guest

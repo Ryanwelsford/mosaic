@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Store;
 use Illuminate\Http\Request;
+use App\Http\Helpers\ModelSearchv2;
 use App\Http\Helpers\ModelValidator;
 
 /********************************************************
@@ -117,15 +118,29 @@ class StoreController extends Controller
     }
 
     //display stores in number desc order alongside the user information
-    public function view()
+    public function view(Request $request)
     {
         //order by number from high to low, query pulls user information aswell
-        $stores = Store::orderBy('number', 'desc')->with("users")->get();
+        //$stores = Store::orderBy('number', 'desc')->with("users")->get();
         //stores user values can be access through store->users->email etc
+        $store = new Store;
+        $searchFields = $store->getSearchable();
+        $search = $request->search;
+        $sort = $request->sort;
+        $messAround = [
+            "stores" => $searchFields,
+            "users" => ["email"]
+        ];
+
         $title = "Display Stores";
+        $join = [[
+            "users", "users.id", "stores.user_id"
+        ]];
+        $modelSearch = new ModelSearchv2(Store::class, $messAround, "stores", $join);
+        $stores = $modelSearch->search($search, $sort);
+        $searchFields[] = "email";
 
-
-        return view("store.view", ["title" => $title, "stores" => $stores]);
+        return view("store.view", ["title" => $title, "stores" => $stores, "search" => $search, "sort" => $sort, "searchFields" => $searchFields]);
     }
 
     //delete store as required

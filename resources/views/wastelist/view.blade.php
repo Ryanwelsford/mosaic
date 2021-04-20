@@ -29,13 +29,13 @@
             <tr>
                 <td>
                     {{ $wastelist->name }}
-                    <p class='mobile-only'>{{ $wastelist->description }} {{ $wastelist->created_at->format('D M Y') }}</p>
+                    <p class='mobile-only'>{{ $wastelist->description }} {{ $wastelist->created_at->format('d/M/Y') }}</p>
                 </td>
                 <td class="mob-hidden">
                     {{ $wastelist->description }}
                 </td>
                 <td class="mob-hidden">
-                    {{ $wastelist->created_at->format('D M Y') }}
+                    {{ $wastelist->created_at->format('d/M/Y') }}
                 </td>
                 <td>
                     <div class="table-button-holder">

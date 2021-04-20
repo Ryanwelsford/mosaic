@@ -19,8 +19,8 @@
     <div class="main-tile tile-all-columns center-column">
         <h2>Product Details</h2>
         @if(session("confirmation"))
-        <div class ="confirmation-banner table-fit margin-bottom-2">
-            <h3>{{ session("confirmation") }}</h3>
+        <div class ="confirmation-banner confirmation-message table-fit margin-bottom-2">
+            <h3>{{ session("confirmation") }} <button onclick="closeDiv(event)" class="close-X">X</button></h3>
         </div>
         @endif
 

@@ -21,6 +21,22 @@ class Store extends Model
         "user_id"
     ];
 
+    protected $searchable = [
+        "id",
+        "number",
+        "name",
+        "address1",
+        "address3",
+        "address2",
+        "postcode",
+        "user_id"
+    ];
+
+    public function getSearchable()
+    {
+        return $this->searchable;
+    }
+
     public function fillItem($id, $name, $number, $address1, $address2, $address3, $postcode, $userid)
     {
         $this->id = $id;

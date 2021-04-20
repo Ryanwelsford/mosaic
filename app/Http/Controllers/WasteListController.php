@@ -105,6 +105,8 @@ class WasteListController extends Controller
             $message = false;
         }
 
+        
+
         $wastelists = Wastelist::orderBy('created_at', 'desc')->get();
         $title = "Display Waste Lists";
         return view("wastelist.view", ["title" => $title, "wastelists" => $wastelists, "message" => $message]);
