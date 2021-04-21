@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Helpers\ModelSearch;
 use App\Http\Helpers\ModelSearchv3;
 use App\Http\Helpers\ModelValidator;
-
+use App\Http\Controllers\Types\UserAccessController;
 
 class OrderController extends UserAccessController
 {

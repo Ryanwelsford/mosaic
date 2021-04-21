@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Types;
 
 use Illuminate\Http\Request;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class UserAccessController extends Controller
@@ -25,7 +26,8 @@ class UserAccessController extends Controller
 
                 return redirect("/login");
             }
-
+            //maybe update redirct to
+            //Redirect::to('/login?attempt='. true) or something liek that
             return $next($request);
         });
     }
