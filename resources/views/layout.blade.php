@@ -509,5 +509,43 @@
         openOrCloseModal("search-modal");
     }
 
+    function findInTable(input, searchable) {
+        let value = input.value;
+        let found = false;
+        let tds = searchable.getElementsByTagName("td");
+        let foundTd = [];
+        let field = document.getElementById("response");
+
+        for (i = 0; i < tds.length; i++) {
+            current = tds[i];
+
+            if(value == current.innerText) {
+                foundTd.push(current);
+                found = true;
+                field.innerText = " ";
+            }
+        }
+
+        if(found) {
+            for (i = 0; i < foundTd.length; i++) {
+                foundTd[i].parentNode.classList.add("find-highlight");
+
+                foundTd[i].parentNode.addEventListener("click", function(event) {
+                    event.target.parentNode.classList.remove('find-highlight');
+                })
+            }
+
+            searchModal();
+            foundTd[0].scrollIntoView({behavior: 'smooth'});
+        }
+        else {
+            field.innerText = "0 Results found";
+        }
+
+    }
+
+    function highlightChange(event) {
+        event.target.parentNode.classList.remove('find-highlight');
+    }
     setupNav();
 </script>

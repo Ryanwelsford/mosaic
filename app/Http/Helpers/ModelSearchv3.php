@@ -33,7 +33,7 @@ class ModelSearchv3
     {
         //guard for malformed searches
         if ($searchValue == null || $searchValue == '' || !isset($searchValue)) {
-            return $this->returnDefault($sort);
+            return $this->returnDefault($sort, $sortDirection);
         }
 
         //build query up based on search fields and value
@@ -92,17 +92,17 @@ class ModelSearchv3
     }
 
     //make use of static functions of models to return a simple defaultly ordered set of results
-    private function returnDefault($sort)
+    private function returnDefault($sort, $sortDirection)
     {
         if (empty($this->restriction)) {
-            $results = $this->returnType::orderby($this->tablename . "." . "id", "desc")->get();
+            $results = $this->returnType::orderby($this->tablename . "." . "id", $sortDirection)->get();
         } else {
             $results = $this->returnType::where(
                 $this->restriction['table'] . "." . $this->restriction['field'],
                 "=",
                 $this->restriction['value']
             )
-                ->orderby($sort)->get();
+                ->orderby($sort, $sortDirection)->get();
         }
 
         return $results;

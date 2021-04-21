@@ -23,8 +23,8 @@ class OrderController extends UserAccessController
         $viewRoute = route("order.view");
         $menuitems = [
             ["title" => "New Order", "anchor" => route("order.new"), "img" => "/images/icons/new-256.png"],
-            ["title" => "Edit Saved Order", "anchor" => $viewRoute, "img" => "/images/icons/edit-256.png"],
-            ["title" => "View Orders", "anchor" => $viewRoute, "img" => "/images/icons/view-256.png"],
+            ["title" => "Edit Saved Order", "anchor" => route("order.view", ["search" => "Saved"]), "img" => "/images/icons/edit-256.png"],
+            ["title" => "Review Booked Orders", "anchor" => $viewRoute, "img" => "/images/icons/view-256.png"],
             ["title" => "Order Reports", "anchor" => "/test", "img" => "/images/icons/report-256.png"]
         ];
 
@@ -74,7 +74,7 @@ class OrderController extends UserAccessController
     public function pick(Request $request)
     {
         $title = "Select Products";
-
+        $origin = 'value="0"';
         //validate previous form
         $this->validate(
             $request,
@@ -119,7 +119,8 @@ class OrderController extends UserAccessController
             "products" => $products,
             "organisedProducts" => $organisedProducts,
             "order" => $order,
-            "store" => $store
+            "store" => $store,
+            "origin" => $origin
         ]);
     }
 
@@ -141,8 +142,13 @@ class OrderController extends UserAccessController
 
         //reorganise form outputs to have a mapping of product_ids to "quantity" => entered value
         $productMappings = $request->product;
+
         $organisedMappings = [];
         foreach ($productMappings as $product_id => $quantity) {
+            //fix for empty input fields, solves issue of form not filling with 0s properly
+            if (is_null($quantity)) {
+                $quantity = 0;
+            }
             $organisedMappings[$product_id] = ["quantity" => $quantity];
         }
 

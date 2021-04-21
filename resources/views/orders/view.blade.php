@@ -50,7 +50,6 @@
                 <tr>
                     <td>
                         {{ $order->id }}
-                        {{ $order->store_id }}
                     </td>
 
                     <td class="">
@@ -71,7 +70,7 @@
 
                     <td>
                         <div class="table-button-holder">
-                            @if($order->status = "Booked")
+                            @if($order->status == "Booked")
                                 <a href="{{ route('order.summary', ['id' => $order->id]) }}"class="ph-button ph-button-standard table-button">Summary<img src="/images/icons/edit-48-black.png"></a>
                             @else
                                 <a href="{{ route('order.new', ['id' => $order->id]) }}"class="ph-button ph-button-standard table-button">Edit<img src="/images/icons/edit-48-black.png"></a>

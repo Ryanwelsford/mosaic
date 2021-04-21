@@ -3,7 +3,8 @@
 @section('tools')
 <div>
     <button form="form_order" name="book" type="submit" class="bar-tool-button" value="book"><span class="mobile-hidden">Book</span> <i class="fas fa-book"></i></button>
-    <button form="form_order" class="bar-tool-button" name="save" value="save"><span class="mobile-hidden">Save</span> <i class="far fa-save"></i></i></button>
+    <button form="form_order" class="bar-tool-button" name="save" value="save"><span class="mobile-hidden">Save</span> <i class="far fa-save"></i></button>
+    <button  class="bar-tool-button" onclick="searchModal()" name="save" value="save"><span class="mobile-hidden">Find</span> <i class="fas fa-search-location"></i></button>
 </div>
 @endsection
 @section('content')
@@ -27,7 +28,7 @@
                     <label>Menu: {{ $menu->name }}</label>
                     <label>Delivery Date: {{ $order->delivery_date }}</label>
                 </div>
-                <table class="wide-table full-width reduced-table">
+                <table class="wide-table full-width reduced-table" id="findable">
                     <th>Id</th>
                     <th>Code</th>
                     <th>Description</th>
@@ -51,10 +52,12 @@
                                 <td>{{$product->code}}</td>
                                 <td>{{$product->name}}</td>
                                 <td>{{$product->units->description}}</td>
-                                <td>£{{$product->units->price}}</td>
+                                <td>£{{number_format($product->units->price,2)}}</td>
                                 <td>
                                     <input name="product[{{$product->id}}]" class="table-input" type="number" min="0" step ="1"
-                                    value="@if(isset($product->pivot)){{$product->pivot->quantity}}@else{{"0"}}@endif">
+                                    value=@if(isset($product->pivot)){{$product->pivot->quantity}}@else{{$origin}}@endif
+
+                                    >
                                 </td>
                             </tr>
                             @endforeach
@@ -71,4 +74,22 @@
 
     </div>
 </div>
+
+<section class="modal" id="search-modal">
+    <div class="modal-internal small-modal">
+        <div class="modal-title">Search Menus <button onclick="searchModal()" class="close-X">X</button></div>
+        <div class="modal-content vert-center">
+            <div class="modal-center">
+                <form class="search-form grid-2-col-wide centered" method="GET" action="{{ route("order.view") }}">
+                    <label>Search Products</label>
+                    <input name="search" type ="text" id="search-bar" placeholder="Enter Product to Find">
+                    <div class="tile-all-columns">
+                        <button type="button" onclick="findInTable(search, findable)" class="ph-button ph-button-standard full-width">Find</button>
+                    </div>
+                    <label id="response" class="tile-all-columns"></label>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
 @endsection

@@ -928,6 +928,10 @@ input[type=number], input[type=date] {
     font-size: 18px;
 }
 
+.find-highlight {
+    background-color: green !important;
+}
+
 @media only screen and (max-width: 1400px) {
     .main-nav ul {
         font-size: 20px;
