@@ -20,7 +20,7 @@
             <input type="hidden" name="delivery_date" value="{{ $order->delivery_date }}">
             <input type="hidden" name="reference" value="{{ $order->reference }}">
             @csrf
-            <div class="full-width">
+            <div class="full-width" onclick="highlightChange(event)">
                 <h2 class="tile-title tile-all-columns ">Order Details</h2>
                 <div class="grid-2-col-wide centered full-width">
                     <label>Status: {{ $order->status }}</label>

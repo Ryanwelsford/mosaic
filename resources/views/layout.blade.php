@@ -509,6 +509,7 @@
         openOrCloseModal("search-modal");
     }
 
+    //find a text input in a table
     function findInTable(input, searchable) {
         let value = input.value;
         let found = false;
@@ -516,34 +517,40 @@
         let foundTd = [];
         let field = document.getElementById("response");
 
+        //get all tds within table
         for (i = 0; i < tds.length; i++) {
             current = tds[i];
 
-            if(value == current.innerText) {
+            //maybe add .includes for partial string matching
+            //check for matches, assign to array if found
+            if(value.toUpperCase() === current.innerText.toUpperCase()) {
                 foundTd.push(current);
                 found = true;
                 field.innerText = " ";
             }
         }
 
+        //for found values
         if(found) {
+            //add highlight effect and click event to remove highlight
             for (i = 0; i < foundTd.length; i++) {
                 foundTd[i].parentNode.classList.add("find-highlight");
-
-                foundTd[i].parentNode.addEventListener("click", function(event) {
-                    event.target.parentNode.classList.remove('find-highlight');
-                })
+                //changing onclick rather than adding event listener allows for event onclick removal.
+                foundTd[i].parentNode.onclick = highlightChange(event);
             }
 
+            //close modal and scroll to first highlighted td
             searchModal();
             foundTd[0].scrollIntoView({behavior: 'smooth'});
         }
+        //otherwise show response
         else {
             field.innerText = "0 Results found";
         }
 
     }
 
+    //no idea why adding click event doesnt work here, onclick cant be removed, remove click event is not working well either
     function highlightChange(event) {
         event.target.parentNode.classList.remove('find-highlight');
     }
