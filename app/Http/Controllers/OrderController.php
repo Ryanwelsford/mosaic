@@ -23,6 +23,7 @@ class OrderController extends UserAccessController
         $viewRoute = route("order.view");
         $menuitems = [
             ["title" => "New Order", "anchor" => route("order.new"), "img" => "/images/icons/new-256.png"],
+            ["title" => "New Automated Order", "anchor" => '#', "img" => "/images/icons/robot-256.png"],
             ["title" => "Edit Saved Order", "anchor" => route("order.view", ["search" => "Saved"]), "img" => "/images/icons/edit-256.png"],
             ["title" => "View All Orders", "anchor" => $viewRoute, "img" => "/images/icons/view-256.png"],
             ["title" => "Order Reports", "anchor" => "/test", "img" => "/images/icons/report-256.png"]
@@ -31,7 +32,6 @@ class OrderController extends UserAccessController
         return view('menu', [
             "menuitems" => $menuitems,
             "title" => $title,
-
         ]);
     }
 
@@ -269,5 +269,36 @@ class OrderController extends UserAccessController
         }
 
         return [$sum, $quantity];
+    }
+
+    public function print(Request $request)
+    {
+        $title = "Order Printout";
+        $id = $request->id;
+        $order = Order::find($id);
+        $store = $order->store()->get()->first();
+        $menu = $order->menu()->get()[0];
+        $listing = $order->products()->with("units")->get();
+
+        $newListing = [];
+        foreach ($listing as $each) {
+
+            if ($each->pivot->quantity > 0) {
+                $newListing[] = $each;
+            }
+        }
+
+        $listing = $newListing;
+        [$sum, $quantity] = $this->calc($listing);
+
+        return view("orders.print", [
+            "title" => $title,
+            "listing" => $listing,
+            "order" => $order,
+            "store" => $store,
+            "menu" => $menu,
+            "sum" => $sum,
+            "quantity" => $quantity
+        ]);
     }
 }

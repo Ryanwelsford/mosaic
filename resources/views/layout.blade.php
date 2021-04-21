@@ -255,7 +255,7 @@
                 <div class="tools-section"> @yield('tools') </div>
             @else
             <div class="tools-section">
-                <button class="bar-tool-button">Home <i class="fas fa-home"></i></button>
+                <a href="{{ route("order.home") }}" class="bar-tool-button">Home <i class="fas fa-home"></i></a>
             </div>
             @endif
             <div class="title">
@@ -285,13 +285,13 @@
                 <div class="modal-content">
                     <div class="grid-2-col modal-center">
                         @if(!$adminNav)
-                        <a href="{{ route('inventory.home') }}"><button class="ph-button ph-button-standard modal-nav-button">Inventory</button></a>
-                        <a href="{{ route('order.home') }}"><button class="ph-button ph-button-standard">Ordering</button></a>
-                        <a href="{{ route('receiving.home') }}"><button class="ph-button ph-button-standard">Receiving</button></a>
-                        <a href="{{ route('waste.home') }}"><button class="ph-button ph-button-standard">Waste</button></a>
-                        <a href="{{ route('forecasting.home') }}"><button class="ph-button ph-button-standard">Forecasting</button></a>
-                        <a href="{{ route('soh.home') }}"><button class="ph-button ph-button-standard">SOH</button></a>
-                        <a href="{{ route('dates.home') }}"><button class="ph-button ph-button-standard">Dates</button></a>
+                        <a href="{{ route('inventory.home') }}"><button id="alt-inventory" class="ph-button ph-button-standard modal-nav-button">Inventory</button></a>
+                        <a href="{{ route('order.home') }}"><button id="alt-order" class="ph-button ph-button-standard modal-nav-button">Ordering</button></a>
+                        <a href="{{ route('receiving.home') }}"><button id="alt-receiving" class="ph-button ph-button-standard modal-nav-button">Receiving</button></a>
+                        <a href="{{ route('waste.home') }}"><button id="alt-waste" class="ph-button ph-button-standard modal-nav-button">Waste</button></a>
+                        <a href="{{ route('forecasting.home') }}"><button id="alt-forecasting" class="ph-button ph-button-standard modal-nav-button">Forecasting</button></a>
+                        <a href="{{ route('soh.home') }}"><button id="alt-soh" class="ph-button ph-button-standard modal-nav-button">SOH</button></a>
+                        <a href="{{ route('dates.home') }}"><button id="alt-dates" class="ph-button ph-button-standard modal-nav-button">Dates</button></a>
 
                         @else
                         <a href="{{ route('product.home') }}"><button id="alt-product" class="ph-button ph-button-standard modal-nav-button">Products</button></a>
@@ -300,8 +300,17 @@
                         <a href="{{ route('store.home') }}"><button id="alt-store" class="ph-button ph-button-standard modal-nav-button">Store</button></a>
 
                         @endif
-                        <a href="{{ "/test" }}"><button id="alt-user" class="ph-button ph-button-standard modal-nav-button">User</button></a>
+
+                        @auth
+                        <a href="{{ route('logout.index') }}"><button id="" class="ph-button ph-button-standard ph-button-important ph-button-alt modal-nav-button">Logout <i class="fas fa-sign-in-alt"></i></button></a>
+                        @endauth
+
+                        @guest
+                        <a href="{{ route('login') }}"><button id="" class="ph-button ph-button-standard ph-button-important ph-button-alt modal-nav-button">Login <i class="fas fa-sign-in-alt"></i></button></a>
+                        @endguest
+
                         <div class="center-button-container"><button class="ph-button ph-button-important" onclick="OpenModalNav(event)">Close</button></div>
+
                     </div>
                 </div>
             </div>
@@ -477,7 +486,7 @@
             }
 
             mobileNav = document.getElementById("alt-"+controller);
-
+            console.log(mobileNav);
             if(mobileNav != null) {
                 mobileNav.classList.add(className);
             }

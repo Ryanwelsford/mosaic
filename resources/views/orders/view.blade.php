@@ -78,6 +78,7 @@
                         <div class="table-button-holder">
                             @if($order->status == "Booked")
                                 <a href="{{ route('order.summary', ['id' => $order->id]) }}"class="ph-button ph-button-standard table-button">Summary <i class="fas fa-clipboard-list"></i></a>
+                                <a target="_blank" href="{{ route('order.print', ['id' => $order->id]) }}"class="ph-button ph-button-standard table-button">Print <i class="fas fa-print"></i></a>
                             @else
                                 <a href="{{ route('order.new', ['id' => $order->id]) }}"class="ph-button ph-button-standard table-button">Edit</a>
 

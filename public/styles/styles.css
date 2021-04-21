@@ -15,6 +15,10 @@ body {
     display: flex;
     flex-direction: column;
 }
+body.printout {
+    background-color: white;
+    color: black;
+}
 a {
     text-decoration: none;
 }
@@ -90,6 +94,15 @@ main {
     flex-direction: column;
 }
 
+.printout main {
+    padding: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2rem;
+    width: 90%;
+    min-height: auto;
+}
+
 .tool-bar {
     background-color: rgb(220, 39, 62);
     width: 100%;
@@ -126,12 +139,13 @@ main {
     font-size: 1.2rem;
     color: white;
     transition: all ease 0.5s;
-    padding: 1px;
+    padding: 2px;
     cursor: pointer;
 }
 .bar-tool-button:hover, .bar-tool-button:focus {
     box-shadow: 0 0 1px 3px rgb(199, 193, 193);
     transition: all ease 0.5s;
+    border-radius:25px;
 }
 /*Updated the background for main content boxes, darker background with linear gradient*/
 .main-tile {
@@ -143,6 +157,12 @@ main {
     padding: 15px;
     border-radius: 15px;
     height: 100%;
+}
+
+.printout .main-tile {
+    background: none;
+    background-color: white;
+    border: none;
 }
 /*updated colours for input darkened the background slightly*/
 input, .checkmark, select, textarea {
@@ -239,6 +259,14 @@ input, .checkmark, select, textarea {
     background-color: rgb(138, 134, 134);
 }
 
+.printout tr:nth-child(even) {
+    background-color: white;
+}
+
+.printout tr:nth-child(odd) {
+    background-color: rgb(238, 227, 227);
+}
+
 .background-form {
     width: 100%;
 }
@@ -318,13 +346,18 @@ input, .checkmark, select, textarea {
 
 .ph-button-standard {
     background-color: rgb(220, 39, 62);
-    border-color: rgb(220, 39, 62);
+    border-color: rgb(109, 19, 33);
     transition: all ease 0.4s;
 }
 
 .ph-button-important {
     background-color: rgb(255, 0, 128);
-    border-color: rgb(255, 0, 128);
+    border-color: rgb(124, 3, 64);
+}
+
+.ph-button-alt {
+    background-color: rgba(127, 255, 255, 0.75);
+    border-color: rgba(127, 255, 255, 0.75);;
 }
 
 .ph-button:not([disabled]):hover, .user-section li:hover, .user-section li:hover a{
@@ -458,6 +491,11 @@ input, .checkmark, select, textarea {
 table, th, td {
     border-collapse: collapse;
     border: 2px solid white;
+}
+
+.printout table,.printout th,.printout td {
+    border-collapse: collapse;
+    border: 2px solid black;
 }
 th {
     font-size: 20px;
@@ -695,6 +733,7 @@ option {
     display: grid;
     justify-content: center;
     grid-column: span 2;
+    margin-top: 1.5rem;
 }
 .centered {
     margin-left: auto;
