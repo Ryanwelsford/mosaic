@@ -17,6 +17,12 @@
             </div>
         </form>
 
+        @if(isset($response) && $response != '')
+            <div class ="confirmation-banner confirmation-message margin-bottom-2 full-width">
+                <h3>{{ $response }} <button onclick="closeDiv(event)" class="close-X">X</button></h3>
+            </div>
+        @endif
+
         @if($orders->count() < 1 && !isset($search))
             <p>No orders currently exist, create a new order <a href="{{ route("order.new") }}">here</a></p>
         @endif
@@ -27,8 +33,8 @@
 
         @if($orders->count() >= 1)
         <table class="wide-table full-width reduced-table">
-            <th>
-                <p class="">Order #</p>
+            <th class="mob-hidden">
+                Order #
             </th>
             <th class="">
                 Reference
@@ -48,7 +54,7 @@
 
             @foreach($orders as $order)
                 <tr>
-                    <td>
+                    <td class="mob-hidden">
                         {{ $order->id }}
                     </td>
 
@@ -71,11 +77,11 @@
                     <td>
                         <div class="table-button-holder">
                             @if($order->status == "Booked")
-                                <a href="{{ route('order.summary', ['id' => $order->id]) }}"class="ph-button ph-button-standard table-button">Summary<img src="/images/icons/edit-48-black.png"></a>
+                                <a href="{{ route('order.summary', ['id' => $order->id]) }}"class="ph-button ph-button-standard table-button">Summary <i class="fas fa-clipboard-list"></i></a>
                             @else
-                                <a href="{{ route('order.new', ['id' => $order->id]) }}"class="ph-button ph-button-standard table-button">Edit<img src="/images/icons/edit-48-black.png"></a>
+                                <a href="{{ route('order.new', ['id' => $order->id]) }}"class="ph-button ph-button-standard table-button">Edit</a>
 
-                                <form method="POST" action="{{ route("order.destroy", $order) }}">
+                                <form method="POST" action="{{ route("order.destroy", $order) }}" class="table-button">
                                     <button class="ph-button ph-button-important table-button" type="submit">Delete</button>
                                     @csrf
                                     @method('delete')

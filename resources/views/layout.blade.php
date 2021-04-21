@@ -137,9 +137,9 @@
 
 
                 <ul id="order" class="main-nav-tab side-bar-tab">
-                    <li><a href="">New Order</a></li>
-                    <li><a href="">Edit Order</a></li>
-                    <li><a href="">View Orders</a></li>
+                    <li><a href="{{ route('order.new') }}">New Order</a></li>
+                    <li><a href="{{ route('order.view', ["search" => "Saved"]) }}">Edit Order</a></li>
+                    <li><a href="{{ route("order.view") }}">View Orders</a></li>
                     <li><a href="">Order Reports</a></li>
                 </ul>
 

@@ -113,6 +113,7 @@ Route::post('/order/new', [OrderController::class, 'pick']);
 Route::post('/order/save', [OrderController::class, 'save'])->name("order.save");
 Route::get('/order/view', [OrderController::class, 'view'])->name('order.view');
 Route::get('/order/summary', [OrderController::class, 'summary'])->name('order.summary');
+Route::get('/order/destroy', [OrderController::class, 'view']);
 Route::delete('/order/destroy/{order}', [OrderController::class, 'destroy'])->name('order.destroy');
 
 //wth is this route

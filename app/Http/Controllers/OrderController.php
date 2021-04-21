@@ -24,7 +24,7 @@ class OrderController extends UserAccessController
         $menuitems = [
             ["title" => "New Order", "anchor" => route("order.new"), "img" => "/images/icons/new-256.png"],
             ["title" => "Edit Saved Order", "anchor" => route("order.view", ["search" => "Saved"]), "img" => "/images/icons/edit-256.png"],
-            ["title" => "Review Booked Orders", "anchor" => $viewRoute, "img" => "/images/icons/view-256.png"],
+            ["title" => "View All Orders", "anchor" => $viewRoute, "img" => "/images/icons/view-256.png"],
             ["title" => "Order Reports", "anchor" => "/test", "img" => "/images/icons/report-256.png"]
         ];
 
@@ -192,7 +192,7 @@ class OrderController extends UserAccessController
     }
 
     //TODO add pagination ability to queries either through larvel pagination or not
-    public function view(Request $request)
+    public function view(Request $request, $response = "")
     {
         $title = "View Orders";
         $orders = new Order;
@@ -216,7 +216,8 @@ class OrderController extends UserAccessController
             "orders" => $orders,
             "searchFields" => $fields,
             "search" => $search,
-            "sort" => $sort
+            "sort" => $sort,
+            "response" => $response
         ]);
     }
     //TODO add guards for order id
@@ -224,7 +225,6 @@ class OrderController extends UserAccessController
     {
         $title = "Order Summary";
         $id = $request->id;
-
         $order = Order::find($id);
         $store = $order->store()->get()->first();
         $menu = $order->menu()->get()[0];
@@ -252,8 +252,11 @@ class OrderController extends UserAccessController
         ]);
     }
 
-    public function destroy(Order $order)
+    public function destroy(Order $order, Request $request)
     {
+        $response = "Sucessfully deleted order #" . $order->id;
+        $order->delete();
+        return $this->view($request, $response);
     }
 
     private function calc($values)

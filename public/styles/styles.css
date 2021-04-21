@@ -512,6 +512,9 @@ th, td {
 .confirmation-banner.table-fit {
     width: 85%;
 }
+.confirmation-banner.full-width {
+    width: 100%;
+}
 .anchor {
     text-decoration: underline;
     color: darkblue;
@@ -1030,6 +1033,7 @@ input[type=number], input[type=date] {
 
     .modal-center a button {
         width: 150px;
+        padding: 2px;
     }
 
     .small-modal {
@@ -1081,19 +1085,43 @@ input[type=number], input[type=date] {
         width: 85%;
     }
     th {
-        font-size: 18px;
+        font-size: 16px;
+        word-wrap: break-word;
     }
-
+    td {
+        font-size: 15px;
+        word-wrap: break-word;
+    }
+    th, td {
+        padding: 3px;
+    }
     .table-button-holder {
         flex-direction: column;
     }
     .table-button {
-        padding: 0px;
+        padding: 0px !important;
     }
     .modal-center a button{
         max-width: 100px;
+        font-size: 17px;
+    }
+    .table-button {
+        font-size: 15px;
+        width: 85% !important;
     }
 
+    .table-button-holder form {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0px ;
+    }
+
+    .table-button-holder form .table-button {
+        width: 100% !important;
+        padding: 0px;
+    }
 }
 
 @media only screen and (max-width: 400px) {
@@ -1104,15 +1132,25 @@ input[type=number], input[type=date] {
         font-size: 3.0vh;
     }
     th, td {
-        padding: 3px;
+        padding: 2px;
     }
     th {
-        font-size: 16px;
+        font-size: 14px;
         word-wrap: break-word;
     }
     td {
-        font-size: 15px;
-        word-wrap: break-word;
+        font-size: 14px;
     }
 
+    /*not sure about this*/
+    .reduced-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .reduced-table tbody {
+        display: table;
+        width: 100%;
+    }
 }
