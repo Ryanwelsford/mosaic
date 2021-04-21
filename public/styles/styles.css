@@ -15,10 +15,7 @@ body {
     display: flex;
     flex-direction: column;
 }
-body.printout {
-    background-color: white;
-    color: black;
-}
+
 a {
     text-decoration: none;
 }
@@ -94,15 +91,6 @@ main {
     flex-direction: column;
 }
 
-.printout main {
-    padding: 0px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 2rem;
-    width: 90%;
-    min-height: auto;
-}
-
 .tool-bar {
     background-color: rgb(220, 39, 62);
     width: 100%;
@@ -159,11 +147,6 @@ main {
     height: 100%;
 }
 
-.printout .main-tile {
-    background: none;
-    background-color: white;
-    border: none;
-}
 /*updated colours for input darkened the background slightly*/
 input, .checkmark, select, textarea {
     background-color: rgb(218, 218, 218);
@@ -257,14 +240,6 @@ input, .checkmark, select, textarea {
 }
 .side-bar-tab li:nth-child(odd), tr:nth-child(odd){
     background-color: rgb(138, 134, 134);
-}
-
-.printout tr:nth-child(even) {
-    background-color: white;
-}
-
-.printout tr:nth-child(odd) {
-    background-color: rgb(238, 227, 227);
 }
 
 .background-form {
@@ -493,10 +468,6 @@ table, th, td {
     border: 2px solid white;
 }
 
-.printout table,.printout th,.printout td {
-    border-collapse: collapse;
-    border: 2px solid black;
-}
 th {
     font-size: 20px;
 }

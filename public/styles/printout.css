@@ -1,0 +1,34 @@
+body.printout {
+    background-color: white;
+    color: black;
+}
+
+.printout main {
+    padding: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2rem;
+    width: 90%;
+    min-height: auto;
+}
+
+
+.printout .main-tile {
+    background: none;
+    background-color: white;
+    border: none;
+}
+
+.printout tr:nth-child(even) {
+    background-color: white;
+}
+
+.printout tr:nth-child(odd) {
+    background-color: rgb(238, 227, 227);
+}
+
+
+.printout table,.printout th,.printout td {
+    border-collapse: collapse;
+    border: 2px solid black;
+}

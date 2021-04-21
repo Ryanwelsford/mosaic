@@ -188,7 +188,7 @@ class OrderController extends UserAccessController
         $heading = "Order Successfully " . $status;
         $text = "Order has been created successfully for a total value of £" . number_format($sum, 2) . " and " . $quantity . " cases in total";
         $anchor = route('order.new');
-        return view("general.confirmation", ["title" => $title, "heading" => $heading, "text" => $text, "anchor" => $anchor]);
+        return view("general.confirmation-print", ["title" => $title, "heading" => $heading, "text" => $text, "anchor" => $anchor]);
     }
 
     //TODO add pagination ability to queries either through larvel pagination or not
@@ -224,22 +224,7 @@ class OrderController extends UserAccessController
     public function summary(Request $request)
     {
         $title = "Order Summary";
-        $id = $request->id;
-        $order = Order::find($id);
-        $store = $order->store()->get()->first();
-        $menu = $order->menu()->get()[0];
-        $listing = $order->products()->with("units")->get();
-
-        $newListing = [];
-        foreach ($listing as $each) {
-
-            if ($each->pivot->quantity > 0) {
-                $newListing[] = $each;
-            }
-        }
-
-        $listing = $newListing;
-        [$sum, $quantity] = $this->calc($listing);
+        [$order, $store, $menu, $listing, $sum, $quantity] = $this->orderDetails($request);
 
         return view("orders.summary", [
             "title" => $title,
@@ -271,9 +256,9 @@ class OrderController extends UserAccessController
         return [$sum, $quantity];
     }
 
-    public function print(Request $request)
+    private function orderDetails($request)
     {
-        $title = "Order Printout";
+
         $id = $request->id;
         $order = Order::find($id);
         $store = $order->store()->get()->first();
@@ -290,6 +275,15 @@ class OrderController extends UserAccessController
 
         $listing = $newListing;
         [$sum, $quantity] = $this->calc($listing);
+
+        return [$order, $store, $menu, $listing, $sum, $quantity];
+    }
+
+    public function print(Request $request)
+    {
+        $title = "Order Printout";
+
+        [$order, $store, $menu, $listing, $sum, $quantity] = $this->orderDetails($request);
 
         return view("orders.print", [
             "title" => $title,
