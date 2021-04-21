@@ -465,7 +465,9 @@ th {
 th, td {
     padding: 10px;
 }
-
+.text-center {
+    text-align: center;
+}
 .table-button-holder {
     display: flex;
     align-items: center;
@@ -901,7 +903,16 @@ input[type=number], input[type=date] {
     padding: 3px 3px;
     text-align: center;
 }
+.scrollable-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}
 
+.scrollable-table tbody {
+    display: table;
+    width: 100%;
+}
 .reduced-table td, .reduced-table th {
     padding: 3px 3px;
     margin: 0px;
@@ -916,6 +927,7 @@ input[type=number], input[type=date] {
 .reduced-table .table-breaker h3 {
     font-size: 18px;
 }
+
 @media only screen and (max-width: 1400px) {
     .main-nav ul {
         font-size: 20px;

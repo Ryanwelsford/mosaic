@@ -12,14 +12,20 @@
 <div class="grid-container">
     <div class="main-tile">
         <form method="POST" action="{{ route("order.save") }}" id="form_order" class="center-column">
+            <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+            <input type="hidden" name="store_id" value="{{ $order->store_id }}">
+            <input type="hidden" name="status" value="{{ $order->status }}">
+            <input type="hidden" name="id" value="{{ $order->id }}">
+            <input type="hidden" name="delivery_date" value="{{ $order->delivery_date }}">
+            <input type="hidden" name="reference" value="{{ $order->reference }}">
             @csrf
             <div class="full-width">
                 <h2 class="tile-title tile-all-columns ">Order Details</h2>
                 <div class="grid-2-col-wide centered full-width">
-                    <label>Status: Saved</label>
-                    <label>Store: Northampton 3</label>
-                    <label>Menu: Updated Menu</label>
-                    <label>Creation Date: Today</label>
+                    <label>Status: {{ $order->status }}</label>
+                    <label>Store: {{ $store->name }}</label>
+                    <label>Menu: {{ $menu->name }}</label>
+                    <label>Delivery Date: {{ $order->delivery_date }}</label>
                 </div>
                 <table class="wide-table full-width reduced-table">
                     <th>Id</th>
@@ -47,7 +53,8 @@
                                 <td>{{$product->units->description}}</td>
                                 <td>£{{$product->units->price}}</td>
                                 <td>
-                                    <input name="product[{{$product->id}}]" class="table-input" type="number" min="0" step ="1" value="0">
+                                    <input name="product[{{$product->id}}]" class="table-input" type="number" min="0" step ="1"
+                                    value="@if(isset($product->pivot)){{$product->pivot->quantity}}@else{{"0"}}@endif">
                                 </td>
                             </tr>
                             @endforeach

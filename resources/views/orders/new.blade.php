@@ -11,36 +11,36 @@
 
             <div class="grid-2-col-wide active-tab tab">
                 <h2 class="tile-title tile-all-columns ">Order Details</h2>
-                <input name="id" type="hidden" value="@if(isset($order->id)) {{ $order->id }} @endif">
+                <input name="order[id]" type="hidden" value="@if(isset($order->id)) {{ $order->id }} @endif">
 
-                <label>Reference: @error('reference') <span class="error-text">*</span> @enderror</label>
+                <label>Reference: @error('order.reference') <span class="error-text">*</span> @enderror</label>
                 <div>
-                    <input name="reference" class="@error('reference') input-error @enderror"type="text" value="@if(isset($menu->reference)){{ $menu->reference }} @endif" placeholder="Enter a reference">
-                    @error('menu.name')
+                    <input name="order[reference]" class="@error('order.reference') input-error @enderror"type="text" value="@if(isset($order->reference)){{ $order->reference }} @endif" placeholder="Enter a reference">
+                    @error('order.reference')
                             <div class="small-error-text error-text">{{ $message }} </div>
                     @enderror
                 </div>
 
-                <label>Delivery Date: @error('menu.name') <span class="error-text">*</span> @enderror</label>
+                <label>Delivery Date: @error('order.delivery_date') <span class="error-text">*</span> @enderror</label>
                 <div>
-                    <input name="menu[name]" class="@error('menu.name') input-error @enderror"type="date" value="@if(isset($menu->name)){{ $menu->name }} @endif" placeholder="Enter a reference">
-                    @error('menu.name')
+                    <input name="order[delivery_date]" class="@error('order.delivery_date') input-error @enderror"type="date" value="@if(isset($order->delivery_date)){{$order->delivery_date->format("Y-m-d")}}@else{{$today->format("Y-m-d")}}@endif" placeholder="Enter a reference" min="{{$today->format("Y-m-d")}}">
+                    @error('order.delivery_date')
                             <div class="small-error-text error-text">{{ $message }} </div>
                     @enderror
                 </div>
 
                 <label>Status:</label>
                 <label>@if(isset($order->status)){{$order->status}}@else{{"Inactive"}}@endif</label>
-                <input type="hidden" value="@if(isset($order->status)){{$order->status}}@else{{"Inactive"}}@endif">
+                <input type="hidden" name="order[status]" value="@if(isset($order->status)){{$order->status}}@else{{"Inactive"}}@endif">
 
                 <label>Store:</label>
                 <label>{{ $store->name }}</label>
-                <input type="hidden" value="@if(isset($order->store_id)){{$order->store_id}}@endif">
+                <input type="hidden" name="order[store_id]" value="@if(isset($order->store_id)){{$order->store_id}}@else{{$store->id}}@endif">
 
                 <label>Menu:</label>
-                <select name="menu_id">
+                <select name="order[menu_id]">
                     @foreach($menus as $key => $option)
-                        <option value="{{$option->id}}"@if(isset($order->menu_id) && $order->menu_id == $option) {{ "selected" }} @endif>{{ ucwords($option->name) }}</option>
+                        <option value="{{$option->id}}"@if(isset($order->menu_id) && $order->menu_id == $option->id) {{ "selected" }} @endif>{{ ucwords($option->name) }}</option>
                     @endforeach
                 </select>
 

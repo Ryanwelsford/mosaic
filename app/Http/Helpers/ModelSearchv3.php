@@ -16,6 +16,7 @@ class ModelSearchv3
     //optional parameter for any default searches required, allows for sorting of outputs without setting a sort field
     private $join;
     private $restriction;
+    private $tablename;
 
     public function __construct($returnType, $searchableFields, $restriction = [], $join = [])
     {
@@ -24,6 +25,7 @@ class ModelSearchv3
         //restriction format table, field, value
         $this->restriction = $restriction;
         $this->join = $join;
+        $this->tablename = array_keys($this->searchableFields)[0];
     }
 
     //search all table fields
@@ -31,7 +33,7 @@ class ModelSearchv3
     {
         //guard for malformed searches
         if ($searchValue == null || $searchValue == '' || !isset($searchValue)) {
-            return $this->returnDefault();
+            return $this->returnDefault($sort);
         }
 
         //build query up based on search fields and value
@@ -59,22 +61,50 @@ class ModelSearchv3
         $query = $this->returnType::query();
 
         if (!empty($this->restriction)) {
-            $query->orWhere($this->restriction['table'] . "." . $this->restriction['field'], "=", $this->restriction['value']);
+            $query->where($this->restriction['table'] . "." . $this->restriction['field'], "=", $this->restriction['value']);
         }
-
+        //old attempt
+        /*$counter = 1;
         foreach ($this->searchableFields as $tablekey => $table) {
             foreach ($table as $field) {
-                $query->orWhere($tablekey . "." . $field, "LIKE", "%" . $searchValue . "%");
+
+                if ($counter == 1) {
+                    $query->Where($tablekey . "." . $field, "LIKE", "%" . $searchValue . "%");
+                    $counter++;
+                } else {
+                    $query->orWhere($tablekey . "." . $field, "LIKE", "%" . $searchValue . "%");
+                }
             }
-        }
+        }*/
+
+        //attempt using a closure
+        //https://stackoverflow.com/questions/22694866/how-to-add-brackets-around-where-conditions-with-laravel-query-builder
+        $query->where(function ($query) use ($searchValue) {
+            foreach ($this->searchableFields as $tablekey => $table) {
+                foreach ($table as $field) {
+                    $query->orWhere($tablekey . "." . $field, "LIKE", "%" . $searchValue . "%");
+                }
+            }
+        });
+
 
         return $query;
     }
 
     //make use of static functions of models to return a simple defaultly ordered set of results
-    private function returnDefault()
+    private function returnDefault($sort)
     {
-        $results = $this->returnType::orderby($this->tablename . "." . "id", "desc")->get();
+        if (empty($this->restriction)) {
+            $results = $this->returnType::orderby($this->tablename . "." . "id", "desc")->get();
+        } else {
+            $results = $this->returnType::where(
+                $this->restriction['table'] . "." . $this->restriction['field'],
+                "=",
+                $this->restriction['value']
+            )
+                ->orderby($sort)->get();
+        }
+
         return $results;
     }
 

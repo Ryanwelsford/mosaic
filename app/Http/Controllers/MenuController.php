@@ -168,7 +168,7 @@ class MenuController extends Controller
 
         //save menu to product listings
         $menu->products()->sync($request->menuListings);
-
+        dd($request->menuListings);
         //return confirmation message
         return ($this->confirm($menu));
     }
