@@ -26,6 +26,19 @@ class Receipt extends Model
         $this->store_id = $array['store_id'];
     }
 
+    protected $searchable = [
+        "id",
+        "date",
+        "reference",
+        "created_at",
+        "updated_at"
+    ];
+
+    public function getSearchable()
+    {
+        return $this->searchable;
+    }
+
     public function getDate()
     {
         $date = new Carbon($this->date);
@@ -35,5 +48,10 @@ class Receipt extends Model
     public function store()
     {
         return $this->belongsTo(Store::class, "store_id", "id");
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class)->withPivot("quantity");
     }
 }

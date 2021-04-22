@@ -9,8 +9,8 @@
 <div class="grid-container">
     <div class="main-tile tile-all-columns center-column">
         <h2>Order Details</h2>
-        <form class="search-form grid-2-col-wide table-width-match" method="GET" action="{{ route("order.view") }}">
-            <label>Search Orders</label>
+        <form class="search-form grid-2-col-wide table-width-match" method="GET" action="{{ route("receiving.view") }}">
+            <label>Search Receipts</label>
             <div class="search-with-button">
                 <input name="search" type ="text" class=""  id="search-bar" placeholder="Search here" value="@if(isset($search)){{$search}}@endif">
                 <button type ="submit" class="ph-button ph-button-standard">Search</button>
@@ -23,71 +23,59 @@
             </div>
         @endif
 
-        @if($orders->count() < 1 && !isset($search))
-            <p>No orders currently exist, create a new order <a href="{{ route("order.new") }}">here</a></p>
+        @if($receipts->count() < 1 && !isset($search))
+            <p>No receipts currently exist, create a new receipt <a href="{{ route("receiving.new") }}">here</a></p>
         @endif
 
         @if(isset($search))
-            <p>Displaying {{$orders->count()}} results for... <span class="italics">{{ $search }}</span> @if(isset($sort)) {{ "sorted by ".$sort }} @endif</p>
+            <p>Displaying {{$receipts->count()}} results for... <span class="italics">{{ $search }}</span> @if(isset($sort)) {{ "sorted by ".$sort }} @endif</p>
         @endif
 
-        @if($orders->count() >= 1)
+        @if($receipts->count() >= 1)
         <table class="wide-table full-width reduced-table">
             <th class="mob-hidden">
-                Order #
+                Receipt #
             </th>
             <th class="">
                 Reference
             </th>
             <th class="">
-                Status
-            </th>
-            <th class="">
                 Created on
             </th>
             <th class="">
-                Delivery
+                Date
             </th>
             <th>
                 Options
             </th>
 
-            @foreach($orders as $order)
+            @foreach($receipts as $receipt)
                 <tr>
                     <td class="mob-hidden">
-                        {{ $order->id }}
+                        {{ $receipt->id }}
                     </td>
 
                     <td class="">
-                        {{ $order->reference }}
+                        {{ $receipt->reference }}
                     </td>
 
                     <td class="">
-                        {{ $order->status }}
+                        {{ $receipt->created_at->format('d M Y') }}
                     </td>
 
                     <td class="">
-                        {{ $order->created_at->format('d M Y') }}
-                    </td>
-
-                    <td class="">
-                        {{ $order->getDeliveryDate()->format('d M Y') }}
+                        {{ $receipt->getDate()->format('d M Y') }}
                     </td>
 
                     <td>
                         <div class="table-button-holder">
-                            @if($order->status == "Booked")
-                                <a href="{{ route('order.summary', ['id' => $order->id]) }}"class="ph-button ph-button-standard table-button">Summary <i class="fas fa-clipboard-list"></i></a>
-                                <a target="_blank" href="{{ route('order.print', ['id' => $order->id]) }}"class="ph-button ph-button-standard table-button">Print <i class="fas fa-print"></i></a>
-                            @else
-                                <a href="{{ route('order.new', ['id' => $order->id]) }}"class="ph-button ph-button-standard table-button">Edit</a>
-
-                                <form method="POST" action="{{ route("order.destroy", $order) }}" class="table-button">
-                                    <button class="ph-button ph-button-standard ph-button-important table-button" type="submit">Delete</button>
-                                    @csrf
-                                    @method('delete')
-                                </form>
-                            @endif
+                            <a href="{{ route('order.new', ['id' => $receipt->id]) }}"class="ph-button ph-button-standard table-button">Edit</a>
+                            <a href="{{ route('receiving.summary', [$receipt]) }}"class="ph-button ph-button-standard table-button">Summary <i class="fas fa-clipboard-list"></i></a>
+                            <form method="POST" action="{{ route("receiving.destroy", $receipt) }}" class="table-button">
+                                <button class="ph-button ph-button-standard ph-button-important table-button" type="submit">Delete</button>
+                                @csrf
+                                @method('delete')
+                            </form>
 
 
                         </div>
@@ -102,11 +90,11 @@
 
     <section class="modal" id="search-modal">
         <div class="modal-internal small-modal">
-            <div class="modal-title">Search<button onclick="searchModal()" class="close-X">X</button></div>
+            <div class="modal-title">Search Menus <button onclick="searchModal()" class="close-X">X</button></div>
             <div class="modal-content vert-center">
                 <div class="modal-center">
-                    <form class="search-form grid-2-col-wide centered" method="GET" action="{{ route("order.view") }}">
-                        <label>Search Orders</label>
+                    <form class="search-form grid-2-col-wide centered" method="GET" action="{{ route("receiving.view") }}">
+                        <label>Search Menus</label>
                         <input name="search" value="@if(isset($search)){{$search}}@endif" type ="text" class=" "  id="search-bar" placeholder="Search here">
                         <label>Sort by</label>
                         <select name="sort">

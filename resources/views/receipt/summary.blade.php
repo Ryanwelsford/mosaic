@@ -7,10 +7,9 @@
         <div class="full-width">
             <h2 class="tile-title tile-all-columns ">Order Summary</h2>
             <div class="grid-2-col-wide">
-                <label>Status: {{ $order->status }}</label>
                 <label>Store: {{ $store->name }} {{ $store->number }}</label>
-                <label>Menu: {{ $menu->name }}</label>
-                <label>Delivery Date: {{ $order->getDeliveryDate()->format("d M Y") }}</label>
+                <label>Receipt Date: {{ $receipt->getDate()->format("d M Y") }}</label>
+                <label>Reference: {{ $receipt->reference }}</label>
             </div>
 
             <table class="wide-table full-width reduced-table">
@@ -45,8 +44,9 @@
                 </tr>
             </table>
 
+
             <div class="tile-all-columns center-column margin-top">
-                <a href="{{ route('order.print', ["id" => $order->id]) }}" class="ph-button ph-button-standard">Print</a>
+                <a href="{{ route('receiving.print', [$receipt]) }}" class="ph-button ph-button-standard">Print</a>
             </div>
         </div>
     </div>

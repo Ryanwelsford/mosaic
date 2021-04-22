@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Unit;
 use App\Models\Order;
+use App\Models\Receipt;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -53,5 +54,9 @@ class Product extends Model
 
     public function orders() {
         return $this->belongsToMany(Order::class)->withPivot("quantity");
+    }
+
+    public function receipts() {
+        return $this->belongsToMany(Receipt::class)->withPivot("quantity");
     }
 }

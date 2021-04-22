@@ -123,5 +123,9 @@ Route::get('/receiving/home', [ReceivingController::class, 'home'])->name('recei
 Route::get('/receiving/new', [ReceivingController::class, 'store'])->name('receiving.new');
 Route::post('/receiving/new', [ReceivingController::class, 'select']);
 Route::post('/receiving/save', [ReceivingController::class, 'save'])->name('receiving.save');
+Route::get('/receiving/view', [ReceivingController::class, 'view'])->name('receiving.view');
+Route::delete('/receiving/destroy/{receipt}', [ReceivingController::class, 'destroy'])->name('receiving.destroy');
+Route::get('/receiving/summary/{receipt}', [ReceivingController::class, 'summary'])->name('receiving.summary');
+Route::get('/receiving/print/{receipt}', [ReceivingController::class, 'print'])->name('receiving.print');
 //wth is this route
 Route::get('/product/confirm', [ProductController::class, 'home'])->name('product.home');

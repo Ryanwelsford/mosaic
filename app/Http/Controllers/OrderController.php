@@ -187,6 +187,7 @@ class OrderController extends UserAccessController
         $title = "Order Confirmation";
         $heading = "Order Successfully " . $status;
         $text = "Order has been created successfully for a total value of £" . number_format($sum, 2) . " and " . $quantity . " cases in total";
+        //TODO anchor is wrong change to route to print?
         $anchor = route('order.new');
         return view("general.confirmation-print", ["title" => $title, "heading" => $heading, "text" => $text, "anchor" => $anchor]);
     }
