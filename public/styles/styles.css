@@ -859,6 +859,12 @@ textarea {
 .right-aligned a {
     text-decoration: underline;
     color: rgb(220, 39, 62);
+    transition: all linear 0.3s;
+}
+
+.right-aligned a:hover {
+    color: rgb(226, 119, 133);
+    transition: all ease 0.5s;
 }
 
 input[type=number], input[type=date] {

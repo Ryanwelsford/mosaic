@@ -544,8 +544,11 @@
             //add highlight effect and click event to remove highlight
             for (i = 0; i < foundTd.length; i++) {
                 foundTd[i].parentNode.classList.add("find-highlight");
+                
                 //changing onclick rather than adding event listener allows for event onclick removal.
-                foundTd[i].parentNode.onclick = highlightChange(event);
+                foundTd[i].parentNode.addEventListener("click", function(event)  {
+                    event.target.parentNode.classList.remove('find-highlight');
+                });
             }
 
             //close modal and scroll to first highlighted td

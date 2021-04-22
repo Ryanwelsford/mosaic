@@ -83,7 +83,7 @@
                                 <a href="{{ route('order.new', ['id' => $order->id]) }}"class="ph-button ph-button-standard table-button">Edit</a>
 
                                 <form method="POST" action="{{ route("order.destroy", $order) }}" class="table-button">
-                                    <button class="ph-button ph-button-important table-button" type="submit">Delete</button>
+                                    <button class="ph-button ph-button-standard ph-button-important table-button" type="submit">Delete</button>
                                     @csrf
                                     @method('delete')
                                 </form>

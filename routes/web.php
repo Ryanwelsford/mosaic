@@ -52,7 +52,7 @@ Route::get('/logout', [LogoutController::class, 'index'])->name('logout.index');
 //TODO move all of these controllers into a new section for eahc controller
 Route::get('/order/home', [OrderController::class, 'home'])->name('order.home');
 Route::get('/inventory/home', [InventoryController::class, 'home'])->name('inventory.home');
-Route::get('/receiving/home', [ReceivingController::class, 'home'])->name('receiving.home');
+
 Route::get('/waste/home', [WasteController::class, 'home'])->name('waste.home');
 Route::get('/dates/home', [DatesController::class, 'home'])->name('dates.home');
 Route::get('/StockOnHand/home', [StockOnHandController::class, 'home'])->name('soh.home');
@@ -108,6 +108,7 @@ Route::get('/forecasting/date/select', [ForecastingController::class, 'dateSelec
 Route::get('/forecasting/new', [ForecastingController::class, 'store'])->name('forecasting.new');
 
 //order routes
+Route::get('/order/home', [OrderController::class, 'home'])->name('order.home');
 Route::get('/order/new', [OrderController::class, 'store'])->name('order.new');
 Route::post('/order/new', [OrderController::class, 'pick']);
 Route::post('/order/save', [OrderController::class, 'save'])->name("order.save");
@@ -117,5 +118,10 @@ Route::get('/order/print', [OrderController::class, 'print'])->name('order.print
 Route::get('/order/destroy', [OrderController::class, 'view']);
 Route::delete('/order/destroy/{order}', [OrderController::class, 'destroy'])->name('order.destroy');
 
+//reciept routes
+Route::get('/receiving/home', [ReceivingController::class, 'home'])->name('receiving.home');
+Route::get('/receiving/new', [ReceivingController::class, 'store'])->name('receiving.new');
+Route::post('/receiving/new', [ReceivingController::class, 'select']);
+Route::post('/receiving/save', [ReceivingController::class, 'save'])->name('receiving.save');
 //wth is this route
 Route::get('/product/confirm', [ProductController::class, 'home'])->name('product.home');

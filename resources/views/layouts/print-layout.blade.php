@@ -15,7 +15,7 @@
     </title>
 
 </head>
-
+<!--Should maybe add like a top left corner box with store information or something like that?-->
 <body class="printout">
     <main class="center-column">
         @yield('content')
