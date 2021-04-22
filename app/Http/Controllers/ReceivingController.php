@@ -9,6 +9,7 @@ use App\Models\Receipt;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Helpers\ModelSearchv3;
+use App\Http\Helpers\ModelValidator;
 use App\Http\Controllers\Types\UserAccessController;
 
 class ReceivingController extends UserAccessController
@@ -31,23 +32,28 @@ class ReceivingController extends UserAccessController
         ]);
     }
 
-    //TODO make edit work and refill form
+    
     //select order for reciept to be based on
-    public function store()
+    public function store(Request $request)
     {
         $title = "New Reciept";
         $store = $this->user->stores()->get()->first();
         $today = new Carbon();
         $menus = Menu::orderby("updated_at")->get();
 
-        return view('receipt.new', ["title" => $title, "today" => $today, "menus" => $menus]);
+        $modelValidator = new ModelValidator(Receipt::class, $request->id, old());
+        $receipt = $modelValidator->validate();
+        //dd($receipt);
+        return view('receipt.new', ["title" => $title, "today" => $today, "menus" => $menus, "receipt" => $receipt]);
     }
 
-    //TODO find open receipts
+
     public function select(Request $request)
     {
         $title = "Select Products";
         $origin = 'value="0"';
+
+        //setup core receipt values
         $receipt = new stdClass();
         $receipt->id = $request->id;
         $receipt->date = $request->date;
@@ -64,30 +70,45 @@ class ReceivingController extends UserAccessController
             ]
         );
 
+        //TODO
         $display = $request->display_mode;
         $view = "receipt.assign";
         if ($display == true) {
             $view = "receipt.full";
         }
 
+        //get menu product listings with the units required
         $menu = Menu::where("id", $request->menu_id)->get()->first();
-
-        //if order exists pull its mappings, else pull the menu products listing
-        /*
-        if (isset($orderDetails['id'])) {
-            $order = Order::where('id', $orderDetails['id'])->get()->first();
-            $products = $order->products()->orderby('category')->orderby('subcategory')->orderby('name')->with("units")->get();
-        } else {
-            $products = $menu->products()->orderby('category')->orderby('subcategory')->orderby('name')->with("units")->get();
-        }*/
-
         $products = $menu->products()->orderby('category')->orderby('subcategory')->orderby('name')->with("units")->get();
 
+        //if edit
+        if (isset($request->id)) {
+            //get previous reciept
+            $receipt = Receipt::where('id', $request->id)->get()->first();
+            //get entered values
+            $Enteredproducts = $receipt->products()->orderby('category')->orderby('subcategory')->orderby('name')->with("units")->get();
+
+            //map into id -> product
+            $map = [];
+            foreach ($Enteredproducts as $product) {
+                $map[$product->id] = $product;
+            }
+        }
+
+        //re organise products based on category and subcateogry
         $organisedProducts = [];
         foreach ($products as $product) {
+
+            //if product was entered previously change it to the previously found product
+            if (isset($map[$product->id])) {
+                $product = $map[$product->id];
+            }
+
+            //organise
             $organisedProducts[$product->category][$product->subcategory][] = $product;
         }
 
+        //get store
         $store = $this->user->stores()->get()->first();
         return view($view, [
             "title" => $title,
@@ -146,15 +167,17 @@ class ReceivingController extends UserAccessController
         $searchFields["receipts"] = $fields;
         $search = $request->search;
         $sort = $request->sort;
+        $sortDirection = "desc";
 
         if ($sort == null) {
-            $sort = "date";
+            $sort = "id";
         }
+
         $store = $this->user->stores()->get()->first();
 
         //so v3 does work with a passed restriction
         $modelSearch = new ModelSearchv3(Receipt::class, $searchFields, ["table" => "receipts", "field" => "store_id", "value" => $store->id]);
-        $receipts = $modelSearch->search($search, $sort, "desc");
+        $receipts = $modelSearch->search($search, $sort, $sortDirection);
 
         return view("receipt.view", [
             "title" => $title,

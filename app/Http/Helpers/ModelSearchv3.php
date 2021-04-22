@@ -104,7 +104,7 @@ class ModelSearchv3
             )
                 ->orderby($sort, $sortDirection)->get();
         }
-
+        //dd($results);
         return $results;
     }
 

@@ -15,18 +15,15 @@
 
                 <label>Reference: @error('reference') <span class="error-text">*</span> @enderror</label>
                 <div>
-                    <input name="reference" class="@error('reference') input-error @enderror"type="text" value="@if(isset($order->reference)){{ $order->reference }} @endif" placeholder="Enter a reference">
+                    <input name="reference" class="@error('reference') input-error @enderror"type="text" value="@if(isset($receipt->reference)){{ $receipt->reference }} @endif" placeholder="Enter a reference">
                     @error('reference')
                             <div class="small-error-text error-text">{{ $message }} </div>
                     @enderror
                 </div>
 
-                <label>Receipt Date: @error('order.delivery_date') <span class="error-text">*</span> @enderror</label>
+                <label>Receipt Date: </label>
                 <div>
-                    <input name="date" class="@error('order.delivery_date') input-error @enderror"type="date" value="@if(isset($order->delivery_date)){{$order->delivery_date->format("Y-m-d")}}@else{{$today->format("Y-m-d")}}@endif" placeholder="Enter a reference" min="{{$today->format("Y-m-d")}}">
-                    @error('order.delivery_date')
-                            <div class="small-error-text error-text">{{ $message }} </div>
-                    @enderror
+                    <input name="date" type="date" value="@if(isset($receipt->date)){{$receipt->getdate()->format("Y-m-d")}}@else{{$today->format("Y-m-d")}}@endif" placeholder="Enter a reference" min="{{$today->format("Y-m-d")}}">
                 </div>
 
                 <label>Menu:</label>

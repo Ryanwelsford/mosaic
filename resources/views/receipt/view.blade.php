@@ -69,7 +69,7 @@
 
                     <td>
                         <div class="table-button-holder">
-                            <a href="{{ route('order.new', ['id' => $receipt->id]) }}"class="ph-button ph-button-standard table-button">Edit</a>
+                            <a href="{{ route('receiving.new', ['id' => $receipt->id]) }}"class="ph-button ph-button-standard table-button">Edit</a>
                             <a href="{{ route('receiving.summary', [$receipt]) }}"class="ph-button ph-button-standard table-button">Summary <i class="fas fa-clipboard-list"></i></a>
                             <form method="POST" action="{{ route("receiving.destroy", $receipt) }}" class="table-button">
                                 <button class="ph-button ph-button-standard ph-button-important table-button" type="submit">Delete</button>
