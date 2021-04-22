@@ -520,9 +520,12 @@
 
     //find a text input in a table
     function findInTable(input, searchable) {
-        let value = input.value;
+        let searchbar = document.getElementById(input);
+        let table = document.getElementById(searchable);
+
+        let value = searchbar.value;
         let found = false;
-        let tds = searchable.getElementsByTagName("td");
+        let tds = table.getElementsByTagName("td");
         let foundTd = [];
         let field = document.getElementById("response");
 
@@ -530,9 +533,13 @@
         for (i = 0; i < tds.length; i++) {
             current = tds[i];
 
-            //maybe add .includes for partial string matching
+
             //check for matches, assign to array if found
-            if(value.toUpperCase() === current.innerText.toUpperCase()) {
+            //old value check
+            //value.toUpperCase() === current.innerText.toUpperCase()
+
+            //with includes
+            if(current.innerText.toUpperCase().includes(value.toUpperCase())) {
                 foundTd.push(current);
                 found = true;
                 field.innerText = " ";
@@ -544,7 +551,7 @@
             //add highlight effect and click event to remove highlight
             for (i = 0; i < foundTd.length; i++) {
                 foundTd[i].parentNode.classList.add("find-highlight");
-                
+
                 //changing onclick rather than adding event listener allows for event onclick removal.
                 foundTd[i].parentNode.addEventListener("click", function(event)  {
                     event.target.parentNode.classList.remove('find-highlight');

@@ -32,7 +32,7 @@ class ReceivingController extends UserAccessController
         ]);
     }
 
-    
+
     //select order for reciept to be based on
     public function store(Request $request)
     {
@@ -60,6 +60,7 @@ class ReceivingController extends UserAccessController
         $receipt->reference = $request->reference;
 
         //validate previous form
+        //dont need to validate date as it has a min of today
         $this->validate(
             $request,
             [

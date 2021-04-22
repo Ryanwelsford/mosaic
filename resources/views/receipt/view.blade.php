@@ -69,7 +69,7 @@
 
                     <td>
                         <div class="table-button-holder">
-                            <a href="{{ route('receiving.new', ['id' => $receipt->id]) }}"class="ph-button ph-button-standard table-button">Edit</a>
+                            <a href="{{ route('receiving.new', ['id' => $receipt->id]) }}"class="ph-button ph-button-standard table-button">@include("icons.edit")</a>
                             <a href="{{ route('receiving.summary', [$receipt]) }}"class="ph-button ph-button-standard table-button">Summary <i class="fas fa-clipboard-list"></i></a>
                             <form method="POST" action="{{ route("receiving.destroy", $receipt) }}" class="table-button">
                                 <button class="ph-button ph-button-standard ph-button-important table-button" type="submit">Delete</button>
@@ -88,26 +88,7 @@
         @endif
     </div>
 
-    <section class="modal" id="search-modal">
-        <div class="modal-internal small-modal">
-            <div class="modal-title">Search Menus <button onclick="searchModal()" class="close-X">X</button></div>
-            <div class="modal-content vert-center">
-                <div class="modal-center">
-                    <form class="search-form grid-2-col-wide centered" method="GET" action="{{ route("receiving.view") }}">
-                        <label>Search Menus</label>
-                        <input name="search" value="@if(isset($search)){{$search}}@endif" type ="text" class=" "  id="search-bar" placeholder="Search here">
-                        <label>Sort by</label>
-                        <select name="sort">
-                            @foreach($searchFields as $field)
-                                <option value="{{ $field }}">{{str_replace("_", " ", $field)}}</option>
-                            @endforeach
-                        </select>
-                        <input type="submit" class="ph-button ph-button-standard tile-all-columns">
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
+    <x-tools.search-modal model="Reciepts" action='receiving.view' search="{{ $search }}" :fields="$searchFields"></x-tools.search-modal>
 
 </div>
 <x-top-button></x-top-button>

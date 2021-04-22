@@ -121,6 +121,8 @@
         </div>
     </section>
 
+    <x-tools.search-modal model="Orders" action='order.view' search="{{ $search }}" :fields="$searchFields"></x-tools.search-modal>
+
 </div>
 <x-top-button></x-top-button>
 

@@ -3,7 +3,7 @@
 @section('tools')
 <div>
     <button form="form" name="book" type="submit" class="bar-tool-button" value="book"><span class="mobile-hidden">Book</span> <i class="fas fa-book"></i></button>
-    <button class="bar-tool-button" onclick="searchModal()" name="save" value="save"><span class="mobile-hidden">Find</span> <i class="fas fa-search-location"></i></button>
+    <button class="bar-tool-button" onclick="openOrCloseModal('search-modal')" name="save" value="save"><span class="mobile-hidden">Find</span> <i class="fas fa-search-location"></i></button>
 </div>
 @endsection
 @section('content')
@@ -71,22 +71,6 @@
 
     </div>
 </div>
+<x-tools.find-modal model="products"></x-tools.find-modal>
 
-<section class="modal" id="search-modal">
-    <div class="modal-internal small-modal">
-        <div class="modal-title">Find products on screen <button onclick="searchModal()" class="close-X">X</button></div>
-        <div class="modal-content vert-center">
-            <div class="modal-center">
-                <form class="search-form grid-2-col-wide centered" method="GET" action="{{ route("order.view") }}">
-                    <label>Search Products</label>
-                    <input name="search" type ="text" id="search-bar" placeholder="Enter Product to Find">
-                    <div class="tile-all-columns">
-                        <button type="button" onclick="findInTable(search, findable)" class="ph-button ph-button-standard full-width">Find</button>
-                    </div>
-                    <label id="response" class="tile-all-columns"></label>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
 @endsection

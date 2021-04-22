@@ -4,24 +4,18 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class SearchModal extends Component
+class FindModal extends Component
 {
     /**
      * Create a new component instance.
      *
-     *
+     * @return void
      */
-    public $model;
-    public $action;
-    public $search;
-    public $fields;
 
-    public function __construct($model,$action, $search, $fields)
+    public $model;
+    public function __construct($model)
     {
         $this->model = $model;
-        $this->action = $action;
-        $this->search = $search;
-        $this->fields = $fields;
     }
 
     /**

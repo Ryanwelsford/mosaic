@@ -75,21 +75,5 @@
     </div>
 </div>
 
-<section class="modal" id="search-modal">
-    <div class="modal-internal small-modal">
-        <div class="modal-title">Find products on screen <button onclick="searchModal()" class="close-X">X</button></div>
-        <div class="modal-content vert-center">
-            <div class="modal-center">
-                <form class="search-form grid-2-col-wide centered" method="GET" action="{{ route("order.view") }}">
-                    <label>Search Products</label>
-                    <input name="search" type ="text" id="search-bar" placeholder="Enter Product to Find">
-                    <div class="tile-all-columns">
-                        <button type="button" onclick="findInTable(search, findable)" class="ph-button ph-button-standard full-width">Find</button>
-                    </div>
-                    <label id="response" class="tile-all-columns"></label>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
+<x-tools.find-modal model="products"></x-tools.find-modal>
 @endsection
