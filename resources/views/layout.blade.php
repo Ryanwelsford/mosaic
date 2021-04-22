@@ -155,9 +155,9 @@
 
 
                 <ul id="receiving" class="main-nav-tab side-bar-tab">
-                    <li><a href="">Test</a></li>
-                    <li><a href="">Test</a></li>
-                    <li><a href="">Test</a></li>
+                    <li><a href="{{ route('receiving.new') }}">New Receipt</a></li>
+                    <li><a href="{{ route("receiving.view") }}">Edit Receipt</a></li>
+                    <li><a href="{{ route("receiving.view") }}">View Receipts</a></li>
                 </ul>
             </li>
 
@@ -205,10 +205,10 @@
 
 
                 <ul id="StockOnHand" class="main-nav-tab side-bar-tab">
-                    <li><a href="">New Soh Count</a></li>
-                    <li><a href="">Edit Soh Count</a></li>
-                    <li><a href="">View Soh</a></li>
-                    <li><a href="">Soh Reports</a></li>
+                    <li><a href="">New Count</a></li>
+                    <li><a href="">Adjust Products</a></li>
+                    <li><a href="">View</a></li>
+                    <li><a href="">Reports</a></li>
                 </ul>
             </li>
 

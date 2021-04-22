@@ -50,12 +50,10 @@ Route::get('/logout', [LogoutController::class, 'index'])->name('logout.index');
 
 //general controllers
 //TODO move all of these controllers into a new section for eahc controller
-Route::get('/order/home', [OrderController::class, 'home'])->name('order.home');
 Route::get('/inventory/home', [InventoryController::class, 'home'])->name('inventory.home');
 
 Route::get('/waste/home', [WasteController::class, 'home'])->name('waste.home');
 Route::get('/dates/home', [DatesController::class, 'home'])->name('dates.home');
-Route::get('/StockOnHand/home', [StockOnHandController::class, 'home'])->name('soh.home');
 
 
 /******************************
@@ -127,5 +125,11 @@ Route::get('/receiving/view', [ReceivingController::class, 'view'])->name('recei
 Route::delete('/receiving/destroy/{receipt}', [ReceivingController::class, 'destroy'])->name('receiving.destroy');
 Route::get('/receiving/summary/{receipt}', [ReceivingController::class, 'summary'])->name('receiving.summary');
 Route::get('/receiving/print/{receipt}', [ReceivingController::class, 'print'])->name('receiving.print');
+
+//Stock on Hand routes
+
+Route::get('/stockonhand/home', [StockOnHandController::class, 'home'])->name('soh.home');
+Route::get('/stockonhand/new', [StockOnHandController::class, 'store'])->name('soh.new');
+
 //wth is this route
 Route::get('/product/confirm', [ProductController::class, 'home'])->name('product.home');
