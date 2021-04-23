@@ -59,4 +59,9 @@ class Product extends Model
     public function receipts() {
         return $this->belongsToMany(Receipt::class)->withPivot("quantity");
     }
+
+    public function stores() {
+        return $this->belongsToMany(Store::class);
+    }
+
 }

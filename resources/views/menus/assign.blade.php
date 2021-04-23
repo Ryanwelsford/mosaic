@@ -210,23 +210,7 @@
 
     }
 
-    function updateText(element) {
-        parent = element.parentNode.parentNode
-        div = parent.getElementsByTagName("div")[0];
-        updateDivText(div);
-    }
 
-    function updateDivText(div) {
-        if(div.innerText == "Select") {
-            div.innerText = "Remove";
-            return
-        }
-
-        if(div.innerText == "Remove") {
-            div.innerText = "Select";
-            return
-        }
-    }
 </script>
 <x-top-button></x-top-button>
 @endsection

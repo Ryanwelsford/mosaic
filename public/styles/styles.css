@@ -524,6 +524,12 @@ th, td {
 .confirmation-banner.full-width {
     width: 100%;
 }
+.error-banner {
+    box-sizing: border-box;
+    background-color: rgba(220, 39, 62, 0.9);
+    border-radius: 10px;
+    border: 3px solid rgba(80, 20, 20, 0.75);
+}
 .anchor {
     text-decoration: underline;
     color: darkblue;
@@ -950,7 +956,9 @@ input[type=number], input[type=date] {
 .find-highlight {
     background-color: green !important;
 }
-
+.counter-holder input {
+    margin: 2px 0px;
+}
 @media only screen and (max-width: 1400px) {
     .main-nav ul {
         font-size: 20px;
@@ -1138,6 +1146,20 @@ input[type=number], input[type=date] {
         width: 100% !important;
         padding: 0px;
     }
+
+    .tool-bar .title {
+        display: none;
+    }
+    .tools-section > div {
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+    }
+    .tool-bar .tools-section {
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
 
 @media only screen and (max-width: 400px) {
@@ -1157,16 +1179,29 @@ input[type=number], input[type=date] {
     td {
         font-size: 14px;
     }
-
+    .grid-2-col-wide input, .grid-2-col-wide select, .grid-2-col-wide option, .grid-2-col-wide label, .grid-2-col-wide textarea, .table-input  {
+        font-size: 16px;
+    }
+    .tool-bar, .bar-tool-button {
+        font-size: 16px;
+    }
+    .main-tile {
+        padding: 5px;
+    }
+    .grid-container {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
     /*not sure about this*/
+    /*
     .reduced-table {
         display: block;
         overflow-x: auto;
         white-space: nowrap;
     }
 
-    .reduced-table tbody {
+    .reduced-table tbody, .reduced-table thead {
         display: table;
         width: 100%;
-    }
+    }*/
 }

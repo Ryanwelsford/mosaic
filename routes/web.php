@@ -130,6 +130,8 @@ Route::get('/receiving/print/{receipt}', [ReceivingController::class, 'print'])-
 
 Route::get('/stockonhand/home', [StockOnHandController::class, 'home'])->name('soh.home');
 Route::get('/stockonhand/new', [StockOnHandController::class, 'store'])->name('soh.new');
-
+Route::post('/stockonhand/new', [StockOnHandController::class, 'saveCount']);
+Route::get('/stockonhand/assign', [StockOnHandController::class, 'assign'])->name('soh.assign');
+Route::post('/stockonhand/assign', [StockOnHandController::class, 'saveAssigned']);
 //wth is this route
 Route::get('/product/confirm', [ProductController::class, 'home'])->name('product.home');

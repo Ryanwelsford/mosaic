@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Types;
 
+use App\Models\User;
+use App\Models\Store;
 use Illuminate\Http\Request;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,6 +12,7 @@ class UserAccessController extends Controller
 {
 
     protected $user;
+    protected $store;
 
     public function __construct(Request $request)
     {
@@ -20,7 +22,7 @@ class UserAccessController extends Controller
         //https://stackoverflow.com/questions/39175252/cant-call-authuser-on-controllers-constructor
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
-
+            $this->store = Store::where('user_id', $this->user->id)->get()->first();
             //i.e not logged in
             if (is_null($this->user)) {
 

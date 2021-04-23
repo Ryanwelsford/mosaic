@@ -42,6 +42,17 @@ class Unit extends Model
         return [$case, $pack];
     }
 
+    public function packQuantity()
+    {
+
+        if ($this->pack != "none") {
+            $packQ = $this->quantity / $this->pack_quantity;
+            return $packQ;
+        } else {
+            return $this->quantity;
+        }
+    }
+
     public function fillItem($case, $pack, $id)
     {
         $this->product_id = $id;

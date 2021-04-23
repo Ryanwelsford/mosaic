@@ -198,13 +198,13 @@
             <li>
                 <div>
                     <a href="{{ route('soh.home') }}">Stock-on-hand</a>
-                    <button onclick="openNavTab(event, 'StockOnHand')" class="main-nav-button">
+                    <button onclick="openNavTab(event, 'stockonhand')" class="main-nav-button">
                         <image src="/images/side-arrow.png"></image>
                     </button>
                 </div>
 
 
-                <ul id="StockOnHand" class="main-nav-tab side-bar-tab">
+                <ul id="stockonhand" class="main-nav-tab side-bar-tab">
                     <li><a href="">New Count</a></li>
                     <li><a href="">Adjust Products</a></li>
                     <li><a href="">View</a></li>
@@ -486,7 +486,7 @@
             }
 
             mobileNav = document.getElementById("alt-"+controller);
-            console.log(mobileNav);
+
             if(mobileNav != null) {
                 mobileNav.classList.add(className);
             }
@@ -573,5 +573,77 @@
     function highlightChange(event) {
         event.target.parentNode.classList.remove('find-highlight');
     }
-    setupNav();
+
+    //actual addition function
+    function totalUp(event) {
+
+        let current, tr, totalBox, runningTotal, newTotal;
+
+        //added if statement to prevent issue of clicking out of input without entering number
+        if(!isNaN(parseFloat(event.target.value))) {
+            current = parseFloat(event.target.value);
+            tr = event.target.parentNode;
+
+            //always find the parent tr of input even after further divs created
+            while(tr.tagName != "TR" ) {
+                tr = tr.parentNode
+            }
+
+            totalBox = tr.getElementsByClassName("total-box")[0];
+            runningTotal = parseFloat(totalBox.value);
+
+            //data attributes are set using data-name, but accessed in js using dataset.name
+            newTotal = runningTotal + (current*parseFloat(event.target.dataset.count)) ;
+
+            //dont allow negative totals
+            if(newTotal <= 0) {
+                newTotal = 0;
+            }
+
+            totalBox.value = newTotal;
+            event.target.value = '';
+        }
+
+    }
+
+    //add event listeners
+    function setupTotals() {
+        let input = document.getElementsByClassName("count-box");
+
+
+        for(i=0; i < input.length; i++) {
+        //when passing variables to an event function you have to call it anonomouysly then call the named function with parameter
+        input[i].addEventListener('focusout', function () {
+            totalUp(event);
+            });
+        }
+    }
+
+    function updateText(element) {
+        parent = element.parentNode.parentNode
+        div = parent.getElementsByTagName("div")[0];
+        updateDivText(div);
+    }
+
+    //update text on select boxes
+    function updateDivText(div) {
+        if(div.innerText == "Select") {
+            div.innerText = "Remove";
+            return
+        }
+
+        if(div.innerText == "Remove") {
+            div.innerText = "Select";
+            return
+        }
+
+    }
+
+    //functions that run on page load
+    function setup() {
+        setupTotals();
+        setupNav();
+    }
+
+    setup()
 </script>
