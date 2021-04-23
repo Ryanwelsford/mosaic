@@ -95,7 +95,8 @@ main {
     background-color: rgb(220, 39, 62);
     width: 100%;
     font-size: 22px;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     margin-bottom: 15px;
     height: 30px;
     position: sticky;
@@ -109,12 +110,14 @@ main {
     margin-right: auto;
 }
 
-.tool-bar .user-section{
+.tool-bar .user-section {
+    display: flex;
+    justify-content: space-evenly;
     margin-right: 1rem;
+
 }
 
 .tool-bar .tools-section {
-
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -982,16 +985,17 @@ input[type=number], input[type=date] {
     }
     main {
     }
-    .main-nav ul, .user-section{
+    .main-nav ul, .tool-bar .title {
         display: none;
     }
     .tool-bar {
         margin: 0px;
         margin-top: 15px;
         margin-bottom: 15px;
-
+        grid-template-columns: 1fr 1fr;
     }
-    .tool-bar .title {
+    .tool-bar .user-section {
+        width: 100%;
         margin-right: 10px;
     }
     .logo-mobile-holder {
@@ -1147,9 +1151,14 @@ input[type=number], input[type=date] {
         padding: 0px;
     }
 
-    .tool-bar .title {
+    .tool-bar {
+        grid-template-columns: 1fr;
+    }
+
+    .tool-bar .user-section {
         display: none;
     }
+
     .tools-section > div {
         width: 100%;
         display: flex;

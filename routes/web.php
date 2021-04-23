@@ -133,5 +133,7 @@ Route::get('/stockonhand/new', [StockOnHandController::class, 'store'])->name('s
 Route::post('/stockonhand/new', [StockOnHandController::class, 'saveCount']);
 Route::get('/stockonhand/assign', [StockOnHandController::class, 'assign'])->name('soh.assign');
 Route::post('/stockonhand/assign', [StockOnHandController::class, 'saveAssigned']);
+Route::get('/stockonhand/view', [StockOnHandController::class, 'view'])->name('soh.view');
+Route::delete('/stockonhand/destroy/{soh}', [StockOnHandController::class, 'destroy'])->name('soh.destroy');
 //wth is this route
 Route::get('/product/confirm', [ProductController::class, 'home'])->name('product.home');

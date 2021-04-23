@@ -258,11 +258,13 @@
                 <a href="{{ route("order.home") }}" class="bar-tool-button">Home <i class="fas fa-home"></i></a>
             </div>
             @endif
+
             <div class="title">
                 @hasSection ('title')
                     @yield('title')
                 @endif
             </div>
+
             <div class ="user-section">
                 @auth
                     <a href="#" class="bar-tool-button">{{ auth()->user()->getCorrectName() }} <i class="fas fa-user-cog"></i></a>

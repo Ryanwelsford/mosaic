@@ -22,12 +22,12 @@ class UserAccessController extends Controller
         //https://stackoverflow.com/questions/39175252/cant-call-authuser-on-controllers-constructor
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
-            $this->store = Store::where('user_id', $this->user->id)->get()->first();
             //i.e not logged in
             if (is_null($this->user)) {
 
                 return redirect("/login");
             }
+            $this->store = Store::where('user_id', $this->user->id)->get()->first();
             //maybe update redirct to
             //Redirect::to('/login?attempt='. true) or something liek that
             return $next($request);

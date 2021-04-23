@@ -7,9 +7,14 @@
 @endsection
 @section('content')
 <div class="grid-container">
-    <form class="main-tile" id="form" action="{{ route('soh.new') }}" method="POST">
+    <form class="main-tile center-column" id="form" action="{{ route('soh.new') }}" method="POST">
+        <input type="hidden" name="id" value="@if(isset($soh->id)){{$soh->id}}@endif">
         @csrf
         <h2 class="tile-title tile-all-columns ">Stock on Hand Count</h2>
+        <div class="grid-2-col-wide centered full-width">
+            <label>Store: {{ $store->name }}</label>
+            <label>Created on: @if(isset($soh->created_at)){{ $soh->created_at->format("d m Y") }}@else {{ $today->format("d m Y") }}@endif</label>
+        </div>
         <table class="wide-table full-width reduced-table" id="findable">
             <thead>
                 <th class="mob-hidden">Code</th>
@@ -36,7 +41,11 @@
                             </div>
                         </td>
                         <td class="total-td">
-                            <input name="product[{{$product->id}}]" type="number" class="table-input total-box" min="0" step="1" value="0">
+                            @if(isset($mappedProducts[$product->id]))
+                                <input name="product[{{$product->id}}]" type="number" class="table-input total-box" min="0" step="1" value="{{$mappedProducts[$product->id]}}">
+                            @else
+                                <input name="product[{{$product->id}}]" type="number" class="table-input total-box" min="0" step="1" value="0">
+                            @endif
                         </td >
                     </tr>
                 @endforeach

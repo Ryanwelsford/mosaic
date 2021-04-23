@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Unit;
 use App\Models\Order;
 use App\Models\Receipt;
+use App\Models\StockOnHand;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -52,16 +53,24 @@ class Product extends Model
         return $this->searchable;
     }
 
-    public function orders() {
+    public function orders()
+    {
         return $this->belongsToMany(Order::class)->withPivot("quantity");
     }
 
-    public function receipts() {
+    public function receipts()
+    {
         return $this->belongsToMany(Receipt::class)->withPivot("quantity");
     }
 
-    public function stores() {
-        return $this->belongsToMany(Store::class);
+    //this may need to have the belongsToMany aspect updated due to the key being called soh_id rather than stock_on_hand_id
+    public function stockOnHands()
+    {
+        return $this->belongsToMany(StockOnHand::class)->withPivot("count");
     }
 
+    public function stores()
+    {
+        return $this->belongsToMany(Store::class);
+    }
 }
