@@ -227,9 +227,15 @@ class OrderController extends UserAccessController
             "response" => $response
         ]);
     }
-    //TODO add guards for order id
+
+
     public function summary(Request $request)
     {
+
+        if (!is_null($this->orderGuard($request->id))) {
+            return $this->orderGuard($request->id);
+        }
+
         $title = "Order Summary";
         [$order, $store, $menu, $listing, $sum, $quantity] = $this->orderDetails($request);
 
@@ -288,6 +294,10 @@ class OrderController extends UserAccessController
 
     public function print(Request $request)
     {
+        if (!is_null($this->orderGuard($request->id))) {
+            return $this->orderGuard($request->id);
+        }
+
         $title = "Order Printout";
 
         [$order, $store, $menu, $listing, $sum, $quantity] = $this->orderDetails($request);
@@ -301,5 +311,14 @@ class OrderController extends UserAccessController
             "sum" => $sum,
             "quantity" => $quantity
         ]);
+    }
+
+    private function orderGuard($id)
+    {
+        $order = Order::find($id);
+
+        if (!isset($id) || is_null($order)) {
+            return redirect()->route('order.view');
+        }
     }
 }
