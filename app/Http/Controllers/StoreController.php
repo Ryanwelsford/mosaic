@@ -64,7 +64,7 @@ class StoreController extends Controller
         //TODO add unique rules to ensure store number is unique
         $this->validate($request, [
             'name' => ['required'],
-            'number' => 'required',
+            'number' => ['required',  \Illuminate\Validation\Rule::unique('stores')->ignore($id)],
             'password' => 'required|confirmed',
             'password_confirmation' => 'required',
             'address1' => 'required',
@@ -145,7 +145,7 @@ class StoreController extends Controller
 
     //delete store as required
     //TODO add softdeletes for store
-    //TODO add confirmation message to store deletion as with menu/product deletion
+    //TODO add confirmation message to store deletion as per receipt del
     public function destroy(Store $store)
     {
         $store->delete();
@@ -159,7 +159,5 @@ class StoreController extends Controller
     {
 
         $title = "Store Settings";
-
-
     }
 }

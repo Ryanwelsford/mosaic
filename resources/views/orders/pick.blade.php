@@ -29,7 +29,7 @@
                     <label>Delivery Date: {{ $order->delivery_date }}</label>
                 </div>
                 <table class="wide-table full-width reduced-table" id="findable">
-                    <th>Id</th>
+                    <th class="mob-hidden">Id</th>
                     <th>Code</th>
                     <th>Description</th>
                     <th>Unit</th>
@@ -48,16 +48,21 @@
 
                             @foreach($products as $product)
                             <tr>
-                                <td>{{$product->id}}</td>
+                                <td class="mob-hidden">{{$product->id}}</td>
                                 <td>{{$product->code}}</td>
                                 <td>{{$product->name}}</td>
                                 <td>{{$product->units->description}}</td>
                                 <td>£{{number_format($product->units->price,2)}}</td>
                                 <td>
-                                    <input name="product[{{$product->id}}]" class="table-input" type="number" min="0" step ="1"
-                                    value=@if(isset($product->pivot)){{$product->pivot->quantity}}@else{{$origin}}@endif
+                                    <!--Readjusting this to an if else allows for value 0 on empty fields-->
+                                    @if(isset($product->pivot->quantity))
+                                        <input name="product[{{$product->id}}]" class="table-input" type="number" min="0" step ="1"
+                                        value="{{$product->pivot->quantity}}">
+                                    @else
+                                        <input name="product[{{$product->id}}]" class="table-input" type="number" min="0" step ="1"
+                                        value="0">
+                                    @endif
 
-                                    >
                                 </td>
                             </tr>
                             @endforeach

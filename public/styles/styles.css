@@ -803,9 +803,8 @@ option {
     width: 85%;
     border-radius: 10px;
     border: 1px solid rgba(220, 39, 62, 0);
-    text-align: center;
     transition: all ease 0.5s;
-    padding: 3px 0px;
+    padding: 3px 10px;
 }
 
 .login .logo {
@@ -962,6 +961,41 @@ input[type=number], input[type=date] {
 .counter-holder input {
     margin: 2px 0px;
 }
+
+.group-input {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.group-input input {
+    padding-right: 50px;
+}
+
+.input-internal {
+    position:absolute;
+    top: 10px;
+    right: 45px;
+}
+.input-internal {
+    box-sizing: border-box;
+    border-radius: 10px;
+    padding: 3px 5px;
+    transition: all ease 0.5s;
+    background-color: rgb(218, 218, 218);
+    /*add invis border so forms dont move around as border changes*/
+    border: 1px solid rgba(220, 39, 62, 0);
+}
+.input-internal>i {
+    width: 100%;
+}
+.input-internal:hover {
+    transition: all ease 0.5s;
+    /*add invis border so forms dont move around as border changes*/
+    box-shadow: 0 0 1px 3px rgb(220, 39, 62);
+}
+
 @media only screen and (max-width: 1400px) {
     .main-nav ul {
         font-size: 20px;

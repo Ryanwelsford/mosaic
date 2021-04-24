@@ -12,6 +12,12 @@ use App\Http\Helpers\ModelSearchv3;
 use App\Http\Helpers\ModelValidator;
 use App\Http\Controllers\Types\UserAccessController;
 
+//TODO
+//there are a few errors here
+//firstly sometimes edited an order cause the order to be empty
+//editing a saved order occasionally prevents a menu change being allowed (imagine if someone put the incorrect menu in and tried to edit, they cannot change the menu as it just takes the previously entered menu.
+//thirdly refilling the order form needs changing see work in receipt controller.
+
 class OrderController extends UserAccessController
 {
     //$user is available as a protected variable of UserAccessController
@@ -187,8 +193,8 @@ class OrderController extends UserAccessController
         $title = "Order Confirmation";
         $heading = "Order Successfully " . $status;
         $text = "Order has been created successfully for a total value of £" . number_format($sum, 2) . " and " . $quantity . " cases in total";
-        //TODO anchor is wrong change to route to print?
-        $anchor = route('order.new');
+
+        $anchor = route('order.print', ['id' => $order->id]);
         return view("general.confirmation-print", ["title" => $title, "heading" => $heading, "text" => $text, "anchor" => $anchor]);
     }
 

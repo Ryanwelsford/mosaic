@@ -56,7 +56,7 @@
                 <button form="form_order" type="submit" class="ph-button ph-button-standard">Enter Order</button>
         </div>
 
-        <p class="right-aligned">Looking to edit an order click <a href="{{route('menu.view')}}">here</a></p>
+        <p class="right-aligned">Looking to edit an order click <a href="{{route('order.view', ["search" => "Saved"])}}">here</a></p>
     </div>
 </div>
 @endsection

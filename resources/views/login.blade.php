@@ -16,7 +16,11 @@
             </div>
             <div class="center-column login-holder margin-top-10">
                 <label>Password @error('email') <span class="error-text">*</span> @enderror</label>
-                <input type="text" name="password">
+                <div id="password-holder" class="group-input full-width">
+                    <button onclick="revealPassword('password-holder')" class="input-internal" type="button"><i class="far fa-eye"></i></button>
+                    <input type="password" name="password">
+                </div>
+
                 @error('password')
                     <div class="small-error-text error-text">{{ $message }} </div>
                 @enderror
