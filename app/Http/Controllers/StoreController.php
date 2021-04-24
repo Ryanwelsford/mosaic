@@ -6,8 +6,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Store;
 use Illuminate\Http\Request;
-use App\Http\Helpers\ModelSearchv2;
 use App\Http\Helpers\ModelValidator;
+use App\Http\Helpers\ModelSearch\ModelSearchv4;
 
 /********************************************************
  *Stores handle the day to day operation of client requried tasks
@@ -128,19 +128,23 @@ class StoreController extends Controller
         $searchFields = $store->getSearchable();
         $search = $request->search;
         $sort = $request->sort;
-        $messAround = [
+
+        $searchArray = [
             "stores" => $searchFields,
             "users" => ["email"]
         ];
 
         $title = "Display Stores";
-        $join = [[
-            "users", "users.id", "stores.user_id"
-        ]];
-        $modelSearch = new ModelSearchv2(Store::class, $messAround, "stores", $join);
-        $stores = $modelSearch->search($search, $sort);
-        $searchFields[] = "email";
-        
+        $join = [
+            "users" => ["users.id", "stores.user_id"]
+        ];
+
+        $modelSearchv4 = new ModelSearchv4(Store::class, $searchArray, $searchArray, [], $join);
+        $stores = $modelSearchv4->search($search, $sort);
+
+
+        //$searchFields[] = "email";
+
         return view("store.view", ["title" => $title, "stores" => $stores, "search" => $search, "sort" => $sort, "searchFields" => $searchFields]);
     }
 
