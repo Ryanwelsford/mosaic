@@ -6,6 +6,7 @@
     <link rel="icon" href="/images/phr-logo.svg" sizes="16x16" type="image/png">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
     <script src="/scripts/main.js"></script>
+    <script src="/scripts/login.js"></script>
     <title>
         @hasSection("title")
             @yield("title")
@@ -317,6 +318,7 @@
                         <a href="{{ route('menu.home') }}"><button id="alt-menu" class="ph-button ph-button-standard modal-nav-button">Menu</button></a>
                         <a href="{{ route('wastelist.home') }}"><button id="alt-wastelist" class="ph-button ph-button-standard modal-nav-button">Waste List</button></a>
                         <a href="{{ route('store.home') }}"><button id="alt-store" class="ph-button ph-button-standard modal-nav-button">Store</button></a>
+                        <a href="{{ route('admin.home') }}"><button id="alt-admin" class="ph-button ph-button-standard modal-nav-button">Admin</button></a>
 
                         @endif
 

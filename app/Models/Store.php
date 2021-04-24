@@ -30,7 +30,8 @@ class Store extends Model
         "address3",
         "address2",
         "postcode",
-        "user_id"
+        "user_id",
+        "created_at"
     ];
 
     public function getSearchable()
@@ -50,11 +51,13 @@ class Store extends Model
         $this->user_id = $userid;
     }
 
-    public function getCreated($string) {
-        $carbon = new Carbon($string);
+    public function getCreated($string = '') {
 
+
+        $carbon = new Carbon($string);
         return $carbon->format('d M Y');
     }
+
 
     public function users()
     {

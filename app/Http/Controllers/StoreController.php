@@ -140,14 +140,14 @@ class StoreController extends Controller
         $modelSearch = new ModelSearchv2(Store::class, $messAround, "stores", $join);
         $stores = $modelSearch->search($search, $sort);
         $searchFields[] = "email";
-
+        
         return view("store.view", ["title" => $title, "stores" => $stores, "search" => $search, "sort" => $sort, "searchFields" => $searchFields]);
     }
 
     //delete store as required
     //TODO add softdeletes for store
     //TODO add confirmation message to store deletion as per receipt del
-    
+
     //now passes an id not the object due to search changes
     public function destroy($id)
     {

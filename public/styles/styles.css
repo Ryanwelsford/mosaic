@@ -968,16 +968,30 @@ input[type=number], input[type=date] {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 
-.group-input input {
+.login-box .group-input input {
     padding-right: 50px;
 }
 
-.input-internal {
+.login-box .input-internal {
     position:absolute;
     top: 10px;
     right: 45px;
+}
+.grid-2-col-wide .input-internal {
+    position:absolute;
+    top: 7px;
+    right: 2%;
+}
+.grid-2-col-wide input {
+    width: 100%;
+}
+.grid-2-col-wide .group-input input {
+    width: 100%;
+    box-sizing: border-box;
+    padding-right: 50px;
 }
 .input-internal {
     box-sizing: border-box;

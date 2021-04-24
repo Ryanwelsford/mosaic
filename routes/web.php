@@ -98,6 +98,10 @@ Route::delete('/menu/destroy/{menu}', [MenuController::class, 'destroy'])->name(
 
 //admin user routes
 Route::get('admin/home', [AdminController::class, 'home'])->name('admin.home');
+Route::get('admin/new', [AdminController::class, 'store'])->name('admin.new');
+Route::post('admin/new', [AdminController::class, 'save']);
+Route::get('admin/view', [AdminController::class, 'view'])->name('admin.view');
+Route::delete('admin/destroy/{admin}', [AdminController::class, 'destroy'])->name('admin.destroy');
 /******************************
  *Store level routes
  ******************************/

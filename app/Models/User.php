@@ -26,6 +26,14 @@ class User extends Authenticatable
         "privelleges"
     ];
 
+    protected $searchable = [
+        'id',
+        'name',
+        'email',
+        "privelleges"
+    ];
+
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -86,5 +94,10 @@ class User extends Authenticatable
         }
 
         return $output;
+    }
+
+    public function getSearchable()
+    {
+        return $this->searchable;
     }
 }
