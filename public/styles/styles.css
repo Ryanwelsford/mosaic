@@ -29,7 +29,8 @@ a {
     justify-content: center;
 }
 .main-nav {
-    margin: 0;
+    /*added a 2px margin to lhs of nav prevents issue on browser boundary*/
+    margin: 0px 0px 0px 2px;
     width: 15%;
     position: fixed;
     height: 100%;
@@ -130,7 +131,7 @@ main {
     font-size: 1.2rem;
     color: white;
     transition: all ease 0.5s;
-    padding: 2px;
+    padding: 2px 4px;
     cursor: pointer;
 }
 .bar-tool-button:hover, .bar-tool-button:focus {

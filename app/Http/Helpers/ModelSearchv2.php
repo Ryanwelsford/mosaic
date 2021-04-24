@@ -2,6 +2,8 @@
 
 namespace App\Http\Helpers;
 
+use Illuminate\Support\Facades\DB;
+
 /*****************************************
  *expand the previous search class to allow for joining of tables
  *****************************************/
@@ -16,6 +18,7 @@ class ModelSearchv2
     private $join;
     private $tablename;
 
+    //maybe create v4 with return type, searchable fields, return fields, table name not required, restriction and join?
     public function __construct($returnType, $searchableFields, $tablename, $join = [])
     {
         $this->returnType = $returnType;
@@ -54,7 +57,11 @@ class ModelSearchv2
     //build query string concatenating where clauses for single entry search forms
     private function queryConstruct($searchValue)
     {
+
+        //adjusted to add all columns that are searchable as part of return information
         $query = $this->returnType::query();
+        $query = $this->selectConstruct($query);
+
 
         foreach ($this->searchableFields as $tablekey => $table) {
             foreach ($table as $field) {
@@ -65,10 +72,26 @@ class ModelSearchv2
         return $query;
     }
 
+    private function selectConstruct($query) {
+        foreach ($this->searchableFields as $tablekey => $table) {
+
+            foreach ($table as $field) {
+                $string = $tablekey . "." . $field . " as " . $tablekey . "_" . $field;
+
+                $query = $query->addSelect($string);
+
+            }
+        }
+
+        return $query;
+    }
+
     //make use of static functions of models to return a simple defaultly ordered set of results
     private function returnDefault()
     {
-        $results = $this->returnType::orderby($this->tablename . "." . "id", "desc")->get();
+        $query = $this->returnType::orderby($this->tablename . "." . "id", "desc");
+        $query = $this->selectConstruct($query);
+        $results = $this->executeQuery($query);
         return $results;
     }
 
@@ -107,7 +130,6 @@ class ModelSearchv2
             }
         }
 
-        //dd($query->toSql());
         return $query->get();
     }
 }

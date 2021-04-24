@@ -55,7 +55,7 @@ class User extends Authenticatable
         if ($this->isAdmin()) {
             return $this->name;
         } else {
-            return $this->stores()->get()->first()->name;
+            return $this->stores()->get()->first()->store_name;
         }
     }
 

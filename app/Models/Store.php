@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,7 +13,7 @@ class Store extends Model
 
     protected $fillable = [
         "id",
-        "number",
+        "store_number",
         "name",
         "address1",
         "address3",
@@ -24,7 +25,7 @@ class Store extends Model
     protected $searchable = [
         "id",
         "number",
-        "name",
+        "store_name",
         "address1",
         "address3",
         "address2",
@@ -40,13 +41,19 @@ class Store extends Model
     public function fillItem($id, $name, $number, $address1, $address2, $address3, $postcode, $userid)
     {
         $this->id = $id;
-        $this->name = $name;
+        $this->store_name = $name;
         $this->number = $number;
         $this->address1 = $address1;
         $this->address2 = $address2;
         $this->address3 = $address3;
         $this->postcode = $postcode;
         $this->user_id = $userid;
+    }
+
+    public function getCreated($string) {
+        $carbon = new Carbon($string);
+
+        return $carbon->format('d M Y');
     }
 
     public function users()

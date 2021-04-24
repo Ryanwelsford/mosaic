@@ -6,6 +6,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DatesController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StoreController;
@@ -95,7 +96,8 @@ Route::get('/menu/view', [MenuController::class, 'view'])->name('menu.view');
 Route::get('/menu/confirmation', [Menu::class, 'confirm'])->name('menu.confirm');
 Route::delete('/menu/destroy/{menu}', [MenuController::class, 'destroy'])->name('menu.destroy');
 
-
+//admin user routes
+Route::get('admin/home', [AdminController::class, 'home'])->name('admin.home');
 /******************************
  *Store level routes
  ******************************/

@@ -12,8 +12,8 @@
 
                 <x-inputs.hidden name="id" :value="$store"></x-inputs.hidden>
 
-                <x-label-error label="name"></x-label-error>
-                <x-inputs.text inputName="name" error="name" :value="$store"></x-inputs.text>
+                <x-label-error label="store_name"></x-label-error>
+                <x-inputs.text inputName="store_name" error="name" :value="$store"></x-inputs.text>
 
                 <x-label-error label="Hut Number" error="number" ></x-label-error>
                 <x-inputs.number inputName="number" error="number" :value="$store"></x-inputs.number>

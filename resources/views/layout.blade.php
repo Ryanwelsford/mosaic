@@ -108,6 +108,22 @@
                 </ul>
 
             </li>
+
+            <li>
+                <div>
+                   <a class=""href="{{ route('admin.home') }}">Admins</a>
+                    <button onclick="openNavTab(event, 'admin')" class="main-nav-button">
+                        <image src="/images/side-arrow.png"></image>
+                    </button>
+                </div>
+
+
+                <ul id="admin" class="main-nav-tab side-bar-tab">
+                    <li><a href="#">New Admin</a></li>
+                    <li><a href="#">View Admins</a></li>
+                </ul>
+
+            </li>
         @else
         <!--In theory this is login check for store then display store tools-->
             <li>

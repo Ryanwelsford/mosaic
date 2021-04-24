@@ -50,8 +50,9 @@ class ModelValidator
         if (isset($this->class_id)) {
             //if a edit is requested find instance and return
             //using first to return only the first element with that id, alternativly use [0]
+            //dd($this->classType::where($this->idField, $this->class_id)->get());
             $baseClass = $this->classType::where($this->idField, $this->class_id)->get()->first();
-
+            
             //null check if returned id value does not exist.
             if ($baseClass == null) {
                 $baseClass = false;

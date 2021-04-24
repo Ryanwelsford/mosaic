@@ -15,6 +15,7 @@ class ModelSearchv3
     private $searchableFields;
     //optional parameter for any default searches required, allows for sorting of outputs without setting a sort field
     private $join;
+    //TODO join functionality is broken, any duplicate model columns are not returned properly, either all columns need unique names or the select * needs to change
     private $restriction;
     private $tablename;
 

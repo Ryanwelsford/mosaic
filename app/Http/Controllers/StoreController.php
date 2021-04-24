@@ -63,7 +63,7 @@ class StoreController extends Controller
         //password confirmation ensures the password entered twice matches
         //TODO add unique rules to ensure store number is unique
         $this->validate($request, [
-            'name' => ['required'],
+            'store_name' => ['required'],
             'number' => ['required',  \Illuminate\Validation\Rule::unique('stores')->ignore($id)],
             'password' => 'required|confirmed',
             'password_confirmation' => 'required',
@@ -100,7 +100,7 @@ class StoreController extends Controller
         $user->save();
 
         //set and save store information
-        $store->fillItem($id, $request->name, $request->number, $request->address1, $request->address2, $request->address3, $request->postcode, $user->id);
+        $store->fillItem($id, $request->store_name, $request->number, $request->address1, $request->address2, $request->address3, $request->postcode, $user->id);
 
         $store->save();
 
@@ -118,6 +118,7 @@ class StoreController extends Controller
     }
 
     //display stores in number desc order alongside the user information
+    //model search v2 is a tad broken
     public function view(Request $request)
     {
         //order by number from high to low, query pulls user information aswell
@@ -146,8 +147,11 @@ class StoreController extends Controller
     //delete store as required
     //TODO add softdeletes for store
     //TODO add confirmation message to store deletion as per receipt del
-    public function destroy(Store $store)
+    
+    //now passes an id not the object due to search changes
+    public function destroy($id)
     {
+        $store = Store::find($id);
         $store->delete();
 
         return back();

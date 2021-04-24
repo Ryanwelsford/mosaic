@@ -40,22 +40,21 @@
         @foreach($stores as $key => $store)
             <tr>
                 <td>
-                    {{ $store->name }}
-                    <p class='mobile-only'>{{ $store->users->name }}</p>
+                    {{ $store->stores_store_name }}
                 </td>
                 <td class="mob-hidden">
-                    {{ $store->users->email }}
+                    {{ $store->users_email }}
                 </td>
                 <td class="mob-hidden">
-                    {{ $store->number }}
+                    {{ $store->stores_number }}
                 </td>
                 <td class="mob-hidden">
-                    {{ $store->created_at->format('d/M/Y') }}
+                    {{ $store->getCreated($store->stores_created_at) }}
                 </td>
                 <td>
                     <div class="table-button-holder">
-                        <a href="{{ route('store.new', ['id' => $store->id]) }}"class="ph-button ph-button-standard table-button">Edit<img src="/images/icons/edit-48-black.png"></a>
-                        <form method="POST" action="{{ route("store.destroy", $store) }}">
+                        <a href="{{ route('store.new', ['id' => $store->stores_id ]) }}"class="ph-button ph-button-standard table-button">Edit<img src="/images/icons/edit-48-black.png"></a>
+                        <form method="POST" action="{{ route("store.destroy", $store->stores_id) }}">
                             <button class="ph-button ph-button-important table-button" type="submit">Delete <img src="/images/icons/delete-48-black.png"></button>
                             @csrf
                             @method('delete')
