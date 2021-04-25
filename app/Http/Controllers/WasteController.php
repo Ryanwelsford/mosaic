@@ -2,16 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Waste;
+use App\Models\Product;
+use App\Models\Wastelist;
 use Illuminate\Http\Request;
+use App\Http\Helpers\ModelValidator;
+use App\Http\Controllers\Types\UserAccessController;
 
-class WasteController extends Controller
+class WasteController extends UserAccessController
 {
-    public function home() {
+    public function home()
+    {
 
         $title = "Waste Home";
 
         $menuitems = [
-            ["title" => "New Waste", "anchor" => "/test", "img" => "/images/icons/new-256.png"],
+            ["title" => "New Waste", "anchor" => route('waste.new'), "img" => "/images/icons/new-256.png"],
             ["title" => "Edit Waste", "anchor" => "/test", "img" => "/images/icons/edit-256.png"],
             ["title" => "View Waste", "anchor" => "/test", "img" => "/images/icons/view-256.png"],
             ["title" => "Waste Reports", "anchor" => "/test", "img" => "/images/icons/report-256.png"]
@@ -20,6 +26,140 @@ class WasteController extends Controller
         return view('menu', [
             "menuitems" => $menuitems,
             "title" => $title
-            ]);
+        ]);
+    }
+    //pull information for ajax query.
+    public function categoryReturn(Request $request)
+    {
+        $products = Product::where('category', $request->category)->orderby('name', 'desc')->with("units")->get();
+
+        $products = $products->toJson();
+
+        return response()->json($products);
+    }
+    public function store(Request $request)
+    {
+        $title = "New Waste Entry";
+        //change this to pull only active wastelists or something
+        $wasteLists = Wastelist::all();
+
+        $productController = new ProductController();
+        $categories = $productController->buildCategories();
+
+        $modelValidator = new ModelValidator(Waste::class, $request->id, old());
+        $wastes = $modelValidator->validate();
+        /*
+        $products = false;
+        if(!is_null($wastes)) {
+            $products = $wastes->products()->get();
+        }
+        else if(!empty(old())) {
+            dd(old());
+        }*/
+
+        return view('waste.new', [
+            "title" => $title,
+            "wastes" => $wastes,
+            "categories" => $categories,
+            "wastelists" => $wasteLists
+        ]);
+    }
+
+    public function save(Request $request)
+    {
+        $this->validate(
+            $request,
+            [
+                'reference' => ['required'],
+                'product' => ['required']
+            ],
+            [
+                "reference.required" => "A reference must be entered",
+                "product.required" => "At least one product must be entered"
+            ]
+        );
+
+        $waste = new Waste;
+
+        if (isset($request->id)) {
+            $waste = Waste::find($request->id);
+        }
+
+        $waste->fillItem($request->id, $request->reference, $request->wastelist_id, $this->store->id);
+        $waste->save();
+
+        $products = $request->product;
+        $organisedMappings = [];
+        foreach ($products as $product_id => $quantity) {
+
+            $required = true;
+            if (is_null($quantity) || $quantity == 0) {
+                $required = false;
+            }
+            if ($required) {
+                $organisedMappings[$product_id] = ["quantity" => $quantity];
+            }
+        }
+
+        $waste->products()->sync($organisedMappings);
+
+        return $this->confirm($waste);
+    }
+
+    public function confirm(Waste $waste)
+    {
+
+        $products = $waste->products()->with("units")->get();
+        [$sum, $quantity] = $this->calc($products);
+
+        $title = "Waste Confirmation";
+        $heading = "Waste Successfully Booked";
+        $text = "Waste has been created successfully for a total value of £" . number_format($sum, 2) . " and " . $quantity . " cases in total";
+        $anchor = route('waste.new');
+        return view("general.confirmation-print", ["title" => $title, "heading" => $heading, "text" => $text, "anchor" => $anchor]);
+    }
+
+    public function calc($values)
+    {
+        $quantity = 0;
+        $sum = 0;
+
+        foreach ($values as $each) {
+            $quantity += $each->pivot->quantity;
+            $sum += $each->pivot->quantity * $each->units->price;
+        }
+
+        return [$sum, $quantity];
+    }
+
+    public function destroy()
+    {
+    }
+
+    public function view()
+    {
+    }
+
+    public function summary(Request $request)
+    {
+        $title = "Waste Summary";
+        [$waste, $products, $sum, $quantity] = $this->wasteDetails($request->id);
+        return view("waste.summary", ["title" => $title, "store" => $this->store, "waste" => $waste, "listing" => $products, "sum" => $sum, "quantity" => $quantity]);
+    }
+    public function wasteDetails($id)
+    {
+
+        $waste = Waste::find($id);
+        $products = $waste->products()->with("units")->get();
+        [$sum, $quantity] = $this->calc($products);
+
+        return [$waste, $products, $sum, $quantity];
+    }
+    public function print(Request $request)
+    {
+        $title = "Waste Summary";
+        [$waste, $products, $sum, $quantity] = $this->wasteDetails($request->id);
+
+        return view("waste.print", ["title" => $title, "store" => $this->store, "waste" => $waste, "listing" => $products, "sum" => $sum, "quantity" => $quantity]);
     }
 }

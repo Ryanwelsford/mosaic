@@ -171,4 +171,10 @@ class StockOnHandController extends UserAccessController
         $soh->delete();
         return $this->view($request, $response);
     }
+
+    //allow for the printing of a weeks worth of SOH data?
+    
+    public function print() {
+
+    }
 }

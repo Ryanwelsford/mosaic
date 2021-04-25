@@ -52,8 +52,6 @@ class Store extends Model
     }
 
     public function getCreated($string = '') {
-
-
         $carbon = new Carbon($string);
         return $carbon->format('d M Y');
     }
@@ -71,6 +69,10 @@ class Store extends Model
 
     public function stockOnHand()
     {
-        return $this->hasMany(Store::class);
+        return $this->hasMany(StockOnHand::class);
+    }
+
+    public function wastes() {
+        return $this->hasMany(Waste::class);
     }
 }

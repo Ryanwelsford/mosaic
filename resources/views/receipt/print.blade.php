@@ -6,7 +6,7 @@
         <div class="full-width">
             <h2 class="tile-title tile-all-columns ">Order Summary</h2>
             <div class="grid-2-col-wide">
-                <label>Store: {{ $store->name }} {{ $store->number }}</label>
+                <label>Store: {{ $store->store_name }} {{ $store->number }}</label>
                 <label>Receipt Date: {{ $receipt->getDate()->format("d M Y") }}</label>
                 <label>Reference: {{ $receipt->reference }}</label>
             </div>

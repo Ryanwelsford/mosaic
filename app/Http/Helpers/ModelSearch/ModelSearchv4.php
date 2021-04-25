@@ -171,7 +171,7 @@ class ModelSearchv4
     //fire query builder return results
     private function executeQuery($query)
     {
-        dd($query->toSql());
+        //dd($query->toSql());
         return $query->get();
     }
 

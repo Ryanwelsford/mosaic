@@ -8,7 +8,7 @@
             <h2 class="tile-title tile-all-columns ">Order Summary</h2>
             <div class="grid-2-col-wide">
                 <label>Status: {{ $order->status }}</label>
-                <label>Store: {{ $store->name }} {{ $store->number }}</label>
+                <label>Store: {{ $store->store_name }} {{ $store->number }}</label>
                 <label>Menu: {{ $menu->name }}</label>
                 <label>Delivery Date: {{ $order->getDeliveryDate()->format("d M Y") }}</label>
             </div>

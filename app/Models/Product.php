@@ -73,4 +73,8 @@ class Product extends Model
     {
         return $this->belongsToMany(Store::class);
     }
+
+    public function wastes() {
+        return $this->belongsToMany(Waste::class)->withPivot("quantity");
+    }
 }

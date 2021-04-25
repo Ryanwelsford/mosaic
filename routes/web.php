@@ -52,8 +52,6 @@ Route::get('/logout', [LogoutController::class, 'index'])->name('logout.index');
 //general controllers
 //TODO move all of these controllers into a new section for eahc controller
 Route::get('/inventory/home', [InventoryController::class, 'home'])->name('inventory.home');
-
-Route::get('/waste/home', [WasteController::class, 'home'])->name('waste.home');
 Route::get('/dates/home', [DatesController::class, 'home'])->name('dates.home');
 
 
@@ -141,5 +139,13 @@ Route::get('/stockonhand/assign', [StockOnHandController::class, 'assign'])->nam
 Route::post('/stockonhand/assign', [StockOnHandController::class, 'saveAssigned']);
 Route::get('/stockonhand/view', [StockOnHandController::class, 'view'])->name('soh.view');
 Route::delete('/stockonhand/destroy/{soh}', [StockOnHandController::class, 'destroy'])->name('soh.destroy');
+
+//waste routes
+Route::get('/waste/home', [WasteController::class, 'home'])->name('waste.home');
+Route::get('/waste/new', [WasteController::class, 'store'])->name('waste.new');
+Route::Get('/waste/print', [WasteController::class, "print"])->name("waste.print");
+Route::Get('/waste/summary', [WasteController::class, "summary"])->name("waste.summary");
+Route::post('/waste/new', [WasteController::class, 'save']);
+Route::post('/waste/category', [WasteController::class, 'categoryReturn']);
 //wth is this route
 Route::get('/product/confirm', [ProductController::class, 'home'])->name('product.home');

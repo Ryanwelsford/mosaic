@@ -795,6 +795,10 @@ option {
 .margin-bottom-2 {
     margin-bottom: 2rem;
 }
+
+.margin-left-2 {
+    margin-left: 2rem;
+}
 .login input, .login label {
     font-size: 25px;
     margin-bottom: 12px;
@@ -1011,6 +1015,38 @@ input[type=number], input[type=date] {
     box-shadow: 0 0 1px 3px rgb(220, 39, 62);
 }
 
+div.vert-scroll {
+    margin-top: 5px;
+    max-height: 300px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow-y: auto;
+    align-items: center;
+}
+
+div.vert-scroll label {
+    width: 100%;
+}
+
+div.vert-scroll button {
+    margin-left:auto;
+}
+.waste-input-td {
+    display:flex;
+    align-items: center;
+    border: hidden;
+}
+.waste-input-td input {
+    margin-right: 5px;
+    width: 95%;
+}
+
+.right-content {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
 @media only screen and (max-width: 1400px) {
     .main-nav ul {
         font-size: 20px;
@@ -1218,6 +1254,10 @@ input[type=number], input[type=date] {
         margin-left: auto;
         margin-right: auto;
     }
+
+    .ph-button-small {
+        width: 75px;
+    }
 }
 
 @media only screen and (max-width: 400px) {
@@ -1249,6 +1289,12 @@ input[type=number], input[type=date] {
     .grid-container {
         margin-left: 5px;
         margin-right: 5px;
+    }
+    .search-with-button {
+        flex-direction: column;
+    }
+    .search-with-button button {
+        margin-top: 3px;
     }
     /*not sure about this*/
     /*

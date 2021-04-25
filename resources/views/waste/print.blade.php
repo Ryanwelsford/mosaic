@@ -1,15 +1,13 @@
-@extends('layout')
+@extends('layouts.print-layout')
 @section('title', $title)
 
 @section('content')
-<div class="grid-container">
-    <div class="main-tile tile-all-columns center-column">
+    <div class="main-tile tile-all-columns center-column full-width">
         <div class="full-width">
-            <h2 class="tile-title tile-all-columns ">Order Summary</h2>
+            <h2 class="tile-title tile-all-columns ">Waste Summary</h2>
             <div class="grid-2-col-wide">
-                <label>Store: {{ $store->store_name }} {{ $store->number }}</label>
-                <label>Receipt Date: {{ $receipt->getDate()->format("d M Y") }}</label>
-                <label>Reference: {{ $receipt->reference }}</label>
+                <label>Store: {{ $store->store_name }}</label>
+                <label>Creation Date: {{ $waste->created_at->format("d M Y") }}</label>
             </div>
 
             <table class="wide-table full-width reduced-table">
@@ -44,11 +42,6 @@
                 </tr>
             </table>
 
-
-            <div class="tile-all-columns center-column margin-top">
-                <a href="{{ route('receiving.print', [$receipt]) }}" class="ph-button ph-button-standard">Print</a>
-            </div>
         </div>
     </div>
-</div>
 @endsection
