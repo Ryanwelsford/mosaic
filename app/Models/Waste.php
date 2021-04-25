@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Models\Store;
 use App\Models\Product;
 use App\Models\Wastelist;
@@ -18,6 +19,22 @@ class Waste extends Model
         'reference',
         'wastelist_id'
     ];
+
+    protected $searchable = [
+        'id',
+        'reference',
+        'created_at'
+    ];
+
+    public function getSearchable()
+    {
+        return $this->searchable;
+    }
+
+    public function getCreated($string = '') {
+        $carbon = new Carbon($string);
+        return $carbon->format('d M Y');
+    }
 
     public function store()
     {

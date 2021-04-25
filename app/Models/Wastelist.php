@@ -15,6 +15,15 @@ class Wastelist extends Model
         'description',
     ];
 
+    protected $searchable = [
+        'name'
+    ];
+
+    public function getSearchable()
+    {
+        return $this->searchable;
+    }
+
     public function fillItem($id, $name, $description)
     {
         $this->id = $id;
@@ -23,4 +32,7 @@ class Wastelist extends Model
     }
 
     //will need a wastes relationship at some point in time
+    public function Wastes() {
+        return $this->HasMany(Waste::class, 'wastelist_id', 'id');
+    }
 }

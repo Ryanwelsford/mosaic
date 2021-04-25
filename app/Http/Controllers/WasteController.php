@@ -6,7 +6,9 @@ use App\Models\Waste;
 use App\Models\Product;
 use App\Models\Wastelist;
 use Illuminate\Http\Request;
+use App\Http\Helpers\ModelSearchv3;
 use App\Http\Helpers\ModelValidator;
+use App\Http\Helpers\ModelSearch\ModelSearchv4;
 use App\Http\Controllers\Types\UserAccessController;
 
 class WasteController extends UserAccessController
@@ -18,8 +20,8 @@ class WasteController extends UserAccessController
 
         $menuitems = [
             ["title" => "New Waste", "anchor" => route('waste.new'), "img" => "/images/icons/new-256.png"],
-            ["title" => "Edit Waste", "anchor" => "/test", "img" => "/images/icons/edit-256.png"],
-            ["title" => "View Waste", "anchor" => "/test", "img" => "/images/icons/view-256.png"],
+            ["title" => "Edit Waste", "anchor" => route('waste.view'), "img" => "/images/icons/edit-256.png"],
+            ["title" => "View Waste", "anchor" => route('waste.view'), "img" => "/images/icons/view-256.png"],
             ["title" => "Waste Reports", "anchor" => "/test", "img" => "/images/icons/report-256.png"]
         ];
 
@@ -132,12 +134,30 @@ class WasteController extends UserAccessController
         return [$sum, $quantity];
     }
 
-    public function destroy()
-    {
-    }
 
-    public function view()
+
+    public function view(Request $request, $response = '')
     {
+        $title = "Search Wastes";
+        $waste = new Waste;
+        $wastelist = new Wastelist;
+        $searchFields = [
+            "wastes" => $waste->getSearchable(),
+            "wastelists" => $wastelist->getSearchable()
+        ];
+        $join = ["wastelists" => ["wastelists.id", "wastes.wastelist_id"]];
+        $search = $request->search;
+        $sort = $request->sort;
+        $sortDirection = "desc";
+
+        if ($sort == null) {
+            $sort = "id";
+        }
+        $modelSearchv4 = new ModelSearchv4(Waste::class, $searchFields, $searchFields, ["table" => "wastes", "field" => "store_id", "value" => $this->store->id], $join);
+        $wastes = $modelSearchv4->search($search, $sort, $sortDirection);
+
+        $searchFields = array_merge($waste->getSearchable(), $wastelist->getSearchable());
+        return view("waste.view", ["title" => $title, "wastes" => $wastes, "search" => $search, "sort" => $sort, "searchFields" => $searchFields, "response" => $response]);
     }
 
     public function summary(Request $request)
@@ -161,5 +181,13 @@ class WasteController extends UserAccessController
         [$waste, $products, $sum, $quantity] = $this->wasteDetails($request->id);
 
         return view("waste.print", ["title" => $title, "store" => $this->store, "waste" => $waste, "listing" => $products, "sum" => $sum, "quantity" => $quantity]);
+    }
+
+    public function destroy($id, Request $request)
+    {
+        $waste = Waste::find($id);
+        $response = "Successfully deleted waste reference \"" . $waste->reference . "\"";
+        $waste->delete();
+        return $this->view($request, $response);
     }
 }
