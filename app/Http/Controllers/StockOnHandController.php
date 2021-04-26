@@ -51,7 +51,6 @@ class StockOnHandController extends UserAccessController
         //adjust query to find correct products
         $products = $this->store->products()->orderby('category')->orderby('subcategory')->orderby('name')->get();
 
-
         return view('soh.new', [
             "title" => $title,
             "products" => $products,

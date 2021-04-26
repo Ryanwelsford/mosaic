@@ -739,6 +739,10 @@ option {
 .pos-rel {
     position: relative;
 }
+
+#findable td{
+    scroll-margin: 50px;
+}
 .testing-h2 {
     position: absolute;
     top: 0px;
@@ -1258,6 +1262,12 @@ div.vert-scroll button {
     .ph-button-small {
         width: 75px;
     }
+
+    table td, table th, table tr, table, table input{
+        border: none;
+        padding: 0px;
+        font-size: 13px;
+    }
 }
 
 @media only screen and (max-width: 400px) {
@@ -1268,7 +1278,7 @@ div.vert-scroll button {
         font-size: 3.0vh;
     }
     th, td {
-        padding: 2px;
+        padding: 0px;
     }
     th {
         font-size: 14px;
@@ -1278,7 +1288,7 @@ div.vert-scroll button {
         font-size: 14px;
     }
     .grid-2-col-wide input, .grid-2-col-wide select, .grid-2-col-wide option, .grid-2-col-wide label, .grid-2-col-wide textarea, .table-input  {
-        font-size: 16px;
+        font-size: 14px;
     }
     .tool-bar, .bar-tool-button {
         font-size: 16px;

@@ -1,21 +1,21 @@
 @extends('layout')
 @section('title', $title)
 @section('tools')
-<button class="bar-tool-button" onclick="openOrCloseModal('search-modal')" name="save" value="save"><span class="mobile-hidden">Info</span> <i class="far fa-question-circle"></i></button>
-<button type="submit" form="form" class="bar-tool-button" onclick="openOrCloseModal('search-modal')" name="save" value="save"> @include("icons.book") </button>
+<button type="submit" form="form" class="bar-tool-button" name="status" value="Booked"> @include("icons.book") </button>
+<button type="submit" form="form" class="bar-tool-button" name="status" value="Saved">@include("icons.save")</button>
 <button class="bar-tool-button" onclick="openOrCloseModal('search-modal')" name="save" value="save"><span class="mobile-hidden">Find</span> <i class="fas fa-search-location"></i></button>
 @endsection
 @section('content')
 <div class="grid-container">
-    <form class="main-tile center-column" id="form" action="{{ route('soh.new') }}" method="POST">
-        <input type="hidden" name="id" value="@if(isset($soh->id)){{$soh->id}}@endif">
+    <form class="main-tile center-column" id="form" action="{{ route('inventory.new') }}" method="POST">
+        <input type="hidden" name="id" value="@if(isset($inventory->id)){{$inventory->id}}@endif">
         @csrf
-        <h2 class="tile-title tile-all-columns ">Stock on Hand Count</h2>
+        <h2 class="tile-title tile-all-columns ">Full Stock Count</h2>
         <div class="grid-2-col-wide centered full-width">
             <label>Store: {{ $store->store_name }}</label>
-            <label>Created on: @if(isset($soh->created_at)){{ $soh->created_at->format("d m Y") }}@else {{ $today->format("d m Y") }}@endif</label>
-            <label>Reference:</label>
-            <input type="text" name="reference" placeholder="Enter reference data here" value="@if(isset($soh->reference)){{$soh->reference}}@endif">
+            <label>Created on: @if(isset($inventory->created_at)){{ $inventory->created_at->format("jS F Y") }}@else {{ $today->format("jS F Y") }}@endif</label>
+            <label>Status: @if(isset($inventory->status)){{ $inventory->status }}@else {{ "Active" }}@endif</label>
+            <label></label>
         </div>
         <table class="wide-table full-width reduced-table" id="findable">
             <thead>
@@ -26,7 +26,21 @@
                 <th>Total</th>
             </thead>
             <tbody>
+                @php
+                    $category = $firstCategory;
+                @endphp
+                <tr>
+                    <td class="span-table-rows" colspan="100%"><h3 class="table-breaker">{{ $category }}</h3></td>
+                </tr>
                 @foreach($products as $product)
+                @if($product->category != $category)
+                @php
+                    $category = $product->category;
+                @endphp
+                <tr>
+                    <td class="span-table-rows" colspan="100%"><h3 class="table-breaker">{{ $category }}</h3></td>
+                </tr>
+                @endif
                     <tr>
                         <td class="mob-hidden">{{ $product->code }}</td>
                         <td>{{ $product->name }}</td>
@@ -55,7 +69,7 @@
         </table>
 
         <div class="tile-all-columns center-column margin-top">
-            <button form="form" name="save" value="save" type="submit" class="ph-button ph-button-standard ph-button-important">@include("icons.book")</button>
+            <button form="form" name="status" value="Booked" type="submit" class="ph-button ph-button-standard ph-button-important">@include("icons.book")</button>
         </div>
     </form>
 </div>

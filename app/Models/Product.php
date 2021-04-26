@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Unit;
 use App\Models\Order;
 use App\Models\Receipt;
+use App\Models\Inventory;
 use App\Models\StockOnHand;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -76,5 +77,9 @@ class Product extends Model
 
     public function wastes() {
         return $this->belongsToMany(Waste::class)->withPivot("quantity");
+    }
+
+    public function inventories() {
+        return $this->belongsToMany(Inventory::class)->withPivot("quantity");
     }
 }

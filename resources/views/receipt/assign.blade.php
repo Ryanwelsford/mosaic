@@ -21,7 +21,7 @@
             <div class="full-width">
                 <h2 class="tile-title tile-all-columns ">Receipt Details</h2>
                 <div class="grid-2-col-wide centered full-width">
-                    <label>Store: {{ $store->name }}</label>
+                    <label>Store: {{ $store->store_name }}</label>
                     <label>Menu: {{ $menu->name }}</label>
                     <label>Receipt Date: {{ $receipt->date }}</label>
                 </div>

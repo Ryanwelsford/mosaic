@@ -109,14 +109,13 @@ class ReceivingController extends UserAccessController
             $organisedProducts[$product->category][$product->subcategory][] = $product;
         }
 
-        //get store
-        $store = $this->user->stores()->get()->first();
+        
         return view($view, [
             "title" => $title,
             "menu" => $menu,
             "products" => $products,
             "organisedProducts" => $organisedProducts,
-            "store" => $store,
+            "store" => $this->store,
             "origin" => $origin,
             "receipt" => $receipt
         ]);
