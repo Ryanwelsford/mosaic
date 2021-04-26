@@ -148,5 +148,5 @@ Route::Get('/waste/print', [WasteController::class, "print"])->name("waste.print
 Route::Get('/waste/summary', [WasteController::class, "summary"])->name("waste.summary");
 Route::post('/waste/new', [WasteController::class, 'save']);
 Route::post('/waste/category', [WasteController::class, 'categoryReturn']);
-Route::delete('/waste/destroy/{id}', [WasteController::class, 'destroy'])->name('waste.destroy');
+Route::delete('/waste/view/{id}', [WasteController::class, 'destroy'])->name('waste.destroy');
 //wth is this route

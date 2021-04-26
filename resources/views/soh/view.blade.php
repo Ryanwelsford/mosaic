@@ -46,7 +46,7 @@
             @foreach($sohs as $soh)
                 <tr>
                     <td class="">
-                        no reference yet
+                        {{ $soh->reference }}
                     </td>
 
                     <td class="">

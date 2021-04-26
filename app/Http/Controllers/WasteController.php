@@ -39,6 +39,7 @@ class WasteController extends UserAccessController
 
         return response()->json($products);
     }
+    //TODO edit does not work yet!
     public function store(Request $request)
     {
         $title = "New Waste Entry";
@@ -50,20 +51,32 @@ class WasteController extends UserAccessController
 
         $modelValidator = new ModelValidator(Waste::class, $request->id, old());
         $wastes = $modelValidator->validate();
-        /*
-        $products = false;
-        if(!is_null($wastes)) {
-            $products = $wastes->products()->get();
+        $results = $resultsMap = false;
+        //form validation has failed user input
+        if (!empty(old())) {
+            $products = Product::query();
+
+            $old = old();
+            $resultsMap = $old['product'];
+            //setup where clauses for each previously entered product
+            foreach ($resultsMap as $pid => $quantity) {
+                $products = $products->orWhere("id", "=", $pid);
+            }
+            $results = $products->orderby('name', 'desc')->with("units")->get();
         }
-        else if(!empty(old())) {
-            dd(old());
-        }*/
+        //i.e. edit request
+        else if (isset($request->id) && $wastes) {
+            $results = $wastes->products()->orderby('name', 'desc')->with("units")->get();
+        }
+
 
         return view('waste.new', [
             "title" => $title,
             "wastes" => $wastes,
             "categories" => $categories,
-            "wastelists" => $wasteLists
+            "wastelists" => $wasteLists,
+            "results" => $results,
+            "resultsMap" => $resultsMap
         ]);
     }
 

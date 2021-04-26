@@ -77,7 +77,7 @@ class StockOnHandController extends UserAccessController
             $soh = StockOnHand::find($request->id);
         }
 
-        $soh->fillItem($request->id, $this->store->id);
+        $soh->fillItem($request->id, $this->store->id, $request->reference);
         $soh->save();
 
         $soh->products()->sync($remappedCounts);
@@ -173,7 +173,7 @@ class StockOnHandController extends UserAccessController
     }
 
     //allow for the printing of a weeks worth of SOH data?
-    
+
     public function print() {
 
     }

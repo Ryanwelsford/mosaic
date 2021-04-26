@@ -43,7 +43,24 @@
                     </tr>
                 </thead>
                 <tbody>
-
+                    @if(isset($results) && $results)
+                        @foreach($results as $value)
+                            <tr>
+                                <td>{{ $value->name }}</td>
+                                <td class="mob-hidden">{{ $value->code }}</td>
+                                <td>{{ $value->units->description }}</td>
+                                <td>{{ $value->units->price }}</td>
+                                <td class="waste-input-td">
+                                    @if(isset($value->pivot->quantity))
+                                    <input class="table-input total-box" type="number" name="product[{{$value->id}}]" step=1 min=0 value="{{$value->pivot->quantity}}">
+                                    @else
+                                    <input class="table-input total-box" type="number" name="product[{{$value->id}}]" step=1 min=0 value="@if(isset($resultsMap[$value->id])){{$resultsMap[$value->id]}}@endif">
+                                    @endif
+                                    <button type="button" class="ph-button ph-button-standard ph-button-rounded" onclick="closeDiv(event, 'TR')">X</button>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
             @error('product')

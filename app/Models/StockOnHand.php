@@ -28,10 +28,11 @@ class StockOnHand extends Model
         return $this->belongsToMany(Product::class, "product_stock_on_hand", "soh_id")->withPivot("count");
     }
 
-    public function fillItem($id, $store_id)
+    public function fillItem($id, $store_id, $reference)
     {
         $this->id = $id;
         $this->store_id = $store_id;
+        $this->reference = $reference;
     }
 
     public function getSearchable()

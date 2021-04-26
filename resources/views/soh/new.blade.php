@@ -14,6 +14,8 @@
         <div class="grid-2-col-wide centered full-width">
             <label>Store: {{ $store->name }}</label>
             <label>Created on: @if(isset($soh->created_at)){{ $soh->created_at->format("d m Y") }}@else {{ $today->format("d m Y") }}@endif</label>
+            <label>Reference:</label>
+            <input type="text" name="reference" placeholder="Enter reference data here" value="@if(isset($soh->reference)){{$soh->reference}}@endif">
         </div>
         <table class="wide-table full-width reduced-table" id="findable">
             <thead>
