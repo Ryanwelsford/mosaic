@@ -53,9 +53,8 @@
                     <td>{{ $each->status }}</td>
                     <td>
                         <div class="table-button-holder">
-                            @if($each->status == "Booked")
-                                <a href="{{ route('inventory.summary', $each->id) }}"class="ph-button ph-button-standard table-button">Summary <i class="fas fa-clipboard-list"></i></a>
-                            @else
+                            <a href="{{ route('inventory.summary', $each->id) }}"class="ph-button ph-button-standard table-button">Summary <i class="fas fa-clipboard-list"></i></a>
+                            @if($each->status == "Saved")
                                 <a href="{{ route('inventory.new', ['id' => $each->id]) }}"class="ph-button ph-button-standard table-button">Edit</a>
 
                                 <form method="POST" action="{{ route("inventory.destroy", $each) }}" class="table-button">

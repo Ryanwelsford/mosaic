@@ -44,8 +44,8 @@
                     @endif
                 <tr>
                     <td>{{ $details->name }}</td>
-                    <td>£{{ $details->pivot->quantity * $details->units->price }}</td>
-                    <td>{{ $details->pivot->quantity }}</td>
+                    <td>£{{ number_format(($details->pivot->quantity / $details->units->quantity) * $details->units->price,2)  }}</td>
+                    <td>{{ number_format($details->pivot->quantity / $details->units->quantity, 2) }}</td>
                 </tr>
                 @endforeach
                 <tr>

@@ -155,5 +155,6 @@ Route::get('/inventory/new', [InventoryController::class, 'store'])->name('inven
 Route::post('/inventory/new', [InventoryController::class, 'save']);
 Route::get('/inventory/view', [InventoryController::class, 'view'])->name('inventory.view');
 Route::get('/inventory/summary/{inventory}', [InventoryController::class, 'countSummary'])->name('inventory.summary');
+Route::get('/inventory/print/{inventory}', [InventoryController::class, 'print'])->name('inventory.print');
 Route::get('/inventory/summary/{inventory}/{category}', [InventoryController::class, 'countDive'])->name('inventory.depth');
 Route::delete('/inventory/view/{inventory}', [InventoryController::class, 'destroy'])->name('inventory.destroy');

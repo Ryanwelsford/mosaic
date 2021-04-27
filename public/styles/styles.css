@@ -1300,11 +1300,11 @@ div.vert-scroll button {
         font-size: 16px;
     }
     .main-tile {
-        padding: 0px;
+        padding: 2px;
     }
     .grid-container {
         margin: 0px;
-        padding: 0px;
+        padding: 2px;
         display: flex;
     }
     .search-with-button {

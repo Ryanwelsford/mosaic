@@ -94,29 +94,28 @@ class InventoryController extends UserAccessController
         }
 
         $inventory->products()->sync($organisedMappings);
+
+        return $this->confirm($inventory);
+    }
+
+    public function confirm(Inventory $inventory)
+    {
+        //dd($inventory);
+        $title = "Count Confirmation";
+        [$catSummary, $quantity, $sum] = $this->fullCalc($inventory->products()->orderby('category', 'asc')->with("units")->get());
+
+        $heading = "Count Successfully " . $inventory->status;
+        $text = "Count has been created successfully for a total value of £" . number_format($sum, 2) . " and " . $quantity . " cases in total";
+        $anchor = route('inventory.summary', [$inventory->id]);
+        $anchorText = " to view the count summary";
+        return view("general.confirmation-custom", ["title" => $title, "heading" => $heading, "text" => $text, "anchor" => $anchor, "anchorText" => $anchorText]);
     }
 
     public function countSummary(Inventory $inventory)
     {
         $productMappings = $inventory->products()->orderby('category', 'asc')->with("units")->get();
 
-        $totalValue = 0;
-        $totalQuantity = 0;
-        $catSummary = [];
-
-        foreach ($productMappings as $product) {
-            //quantiy may need to change depending on if we are discussing cases or indivdual units
-            if (isset($catSummary[$product->category])) {
-                $catSummary[$product->category]["quantity"] += $product->pivot->quantity;
-                $catSummary[$product->category]["sum"] += $product->pivot->quantity * $product->units->price;
-            } else {
-                $catSummary[$product->category]["quantity"] = $product->pivot->quantity;
-                $catSummary[$product->category]["sum"] = $product->pivot->quantity * $product->units->price;
-            }
-
-            $totalQuantity += $product->pivot->quantity;
-            $totalValue += $product->pivot->quantity * $product->units->price;
-        }
+        [$catSummary, $totalQuantity, $totalValue] = $this->fullCalc($productMappings);
 
 
         $title = "Count Summary";
@@ -148,8 +147,8 @@ class InventoryController extends UserAccessController
         $totalQuantity = 0;
 
         foreach ($productMappings as $product) {
-            $totalQuantity += $product->pivot->quantity;
-            $totalValue += $product->pivot->quantity * $product->units->price;
+            $totalQuantity += ($product->pivot->quantity / $product->units->quantity);
+            $totalValue += ($product->pivot->quantity / $product->units->quantity) * $product->units->price;
         }
 
         $title = "Count Summary";
@@ -165,8 +164,45 @@ class InventoryController extends UserAccessController
         ]);
     }
 
-    public function print()
+    public function fullCalc($productMappings)
     {
+
+        $totalValue = 0;
+        $totalQuantity = 0;
+        $catSummary = [];
+
+        foreach ($productMappings as $product) {
+            //quantiy may need to change depending on if we are discussing cases or indivdual units
+            if (isset($catSummary[$product->category])) {
+                $catSummary[$product->category]["quantity"] += $product->pivot->quantity / $product->units->quantity;
+                $catSummary[$product->category]["sum"] += ($product->pivot->quantity / $product->units->quantity) * $product->units->price;
+            } else {
+                $catSummary[$product->category]["quantity"] = $product->pivot->quantity / $product->units->quantity;
+                $catSummary[$product->category]["sum"] = ($product->pivot->quantity / $product->units->quantity) * $product->units->price;
+            }
+
+            $totalQuantity += ($product->pivot->quantity / $product->units->quantity);
+            $totalValue += ($product->pivot->quantity / $product->units->quantity) * $product->units->price;
+        }
+
+        return [$catSummary, $totalQuantity, $totalValue];
+    }
+
+    public function print(Inventory $inventory)
+    {
+        $productMappings = $inventory->products()->orderby('category', 'asc')->with("units")->get();
+        [$catSummary, $totalQuantity, $totalValue] = $this->fullCalc($productMappings);
+
+        $title = "Print Count";
+
+        return view("inventory.summary-print", [
+            "title" => $title,
+            "catSummary" => $catSummary,
+            "sum" => $totalValue,
+            "quantity" => $totalQuantity,
+            "store" => $this->store,
+            "inventory" => $inventory
+        ]);
     }
 
     public function view(Request $request, $response = "")
@@ -200,7 +236,10 @@ class InventoryController extends UserAccessController
     }
 
     //should be saved only no deleting booked
-    public function destroy()
+    public function destroy(Inventory $inventory, Request $request)
     {
+        $response = "Successfully deleted Inventory count #" . $inventory->id;
+        $inventory->delete();
+        return $this->view($request, $response);
     }
 }
