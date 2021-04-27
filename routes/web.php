@@ -153,3 +153,7 @@ Route::delete('/waste/view/{id}', [WasteController::class, 'destroy'])->name('wa
 Route::get('/inventory/home', [InventoryController::class, 'home'])->name('inventory.home');
 Route::get('/inventory/new', [InventoryController::class, 'store'])->name('inventory.new');
 Route::post('/inventory/new', [InventoryController::class, 'save']);
+Route::get('/inventory/view', [InventoryController::class, 'view'])->name('inventory.view');
+Route::get('/inventory/summary/{inventory}', [InventoryController::class, 'countSummary'])->name('inventory.summary');
+Route::get('/inventory/summary/{inventory}/{category}', [InventoryController::class, 'countDive'])->name('inventory.depth');
+Route::delete('/inventory/view/{inventory}', [InventoryController::class, 'destroy'])->name('inventory.destroy');

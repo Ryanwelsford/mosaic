@@ -15,7 +15,11 @@ class Inventory extends Model
         'store_id',
         'status'
     ];
+    protected $searchable = ['id', 'status', 'created_at'];
 
+    public function getSearchable() {
+        return $this->searchable;
+    }
     public function fillItem($id, $store_id, $status) {
         $this->id = $id;
         $this->store_id = $store_id;

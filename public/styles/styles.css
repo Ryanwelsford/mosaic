@@ -387,6 +387,10 @@ input, .checkmark, select, textarea {
     justify-content: center;
     align-items: center;
 }
+td .center {
+    margin-left: auto;
+    margin-right: auto;
+}
 
 .main-select {
     min-width: 200px;
@@ -684,7 +688,9 @@ input:checked ~ .checkmark {
     font-size: 23px;
     width: 85%;
 }
+.grid-2-col-wide.display {
 
+}
 .grid-2-col-wide input, .grid-2-col-wide select, .grid-2-col-wide option, .grid-2-col-wide textarea, .table-input  {
     box-sizing: border-box;
     border-radius: 10px;
@@ -1224,7 +1230,7 @@ div.vert-scroll button {
     }
     .table-button {
         font-size: 15px;
-        width: 85% !important;
+        width: 75% !important;
     }
 
     .table-button-holder form {
@@ -1281,24 +1287,25 @@ div.vert-scroll button {
         padding: 0px;
     }
     th {
-        font-size: 14px;
+        font-size: 16px;
         word-wrap: break-word;
     }
     td {
-        font-size: 14px;
+        font-size: 16px;
     }
     .grid-2-col-wide input, .grid-2-col-wide select, .grid-2-col-wide option, .grid-2-col-wide label, .grid-2-col-wide textarea, .table-input  {
-        font-size: 14px;
+        font-size: 16px;
     }
     .tool-bar, .bar-tool-button {
         font-size: 16px;
     }
     .main-tile {
-        padding: 5px;
+        padding: 0px;
     }
     .grid-container {
-        margin-left: 5px;
-        margin-right: 5px;
+        margin: 0px;
+        padding: 0px;
+        display: flex;
     }
     .search-with-button {
         flex-direction: column;
@@ -1306,6 +1313,42 @@ div.vert-scroll button {
     .search-with-button button {
         margin-top: 3px;
     }
+
+    .table-button {
+        width: 75% !important;
+        height: 30px;
+    }
+
+    .grid-2-col-wide {
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+    }
+    .reduced-table td, .reduced-table th {
+        padding: 5px 0px;
+    }
+
+    .main-tile {
+        box-sizing: border-box;
+        width: 100%;
+    }
+    .main-nav {
+        box-sizing: border-box;
+        width: 100%;
+    }
+    .mobile-nav {
+        width: 100%;
+    }
+
+    .mobile-nav button {
+        margin-left: auto;
+        margin-right: 10px;
+    }
+
+    .logo-mobile-holder {
+        width: 100%;
+    }
+
     /*not sure about this*/
     /*
     .reduced-table {

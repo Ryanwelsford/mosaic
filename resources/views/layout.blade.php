@@ -337,7 +337,7 @@
             </div>
         </section>
     </main>
-
+    <x-top-button></x-top-button>
     <div class = "footer">
         <p>Pizza Hut Restaurants 2021 &copy;</p>
     </div>

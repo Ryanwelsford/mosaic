@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Store;
 use App\Models\Product;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
 use App\Http\Helpers\ModelValidator;
+use App\Http\Helpers\ModelSearch\ModelSearchv4;
 use App\Http\Controllers\Types\UserAccessController;
 
 class InventoryController extends UserAccessController
@@ -15,11 +17,13 @@ class InventoryController extends UserAccessController
     {
 
         $title = "Inventory Home";
+        //pull latest count for this store
+        $inventory = Inventory::orderby('created_at', 'desc')->where('store_id', $this->store->id)->get()->first();
 
         $menuitems = [
             ["title" => "New Count", "anchor" => route("inventory.new"), "img" => "/images/icons/new-256.png"],
-            ["title" => "Edit Count", "anchor" => "/test", "img" => "/images/icons/edit-256.png"],
-            ["title" => "View Count", "anchor" => "/test", "img" => "/images/icons/view-256.png"],
+            ["title" => "Current Count", "anchor" => route("inventory.summary", [$inventory->id]), "img" => "/images/icons/summary-256.png"],
+            ["title" => "View Count", "anchor" => route("inventory.view"), "img" => "/images/icons/view-256.png"],
             ["title" => "Inventory Reports", "anchor" => "/test", "img" => "/images/icons/report-256.png"]
         ];
 
@@ -28,7 +32,7 @@ class InventoryController extends UserAccessController
             "title" => $title
         ]);
     }
-
+    //change this to display all pack/each details as well
     public function store(Request $request)
     {
         $title = "Inventory Count";
@@ -90,5 +94,113 @@ class InventoryController extends UserAccessController
         }
 
         $inventory->products()->sync($organisedMappings);
+    }
+
+    public function countSummary(Inventory $inventory)
+    {
+        $productMappings = $inventory->products()->orderby('category', 'asc')->with("units")->get();
+
+        $totalValue = 0;
+        $totalQuantity = 0;
+        $catSummary = [];
+
+        foreach ($productMappings as $product) {
+            //quantiy may need to change depending on if we are discussing cases or indivdual units
+            if (isset($catSummary[$product->category])) {
+                $catSummary[$product->category]["quantity"] += $product->pivot->quantity;
+                $catSummary[$product->category]["sum"] += $product->pivot->quantity * $product->units->price;
+            } else {
+                $catSummary[$product->category]["quantity"] = $product->pivot->quantity;
+                $catSummary[$product->category]["sum"] = $product->pivot->quantity * $product->units->price;
+            }
+
+            $totalQuantity += $product->pivot->quantity;
+            $totalValue += $product->pivot->quantity * $product->units->price;
+        }
+
+
+        $title = "Count Summary";
+
+        return view("inventory.summary", [
+            "title" => $title,
+            "catSummary" => $catSummary,
+            "sum" => $totalValue,
+            "quantity" => $totalQuantity,
+            "store" => $this->store,
+            "inventory" => $inventory
+        ]);
+    }
+
+    public function countDive(Inventory $inventory, $category)
+    {
+        $pc = new ProductController();
+
+        $categories = $pc->buildCategories();
+
+        //guard against poor category value passed
+        if (!in_array($category, array_keys($categories))) {
+            return redirect()->route('inventory.view');
+        }
+
+        $productMappings = $inventory->products()->where("category", $category)->orderby('subcategory', 'desc')->with("units")->get();
+
+        $totalValue = 0;
+        $totalQuantity = 0;
+
+        foreach ($productMappings as $product) {
+            $totalQuantity += $product->pivot->quantity;
+            $totalValue += $product->pivot->quantity * $product->units->price;
+        }
+
+        $title = "Count Summary";
+
+        return view("inventory.summary-category", [
+            "title" => $title,
+            "category" => $category,
+            "products" => $productMappings,
+            "sum" => $totalValue,
+            "quantity" => $totalQuantity,
+            "store" => $this->store,
+            "inventory" => $inventory
+        ]);
+    }
+
+    public function print()
+    {
+    }
+
+    public function view(Request $request, $response = "")
+    {
+        $title = "View Stock Counts";
+        $inventory = new Inventory;
+        $fields = $inventory->getSearchable();
+        //remember to pass the search fields as a mapping of table to fields
+        $searchFields["inventories"] = $fields;
+        $search = $request->search;
+        $sort = $request->sort;
+        $sortDirection = "desc";
+
+        if ($sort == null) {
+            $sort = "id";
+        }
+
+        //so v3 does work with a passed restriction
+        $modelSearch = new ModelSearchv4(Inventory::class, $searchFields, $searchFields, ["table" => "inventories", "field" => "store_id", "value" => $this->store->id]);
+        $inventory = $modelSearch->search($search, $sort, $sortDirection);
+        //dd($inventory);
+
+        return view("inventory.view", [
+            "title" => $title,
+            "inventory" => $inventory,
+            "searchFields" => $fields,
+            "search" => $search,
+            "sort" => $sort,
+            "response" => $response
+        ]);
+    }
+
+    //should be saved only no deleting booked
+    public function destroy()
+    {
     }
 }
