@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Wastelist;
 use Illuminate\Http\Request;
 use App\Http\Helpers\ModelValidator;
+use App\Http\Controllers\Types\AdminAccessController;
 
 /********************************************************
  *Controller handles all waste list requirements
  *Waste lists are descriptive groupings for stores to input invalide products due to overproduction or etc
  ********************************************************/
 
-class WasteListController extends Controller
+class WasteListController extends AdminAccessController
 {
 
     //produce a menu for all actions within teh controller
@@ -105,7 +106,7 @@ class WasteListController extends Controller
             $message = false;
         }
 
-        
+
 
         $wastelists = Wastelist::orderBy('created_at', 'desc')->get();
         $title = "Display Waste Lists";

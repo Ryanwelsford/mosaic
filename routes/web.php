@@ -18,6 +18,7 @@ use App\Http\Controllers\WasteListController;
 use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\auth\LogoutController;
 use App\Http\Controllers\ForecastingController;
+use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\StockOnHandController;
 
 /******************************
@@ -30,9 +31,6 @@ Route::get('/', [ProductController::class, 'home']);
 Route::get('home', [ProductController::class, 'home'])->name('home');
 
 // test route contains alot of design specific attributes
-Route::get('/test', function () {
-    return view('test', ["title" => "Test Page"]);
-});
 
 
 /******************************
@@ -41,6 +39,7 @@ Route::get('/test', function () {
 //Login Controller
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'authorise']);
+Route::get('/restricted', [GeneralController::class, 'restricted'])->name('general.restricted');
 
 //logout controller
 Route::get('/logout', [LogoutController::class, 'index'])->name('logout.index');
@@ -155,6 +154,7 @@ Route::get('/inventory/new', [InventoryController::class, 'store'])->name('inven
 Route::post('/inventory/new', [InventoryController::class, 'save']);
 Route::get('/inventory/view', [InventoryController::class, 'view'])->name('inventory.view');
 Route::get('/inventory/summary/{inventory}', [InventoryController::class, 'countSummary'])->name('inventory.summary');
+Route::get('/inventory/latest', [InventoryController::class, 'routeToLatest'])->name('inventory.latest');
 Route::get('/inventory/print/{inventory}', [InventoryController::class, 'print'])->name('inventory.print');
 Route::get('/inventory/summary/{inventory}/{category}', [InventoryController::class, 'countDive'])->name('inventory.depth');
 Route::delete('/inventory/view/{inventory}', [InventoryController::class, 'destroy'])->name('inventory.destroy');

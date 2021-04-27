@@ -58,6 +58,7 @@ a {
 }
 .main-nav ul a {
     padding-right: 35px;
+    width: 100%;
 }
 
 .main-nav ul a:hover {

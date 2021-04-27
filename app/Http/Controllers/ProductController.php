@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use stdClass;
-use Exception;
 use App\Models\Unit;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Helpers\ModelSearch;
 use App\Http\Helpers\ModelValidator;
+use App\Http\Controllers\Types\AdminAccessController;
 
-class ProductController extends Controller
+class ProductController extends AdminAccessController
 {
     public function home()
     {

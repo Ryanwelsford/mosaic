@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 /********************************************************
  *Controller is repsonsible for ensuring a user can login and authorising users to the correct account
@@ -49,7 +50,13 @@ class LoginController extends Controller
 
         if (Auth::attempt($loginDetails)) {
             //therefore login success
-            return redirect()->route('product.home');
+            $user = User::find(auth()->user()->id);
+
+            if ($user->isAdmin()) {
+                return redirect()->route('product.home');
+            } else {
+                return redirect()->route('inventory.home');
+            }
         } else {
             //login failed
             return back()->with('loginError', "Invalid login details");
@@ -60,4 +67,5 @@ class LoginController extends Controller
 
 
     }
+
 }

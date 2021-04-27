@@ -7,8 +7,9 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Type\Integer;
 use App\Http\Helpers\PeriodWeekDate;
+use App\Http\Controllers\Types\UserAccessController;
 
-class ForecastingController extends Controller
+class ForecastingController extends UserAccessController
 {
     public function home()
     {

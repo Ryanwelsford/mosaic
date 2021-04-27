@@ -8,13 +8,14 @@ use App\Models\Store;
 use Illuminate\Http\Request;
 use App\Http\Helpers\ModelValidator;
 use App\Http\Helpers\ModelSearch\ModelSearchv4;
+use App\Http\Controllers\Types\AdminAccessController;
 
 /********************************************************
  *Stores handle the day to day operation of client requried tasks
  *This controller allows for the CRUD operations of the store class
  ********************************************************/
 
-class StoreController extends Controller
+class StoreController extends AdminAccessController
 {
 
     //produce menu options for each allowed class function

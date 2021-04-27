@@ -109,7 +109,7 @@ class ReceivingController extends UserAccessController
             $organisedProducts[$product->category][$product->subcategory][] = $product;
         }
 
-        
+
         return view($view, [
             "title" => $title,
             "menu" => $menu,
@@ -197,7 +197,7 @@ class ReceivingController extends UserAccessController
         $title = "Receipt Confirmation";
         $heading = "Receipt Successfully Booked";
         $text = "Receipt has been created successfully for a total value of £" . number_format($sum, 2) . " and " . $quantity . " cases in total";
-        $anchor = route('receiving.new');
+        $anchor = route('receiving.print', [$receipt->id]);
         return view("general.confirmation-print", ["title" => $title, "heading" => $heading, "text" => $text, "anchor" => $anchor]);
     }
 

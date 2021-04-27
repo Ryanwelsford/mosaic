@@ -48,9 +48,9 @@
 
 
                 <ul id="product" class="main-nav-tab side-bar-tab">
-                    <li><a href="{{ route('product.new') }}">New Product</a></li>
-                    <li><a href="{{ route('product.view') }}">Edit Product</a></li>
-                    <li><a href="{{ route('product.view') }}">View Products</a></li>
+                    <li><a href="{{ route('product.new') }}">New</a></li>
+                    <li><a href="{{ route('product.view') }}">Edit</a></li>
+                    <li><a href="{{ route('product.view') }}">View</a></li>
                     <li><a href="">Product Reports</a></li>
                 </ul>
 
@@ -120,8 +120,8 @@
 
 
                 <ul id="admin" class="main-nav-tab side-bar-tab">
-                    <li><a href="#">New Admin</a></li>
-                    <li><a href="#">View Admins</a></li>
+                    <li><a href="{{ route('admin.new') }}">New Admin</a></li>
+                    <li><a href="{{ route('admin.view') }}">View Admins</a></li>
                 </ul>
 
             </li>
@@ -137,9 +137,9 @@
 
 
                 <ul id="inventory" class="main-nav-tab side-bar-tab">
-                    <li><a href="">New Count</a></li>
-                    <li><a href="">Edit Count</a></li>
-                    <li><a href="">View Count</a></li>
+                    <li><a href="{{ route('inventory.new') }}">New Count</a></li>
+                    <li><a href="{{ route('inventory.latest') }}">Latest Count</a></li>
+                    <li><a href="{{ route('inventory.view') }}">View Counts</a></li>
                     <li><a href="">Inventory Reports</a></li>
                 </ul>
 
@@ -189,9 +189,9 @@
 
 
                 <ul id="waste" class="main-nav-tab side-bar-tab">
-                    <li><a href="">Test</a></li>
-                    <li><a href="">Test</a></li>
-                    <li><a href="">Test</a></li>
+                    <li><a href="{{ route('waste.new') }}">New Waste</a></li>
+                    <li><a href="{{ route('waste.view') }}">View Wastes</a></li>
+                    <li><a href="">Waste Reports</a></li>
                 </ul>
             </li>
 
@@ -223,14 +223,14 @@
 
 
                 <ul id="stockonhand" class="main-nav-tab side-bar-tab">
-                    <li><a href="">New Count</a></li>
-                    <li><a href="">Adjust Products</a></li>
-                    <li><a href="">View</a></li>
+                    <li><a href="{{ route('soh.new') }}">New</a></li>
+                    <li><a href="{{ route('soh.assign') }}">Adjust Products</a></li>
+                    <li><a href="{{ route('soh.view') }}">View</a></li>
                     <li><a href="">Reports</a></li>
                 </ul>
             </li>
 
-            <li>
+            <!--<li>
                 <div>
                     <a href=" {{ route('dates.home') }}">Dates</a>
                     <button onclick="openNavTab(event, 'dates')" class="main-nav-button">
@@ -243,24 +243,7 @@
                     <li><a href="">Search Dates</a></li>
                     <li><a href="">View Shelf Life Chart</a></li>
                 </ul>
-            </li>
-
-            <li>
-                <div>
-                    <a href=" {{ route('product.home') }}">Products</a>
-                    <button onclick="openNavTab(event, 'product')" class="main-nav-button">
-                    <image id="Products_arrow"  src="/images/side-arrow.png"></image>
-                    </button>
-                </div>
-
-
-                <ul id="product" class="main-nav-tab side-bar-tab">
-                    <li><a href="{{ route('product.new') }}">New Product</a></li>
-                    <li><a href="">Edit Product</a></li>
-                    <li><a href="{{ route('product.view') }}">View Product</a></li>
-                    <li><a href="">Product Reports</a></li>
-                </ul>
-            </li>
+            </li>-->
 
     @endif
         </ul>

@@ -130,6 +130,11 @@ class InventoryController extends UserAccessController
         ]);
     }
 
+    public function routeToLatest() {
+        $inventory = Inventory::orderby('created_at', 'desc')->where('store_id', $this->store->id)->get()->first();
+        return $this->countSummary($inventory);
+    }
+
     public function countDive(Inventory $inventory, $category)
     {
         $pc = new ProductController();

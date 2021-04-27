@@ -20,7 +20,6 @@ class StockOnHandController extends UserAccessController
         $menuitems = [
             ["title" => "New Count", "anchor" => route('soh.new'), "img" => "/images/icons/new-256.png"],
             ["title" => "Adjust Products", "anchor" => route('soh.assign'), "img" => "/images/icons/edit-256.png"],
-            ["title" => "Edit Count", "anchor" => route('soh.view'), "img" => "/images/icons/edit-256.png"],
             ["title" => "View Counts", "anchor" => route('soh.view'), "img" => "/images/icons/view-256.png"],
             ["title" => "Stock on Hand Reports", "anchor" => "/test", "img" => "/images/icons/report-256.png"]
         ];

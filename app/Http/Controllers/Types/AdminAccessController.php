@@ -8,11 +8,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
-class UserAccessController extends Controller
+class AdminAccessController extends Controller
 {
 
     protected $user;
-    protected $store;
 
     public function __construct(Request $request)
     {
@@ -29,11 +28,10 @@ class UserAccessController extends Controller
                 return redirect("/login");
             }
 
-            if ($this->user->privelleges != "store") {
+            if ($this->user->privelleges != "admin") {
                 return redirect()->route('general.restricted');
             }
 
-            $this->store = Store::where('user_id', $this->user->id)->get()->first();
             //maybe update redirct to
             //Redirect::to('/login?attempt='. true) or something liek that
             return $next($request);

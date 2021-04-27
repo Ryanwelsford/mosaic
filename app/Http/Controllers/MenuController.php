@@ -6,12 +6,13 @@ use stdClass;
 use App\Models\Menu;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Http\Helpers\ModelValidator;
 use App\Http\Helpers\ModelSearch;
+use App\Http\Helpers\ModelValidator;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Types\AdminAccessController;
 
 //TODO create copy method to allow for a new menu to be created from a base menu, copying all the product mappings
-class MenuController extends Controller
+class MenuController extends AdminAccessController
 {
     public function home()
     {
@@ -119,7 +120,7 @@ class MenuController extends Controller
 
     public function assign(Menu $menu, Request $request)
     {
-        $productController = new ProductController;
+        $productController = new ProductController($request);
         $categories = $productController->buildCategories();
 
 

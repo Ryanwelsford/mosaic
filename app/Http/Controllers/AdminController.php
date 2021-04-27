@@ -6,9 +6,10 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Helpers\ModelSearchv3;
 use App\Http\Helpers\ModelValidator;
+use App\Http\Controllers\Types\AdminAccessController;
 
 //CRUD of admin/core user class
-class AdminController extends Controller
+class AdminController extends AdminAccessController
 {
     public function home()
     {
