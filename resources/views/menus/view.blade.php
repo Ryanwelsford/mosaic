@@ -26,7 +26,7 @@
         @endif
 
         @if($menus->count() >= 1)
-        <table class="wide-table">
+        <table class="wide-table full-width reduced-table">
             <th>
                 <p class="mob-hidden">Menu Name</p>
                 <p class="mobile-only">Details</p>
@@ -73,8 +73,8 @@
                             <a href="{{ route('menu.new', ['copy_id' => $menu->id]) }}"class="ph-button ph-button-standard table-button">Copy<img src="/images/icons/copy-48-black.png"></a>
                             <a href="{{ route('menu.assign', ['menu_id' => $menu->id]) }}" class="ph-button ph-button-standard table-button" type="submit">Add to<img src="/images/icons/add-list-48-black.png"></a>
 
-                            <form method="POST" action="{{ route("menu.destroy", $menu) }}">
-                                <button class="ph-button ph-button-important table-button" type="submit">Delete</button>
+                            <form class="table-button" method="POST" action="{{ route("menu.destroy", $menu) }}">
+                                <button class="ph-button ph-button-standard ph-button-important table-button" type="submit">Delete</button>
                                 @csrf
                                 @method('delete')
                             </form>

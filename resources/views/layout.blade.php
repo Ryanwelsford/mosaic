@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
     <script src="/scripts/main.js"></script>
     <script src="/scripts/login.js"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
     <title>
         @hasSection("title")
             @yield("title")

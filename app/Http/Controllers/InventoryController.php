@@ -117,7 +117,6 @@ class InventoryController extends UserAccessController
 
         [$catSummary, $totalQuantity, $totalValue] = $this->fullCalc($productMappings);
 
-
         $title = "Count Summary";
 
         return view("inventory.summary", [
@@ -126,11 +125,12 @@ class InventoryController extends UserAccessController
             "sum" => $totalValue,
             "quantity" => $totalQuantity,
             "store" => $this->store,
-            "inventory" => $inventory
+            "inventory" => $inventory,
         ]);
     }
 
-    public function routeToLatest() {
+    public function routeToLatest()
+    {
         $inventory = Inventory::orderby('created_at', 'desc')->where('store_id', $this->store->id)->get()->first();
         return $this->countSummary($inventory);
     }

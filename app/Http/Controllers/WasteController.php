@@ -46,7 +46,7 @@ class WasteController extends UserAccessController
         //change this to pull only active wastelists or something
         $wasteLists = Wastelist::all();
 
-        $productController = new ProductController($request);
+        $productController = new ProductController();
         $categories = $productController->buildCategories();
 
         $modelValidator = new ModelValidator(Waste::class, $request->id, old());

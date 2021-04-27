@@ -13,7 +13,7 @@ class AdminAccessController extends Controller
 
     protected $user;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
 
         //for whatever reason you cannot access the Auth facade within constructors, because that makes perfect sense...

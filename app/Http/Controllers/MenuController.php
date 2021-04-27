@@ -120,7 +120,7 @@ class MenuController extends AdminAccessController
 
     public function assign(Menu $menu, Request $request)
     {
-        $productController = new ProductController($request);
+        $productController = new ProductController();
         $categories = $productController->buildCategories();
 
 
