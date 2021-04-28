@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Forecast;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -81,5 +82,9 @@ class Store extends Model
     public function inventories()
     {
         return $this->hasMany(Inventory::class);
+    }
+
+    public function forecasts() {
+        return $this->hasMany(Forecast::class);
     }
 }

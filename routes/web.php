@@ -106,6 +106,8 @@ Route::delete('admin/destroy/{admin}', [AdminController::class, 'destroy'])->nam
 Route::get('/forecasting/home', [ForecastingController::class, 'home'])->name('forecasting.home');
 Route::get('/forecasting/date/select', [ForecastingController::class, 'dateSelect'])->name('forecasting.date');
 Route::get('/forecasting/new', [ForecastingController::class, 'store'])->name('forecasting.new');
+Route::post('/forecasting/new', [ForecastingController::class, 'save']);
+Route::get('/forecasting/report/{date}', [ForecastingController::class, 'forecastWeekByDate'])->name('forecasting.week');
 
 //order routes
 Route::get('/order/home', [OrderController::class, 'home'])->name('order.home');

@@ -80,7 +80,7 @@ class PeriodWeekDate
 
     public function toString()
     {
-        $string = "Period: " . $this->getPeriod() . " Week: " . $this->getWeek();
+        $string = "P: " . $this->getPeriod() . " W: " . $this->getWeek();
         return $string;
     }
 
