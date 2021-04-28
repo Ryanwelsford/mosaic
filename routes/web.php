@@ -27,7 +27,6 @@ use App\Http\Controllers\StockOnHandController;
  ******************************/
 
 //route for homepage, should default to some form of dashboard
-Route::get('/', [ProductController::class, 'home']);
 Route::get('home', [ProductController::class, 'home'])->name('home');
 
 // test route contains alot of design specific attributes
@@ -40,7 +39,7 @@ Route::get('home', [ProductController::class, 'home'])->name('home');
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'authorise']);
 Route::get('/restricted', [GeneralController::class, 'restricted'])->name('general.restricted');
-
+Route::get('/', [GeneralController::class, 'welcome'])->name('general.welcome');
 //logout controller
 Route::get('/logout', [LogoutController::class, 'index'])->name('logout.index');
 
@@ -121,6 +120,8 @@ Route::get('/order/summary', [OrderController::class, 'summary'])->name('order.s
 Route::get('/order/print', [OrderController::class, 'print'])->name('order.print');
 Route::get('/order/destroy', [OrderController::class, 'view']);
 Route::delete('/order/destroy/{order}', [OrderController::class, 'destroy'])->name('order.destroy');
+Route::get('/order/report/select', [OrderController::class, 'weekSelect'])->name('order.weekSelect');
+Route::get('/order/report/weekly', [OrderController::class, 'weeklyOrder'])->name('order.weekly');
 
 //reciept routes
 Route::get('/receiving/home', [ReceivingController::class, 'home'])->name('receiving.home');

@@ -317,7 +317,7 @@ var defaultOptions = {
         "fontSize": 18
       },
     'legend': {'position': 'bottom'},
-    'width': "100%",
+    'width': 310,
     'height': 310
   }
 

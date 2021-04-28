@@ -32,7 +32,7 @@ class OrderController extends UserAccessController
             ["title" => "New Automated Order", "anchor" => '#', "img" => "/images/icons/robot-256.png"],
             ["title" => "Edit Saved Order", "anchor" => route("order.view", ["search" => "Saved"]), "img" => "/images/icons/edit-256.png"],
             ["title" => "View All Orders", "anchor" => $viewRoute, "img" => "/images/icons/view-256.png"],
-            ["title" => "Order Reports", "anchor" => "/test", "img" => "/images/icons/report-256.png"]
+            ["title" => "Weekly Order Summary", "anchor" => route('order.weekSelect'), "img" => "/images/icons/report-256.png"]
         ];
 
         return view('menu', [
@@ -114,6 +114,7 @@ class OrderController extends UserAccessController
         }
 
         $store = $this->user->stores()->get()->first();
+
         return view("orders.pick", [
             "title" => $title,
             "menu" => $menu,
@@ -159,30 +160,24 @@ class OrderController extends UserAccessController
 
         //save pivot table mappings
         $order->products()->sync($organisedMappings);
+        [$sum, $quantity] = $this->calc($order->products()->with("units")->get());
 
+        //slightly hacky way to add total in
+        $order->saveTotal($sum);
+        $order->Save();
         //add email confirmation if booked
 
         //confirm message
 
-        return $this->confirm($order);
+        return $this->confirm($order, $sum, $quantity);
     }
 
-    public function confirm(Order $order)
+    public function confirm(Order $order, $sum, $quantity)
     {
         if ($order->status == "book") {
             $status = "Booked";
         } else {
             $status = "Saved";
-        }
-
-        $values = $order->products()->with("units")->get();
-
-        $quantity = 0;
-        $sum = 0;
-
-        foreach ($values as $each) {
-            $quantity += $each->pivot->quantity;
-            $sum += $each->pivot->quantity * $each->units->price;
         }
 
         $title = "Order Confirmation";
@@ -212,6 +207,7 @@ class OrderController extends UserAccessController
         //so v3 does work with a passed restriction
         $modelSearch = new ModelSearchv3(Order::class, $searchFields, ["table" => "orders", "field" => "store_id", "value" => $store->id]);
         $orders = $modelSearch->search($search, $sort, "desc");
+
 
         return view("orders.view", [
             "title" => $title,
@@ -262,6 +258,25 @@ class OrderController extends UserAccessController
         }
 
         return [$sum, $quantity];
+    }
+
+    private function fullCalc($values)
+    {
+        $quantity = 0;
+        $sum = 0;
+        $catSummary = [];
+        foreach ($values as $each) {
+            $quantity += $each->pivot->quantity;
+            $sum += $each->pivot->quantity * $each->units->price;
+
+            if (!isset($catSummary[$each->category])) {
+                $catSummary[$each->category] = 0;
+            }
+
+            $catSummary[$each->category] += ($each->pivot->quantity * $each->units->price);
+        }
+
+        return [$sum, $quantity, $catSummary];
     }
 
     private function orderDetails($request)
@@ -315,5 +330,73 @@ class OrderController extends UserAccessController
         if (!isset($id) || is_null($order)) {
             return redirect()->route('order.view');
         }
+    }
+
+    public function weeklyOrder(Request $request)
+    {
+        $fc = new ForecastingController();
+        //create current date or passed date
+        if (isset($request->date) && $fc->checkIsAValidDate($request->date)) {
+            $startofweek = Carbon::parse($request->date)->startOfWeek();
+            $endofweek = Carbon::parse($request->date)->endOfWeek();
+        } else {
+            $startofweek = Carbon::now()->startOfWeek();
+            $endofweek = Carbon::now()->endOfWeek();
+        }
+
+
+        $title = "Weekly Order Summary";
+        $orders = Order::where("store_id", $this->store->id)
+            ->where("status", "Booked")
+            ->whereBetween("delivery_date", [$startofweek->format('Y-m-d'), $endofweek->format('Y-m-d')])
+            ->get();
+        //dd($orders);
+
+        $sum = 0;
+        $quantity = 0;
+        $catSummary = [];
+        foreach ($orders as $order) {
+            [$oSum, $oQuantity, $summary] = $this->fullCalc($order->products()->with("units")->get());
+            $sum += $oSum;
+            $quantity += $oQuantity;
+
+            foreach ($summary as $category => $value) {
+                if (!isset($catSummary[$category])) {
+                    $catSummary[$category] = 0;
+                }
+                $catSummary[$category] += $value;
+            }
+        }
+        $chartData = $this->chartData($catSummary);
+
+        return view("orders.weeklySummary", [
+            "title" => $title,
+            "orders" => $orders,
+            "startDate" => $startofweek,
+            "endDate" => $endofweek,
+            "sum" => $sum,
+            "quantity" => $quantity,
+            "chartData" => $chartData
+        ]);
+    }
+
+    public function chartData($catSummary)
+    {
+        $data = [];
+        $data[] = ['Category', 'Sum'];
+        foreach ($catSummary as $category => $value) {
+            $data[] = [$category, $value];
+        }
+
+        return json_encode($data);
+    }
+
+    public function weekSelect()
+    {
+        $title = "Select Week to View";
+        $action = route('order.weekly');
+        $heading = "Select Week";
+        $message = "Pick week to view order details";
+        return view("general.weekSelect", ["title" => $title, "action" => $action, "heading" => $heading, "message" => $message]);
     }
 }

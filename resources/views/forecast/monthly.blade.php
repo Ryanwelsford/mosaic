@@ -10,7 +10,7 @@
             <label>Starting from: {{ $starting_date->format('jS M Y') }}</label>
             <label>Ending at: {{ $ending_date->format('jS M Y') }}</label>
 
-            <label class="margin-top-2">Total forecast value: £{{$forecast_total}}</label>
+            <label class="margin-top-2">Total forecast Value: £{{$forecast_total}}</label>
         </div>
     </div>
 

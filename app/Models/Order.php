@@ -54,6 +54,11 @@ class Order extends Model
         $this->store_id = $array['store_id'];
     }
 
+    public function saveTotal($total)
+    {
+        $this->total = $total;
+    }
+
     public function getDeliveryDate()
     {
         $date = new Carbon($this->delivery_date);
