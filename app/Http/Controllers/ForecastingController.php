@@ -18,6 +18,7 @@ class ForecastingController extends UserAccessController
         $title = "Forecasting Home";
 
         $newFc = route("forecasting.date");
+        //god carbon is useful
         $date = new Carbon();
         $lastMonday = Carbon::now()->startOfWeek();
         //dd($lastMonday->format('Y-m-d'));
@@ -26,7 +27,7 @@ class ForecastingController extends UserAccessController
             ["title" => "Edit Forecast", "anchor" => $newFc, "img" => "/images/icons/edit-256.png"],
             ["title" => "Seven Day Forecast", "anchor" => route('forecasting.week', [$date->format('Y-m-d')]), "img" => "/images/icons/pound-256.png"],
             ["title" => "Weekly Forecast", "anchor" => route('forecasting.week', [$lastMonday->format('Y-m-d')]), "img" => "/images/icons/pound-256.png"],
-            ["title" => "Forecasting Reports", "anchor" => "/test", "img" => "/images/icons/report-256.png"]
+            ["title" => "Four Week Forecast", "anchor" => route('forecasting.monthSelect'), "img" => "/images/icons/pound-256.png"],
         ];
 
         return view('menu', [
@@ -122,15 +123,13 @@ class ForecastingController extends UserAccessController
 
     public function forecastWeekByDate($dateInput)
     {
+
         if (!$this->checkIsAValidDate($dateInput)) {
-            return redirect()->route('forecasting.home');
+            //return redirect()->route('forecasting.home');
         }
-        $date = Carbon::parse($dateInput);
 
         $title = "Weekly Forecast Summary";
-        $ending_date = Carbon::parse($dateInput);
-        $ending_date = $ending_date->addDays(6);
-
+        [$date, $ending_date] = $this->returnDateSet($dateInput, 6);
         $forecasts = Forecast::where("store_id", $this->store->id)->whereBetween("date", [$date->format('Y-m-d'), $ending_date->format('Y-m-d')])->orderby("date", 'ASC')->get();
         [$chartData1, $forecastTotal] = $this->buildData($forecasts);
 
@@ -143,22 +142,28 @@ class ForecastingController extends UserAccessController
             "forecasts" => $forecasts
         ]);
     }
+
+    //check for valid date format
+    //https://stackoverflow.com/questions/19271381/correctly-determine-if-date-string-is-a-valid-date-in-that-format
     function checkIsAValidDate($myDateString)
     {
         return (bool)strtotime($myDateString);
     }
+
     public function buildData($forecasts)
     {
-        $data = [
+        /*$dataformat = [
             ['Day', 'Forecast'],
             ['2004',  1000],
             ['2005',  1170],
             ['2006',  660],
             ['2007',  1030]
-        ];
+        ];*/
+
         $data = [];
         $data[] = ['Day', 'Forecast'];
         $total = 0;
+
         foreach ($forecasts as $forecast) {
             $carbon = Carbon::parse($forecast->date);
             $data[] = [$carbon->format("l"), $forecast->value];
@@ -167,5 +172,55 @@ class ForecastingController extends UserAccessController
 
         //dd($data);
         return [json_encode($data), number_format($total, 2)];
+    }
+
+
+    public function returnDateSet($dateInput, $days = 6)
+    {
+
+        $date = Carbon::parse($dateInput);
+
+        $ending_date = Carbon::parse($dateInput);
+        $ending_date = $ending_date->addDays($days);
+
+        return [$date, $ending_date];
+    }
+
+    //return forecast info for the month.
+    public function monthly(Request $request)
+    {
+        if (isset($request->date) && $this->checkIsAValidDate($request->date)) {
+            $firstOfMonth = Carbon::parse($request->date)->startOfMonth();
+            $endOfMonth = Carbon::parse($request->date)->endOfMonth();
+        } else {
+            $firstOfMonth = Carbon::now()->startOfMonth();
+            $endOfMonth = Carbon::now()->endOfMonth();
+        }
+
+        $title = "Monthly Forecast Data";
+        $forecasts = Forecast::where("store_id", $this->store->id)->whereBetween("date", [$firstOfMonth->format('Y-m-d'), $endOfMonth->format('Y-m-d')])->orderby("date", 'ASC')->get();
+
+        $forecastTotal = 0;
+        $runningTotal = 0;
+        $weekly = [];
+        foreach ($forecasts as $forecast) {
+            $forecastTotal += $forecast->value;
+            $runningTotal += $forecast->value;
+            $carbon = Carbon::parse($forecast->date);
+
+            if ($carbon->format("l") == "Sunday" || $forecast == $forecasts[count($forecasts) - 1]) {
+                $weekly[$carbon->startOfWeek()->format('jS M Y')]["value"] = $runningTotal;
+                $weekly[$carbon->startOfWeek()->format('jS M Y')]["date"] = $carbon->startOfWeek()->format('Y-m-d');
+                $runningTotal = 0;
+            }
+        }
+
+
+        return view('forecast.monthly', ["title" => $title, "forecasts" => $forecasts, "forecast_total" => $forecastTotal, "starting_date" => $firstOfMonth, "ending_date" => $endOfMonth, "weekly" => $weekly]);
+    }
+
+    public function monthSelect()
+    {
+        return view("forecast.monthSelect", ["title" => "Select Month"]);
     }
 }

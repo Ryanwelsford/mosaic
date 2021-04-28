@@ -1,7 +1,5 @@
 @extends('layout')
 @section('title', $title)
-@section("tools")
-@endsection
 @section('content')
 
 <div class="grid-container">
@@ -16,22 +14,38 @@
         </div>
     </div>
 
-    <div class="main-tile">
-        <h2>Forecast by Day</h2>
-        @if(count($forecasts) > 2)
-            <div id="piechart" class="chart center-column"></div>
+    <div class="main-tile tile-2-4">
+        <h2>Forecast Totals by Week</h2>
+        @if(count($weekly) > 0)
+        <table id="findable" class="wide-table full-width reduced-table">
+            <th>Breakdown</th>
+            <th>Week Starting</th>
+            <th>Forecast Total</th>
+
+            <tbody>
+                <tr>
+                    @foreach($weekly as $week_start => $value)
+                        <tr>
+                            <td><a class=" ph-button ph-button-standard table-button center" href="{{ route("forecasting.week", [$value["date"]]) }}">Details</a></td>
+                            <td>{{ $week_start }}</td>
+                            <td>£{{ $value["value"] }}</td>
+                        </tr>
+                    @endforeach
+                </tr>
+            </tbody>
+        </table>
         @else
-            <label>Forecast information not available</label>
+        <h3 class="centered">No forecast information found</h3>
         @endif
     </div>
-    <div class="main-tile">
+    <div class="main-tile tile-all-columns">
         <div class="full-width center-column">
-            <h2 class="tile-title tile-all-columns ">Daily Forecasts</h2>
-
+            <h2 class="tile-title tile-all-columns ">Forecast by Day</h2>
+            @if(count($forecasts) > 0)
             <table id="findable" class="wide-table full-width reduced-table">
                 <tr>
                     <th>Date</th>
-                    <th>Value</th>
+                    <th>Forecast</th>
                 </tr>
 
                 @foreach($forecasts as $forecast)
@@ -46,30 +60,11 @@
             <div class="tile-all-columns center-column margin-top">
                 <a href="{{ route('forecasting.date') }}" class="ph-button ph-button-standard">@include('icons.edit')</a>
             </div>
+            @else
+            <h3 class="centered">No forecast information found</h3>
+            @endif
         </div>
     </div>
 
 </div>
-<script type="text/javascript">
-
-  google.charts.load('current', {'packages':['corechart']});
-  google.charts.setOnLoadCallback(onload);
-
-  function drawChart() {
-
-    var data = google.visualization.arrayToDataTable(<?php echo $chartData1;?>);
-
-    let options = defaultOptions;
-    options.title = "Forecast by Day";
-    options.curveType = 'function';
-
-    var chart = new google.visualization.LineChart(document.getElementById('piechart'));
-
-    chart.draw(data, options);
-  }
-
-  function onload() {
-      drawChart();
-  }
-</script>
 @endsection

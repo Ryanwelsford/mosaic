@@ -13,9 +13,10 @@ class FindModal extends Component
      */
 
     public $model;
-    public function __construct($model)
+    public function __construct($model, $message = "Enter Product to Find")
     {
         $this->model = $model;
+        $this->message = $message;
     }
 
     /**

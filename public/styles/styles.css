@@ -689,15 +689,14 @@ input:checked ~ .checkmark {
     grid-template-columns: 1fr 1fr;
     row-gap: 15px;
     column-gap: 15px;
+    align-items: center;
 }
 
 .grid-2-col-wide {
     font-size: 23px;
     width: 85%;
 }
-.grid-2-col-wide.display {
 
-}
 .grid-2-col-wide input, .grid-2-col-wide select, .grid-2-col-wide option, .grid-2-col-wide textarea, .table-input  {
     box-sizing: border-box;
     border-radius: 10px;
@@ -732,6 +731,9 @@ option {
 .centered {
     margin-left: auto;
     margin-right: auto;
+}
+h3.centered {
+    text-align: center;
 }
 .footer {
     width: 100%;

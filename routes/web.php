@@ -108,6 +108,8 @@ Route::get('/forecasting/date/select', [ForecastingController::class, 'dateSelec
 Route::get('/forecasting/new', [ForecastingController::class, 'store'])->name('forecasting.new');
 Route::post('/forecasting/new', [ForecastingController::class, 'save']);
 Route::get('/forecasting/report/{date}', [ForecastingController::class, 'forecastWeekByDate'])->name('forecasting.week');
+Route::get('/forecasting/monthly/report', [ForecastingController::class, 'monthly'])->name('forecasting.monthly');
+Route::get('/forecasting/monthly/select', [ForecastingController::class, 'monthSelect'])->name('forecasting.monthSelect');
 
 //order routes
 Route::get('/order/home', [OrderController::class, 'home'])->name('order.home');
