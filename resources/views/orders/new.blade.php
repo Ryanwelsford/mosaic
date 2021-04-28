@@ -43,12 +43,6 @@
                         <option value="{{$option->id}}"@if(isset($order->menu_id) && $order->menu_id == $option->id) {{ "selected" }} @endif>{{ ucwords($option->name) }}</option>
                     @endforeach
                 </select>
-
-                <label>Full Order Input Mode:</label>
-                <label class="ph-checkbox-label justify-right">
-                    <input class="ph-checkbox" type="checkbox" name="display_mode" value ="{{ true }}" >
-                    <span class="checkmark"></span>
-                </label>
             </div>
         </form>
 

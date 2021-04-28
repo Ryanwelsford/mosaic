@@ -311,6 +311,17 @@ function updateDivText(div) {
 
 }
 
+var defaultOptions = {
+    'backgroundColor': '#d3d3d3',
+    "titleTextStyle": {
+        "fontSize": 18
+      },
+    'legend': {'position': 'bottom'},
+    'width': "100%",
+    'height': 310
+  }
+
+
 //functions that run on page load
 function setup() {
     setupTotals();

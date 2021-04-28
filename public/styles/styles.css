@@ -152,8 +152,8 @@ main {
     height: 100%;
 }
 .chart {
-    background: rgb(41,39,39);
-    background: linear-gradient(65deg, rgba(41,39,39,1) 0%, rgba(69,62,62,1) 48%, rgba(41,39,39,1) 100%);
+    width: 100%;
+    margin: auto;
 }
 /*updated colours for input darkened the background slightly*/
 input, .checkmark, select, textarea {
@@ -613,7 +613,10 @@ input:checked ~ .checkmark {
 .justify-right {
     justify-content: flex-end;
 }
-
+.grid-2-col-wide.display-flex {
+    display: flex;
+    flex-direction: column;
+}
 @-webkit-keyframes fadeIn {
     from {opacity: 0}
     to {opacity: 1}

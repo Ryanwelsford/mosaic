@@ -116,7 +116,7 @@ class InventoryController extends UserAccessController
         $productMappings = $inventory->products()->orderby('category', 'asc')->with("units")->get();
 
         [$catSummary, $totalQuantity, $totalValue] = $this->fullCalc($productMappings);
-
+        [$chartData1, $chartData2] = $this->gatherChartData($catSummary);
         $title = "Count Summary";
 
         return view("inventory.summary", [
@@ -126,7 +126,29 @@ class InventoryController extends UserAccessController
             "quantity" => $totalQuantity,
             "store" => $this->store,
             "inventory" => $inventory,
+            "chartData1" => $chartData1,
+            "chartData2" => $chartData2
         ]);
+    }
+
+    public function gatherChartData($categorySummaries)
+    {
+
+        $chartData1 = [];
+        $chartData1[] = ['Category', 'Cases'];
+
+        $chartData2 = [];
+        $chartData2[] = ['Category', 'Sum'];
+
+        foreach ($categorySummaries as $category => $each) {
+            $chartData1[] = [$category, round($each['quantity'], 2)];
+            $chartData2[] = [$category, round($each['sum'], 2)];
+        }
+
+        $jsonTable1 = json_encode($chartData1);
+        $jsonTable2 = json_encode($chartData2);
+
+        return [$jsonTable1, $jsonTable2];
     }
 
     public function routeToLatest()
@@ -150,12 +172,24 @@ class InventoryController extends UserAccessController
 
         $totalValue = 0;
         $totalQuantity = 0;
-
+        $catSummary = [];
+        //map sub category information
         foreach ($productMappings as $product) {
             $totalQuantity += ($product->pivot->quantity / $product->units->quantity);
             $totalValue += ($product->pivot->quantity / $product->units->quantity) * $product->units->price;
+
+            if (isset($catSummary[$product->subcategory])) {
+            $catSummary[$product->subcategory]["quantity"] += $product->pivot->quantity / $product->units->quantity;
+            $catSummary[$product->subcategory]["sum"] += ($product->pivot->quantity / $product->units->quantity) * $product->units->price;
+        } else {
+            $catSummary[$product->subcategory]["quantity"] = $product->pivot->quantity / $product->units->quantity;
+            $catSummary[$product->subcategory]["sum"] = ($product->pivot->quantity / $product->units->quantity) * $product->units->price;
+        }
         }
 
+        [$chartData1, $chartData2] = $this->gatherChartData($catSummary);
+
+        
         $title = "Count Summary";
 
         return view("inventory.summary-category", [
@@ -165,7 +199,9 @@ class InventoryController extends UserAccessController
             "sum" => $totalValue,
             "quantity" => $totalQuantity,
             "store" => $this->store,
-            "inventory" => $inventory
+            "inventory" => $inventory,
+            "chartData1" => $chartData1,
+            "chartData2" => $chartData2
         ]);
     }
 

@@ -92,11 +92,6 @@ class OrderController extends UserAccessController
             ]
         );
 
-        $display = $request->display_mode;
-        $view = "orders.pick";
-        if ($display == true) {
-            $view = "orders.full";
-        }
         $orderDetails = $request->order;
 
         $menu = Menu::where("id", $request->order["menu_id"])->get()->first();
@@ -119,7 +114,7 @@ class OrderController extends UserAccessController
         }
 
         $store = $this->user->stores()->get()->first();
-        return view($view, [
+        return view("orders.pick", [
             "title" => $title,
             "menu" => $menu,
             "products" => $products,
