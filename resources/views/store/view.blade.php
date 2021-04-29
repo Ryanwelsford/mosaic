@@ -16,18 +16,32 @@
             <button type ="submit" class="ph-button ph-button-standard">Search</button>
         </div>
     </form>
+
+    @if($stores->count() < 1 && !isset($search))
+            <p>No stores currently exist, create a new store <a href="{{ route("store.new") }}">here</a></p>
+        @endif
+
+        @if(isset($search))
+            <p>Displaying {{$stores->count()}} of {{ $stores->total() }} results for... <span class="italics">{{ $search }}</span> @if(isset($sort)) {{ "sorted by ".$sort }} @endif</p>
+        @endif
 </div>
+
 <div class="main-tile tile-all-columns center-column">
     <h2>Store Details</h2>
-    <table class="wide-table">
+    @if(isset($response) && $response != '')
+        <div class ="confirmation-banner confirmation-message margin-bottom-2 full-width">
+            <h3>{{ $response }} <button onclick="closeDiv(event)" class="close-X">X</button></h3>
+        </div>
+    @endif
+
+    <table class="wide-table full-width reduced-table"">
         <th>
-            <p class="mob-hidden">Name</p>
-            <p class="mobile-only">Details</p>
+            Name
         </th>
         <th class="mob-hidden">
             Email
         </th>
-        <th class="mob-hidden">
+        <th>
             Hut Number
         </th>
         <th class="mob-hidden">
@@ -45,7 +59,7 @@
                 <td class="mob-hidden">
                     {{ $store->users_email }}
                 </td>
-                <td class="mob-hidden">
+                <td>
                     {{ $store->stores_number }}
                 </td>
                 <td class="mob-hidden">
@@ -53,9 +67,9 @@
                 </td>
                 <td>
                     <div class="table-button-holder">
-                        <a href="{{ route('store.new', ['id' => $store->stores_id ]) }}"class="ph-button ph-button-standard table-button">Edit<img src="/images/icons/edit-48-black.png"></a>
+                        <a href="{{ route('store.new', ['id' => $store->stores_id ]) }}"class="ph-button ph-button-standard table-button">@include('icons.edit')</a>
                         <form method="POST" action="{{ route("store.destroy", $store->stores_id) }}">
-                            <button class="ph-button ph-button-important table-button" type="submit">Delete <img src="/images/icons/delete-48-black.png"></button>
+                            <button class="ph-button ph-button-important table-button" type="submit">@include('icons.delete')</button>
                             @csrf
                             @method('delete')
                         </form>
@@ -65,27 +79,9 @@
 
         @endforeach
     </table>
+
+    {{ $stores->links('paginate.default', ["paginator" => $stores, "search" => $search, "sort" => $sort]) }}
 </div>
 </div>
-<section class="modal" id="search-modal">
-    <div class="modal-internal small-modal">
-        <div class="modal-title">Search Menus <button onclick="searchModal()" class="close-X">X</button></div>
-        <div class="modal-content vert-center">
-            <div class="modal-center">
-                <form class="search-form grid-2-col-wide centered" method="GET" action="{{ route("store.view") }}">
-                    <label>Search Menus</label>
-                    <input name="search" value="@if(isset($search)){{$search}}@endif" type ="text" class=" "  id="search-bar" placeholder="Search here">
-                    <label>Sort by</label>
-                    <select name="sort">
-                        @foreach($searchFields as $field)
-                            <option value="{{ $field }}">{{str_replace("_", " ", $field)}}</option>
-                        @endforeach
-                    </select>
-                    <input type="submit" class="ph-button ph-button-standard tile-all-columns">
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
-<x-top-button></x-top-button>
+<x-tools.search-modal model="Stores" action='store.view' search="{{ $search }}" :fields="$searchFields"></x-tools.search-modal>
 @endsection

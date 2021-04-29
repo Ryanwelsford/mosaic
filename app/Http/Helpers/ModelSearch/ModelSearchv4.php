@@ -51,7 +51,7 @@ class ModelSearchv4
     }
 
     //search all table fields, allows for sort only and search only
-    public function search($searchValue, $sort = "id", $sortDirection = "desc")
+    public function search($searchValue, $sort = "id", $sortDirection = "desc", $paginate = 10)
     {
         //guard for malformed searches
         if ($searchValue == null || $searchValue == '' || !isset($searchValue)) {
@@ -172,7 +172,7 @@ class ModelSearchv4
     private function executeQuery($query)
     {
         //dd($query->toSql());
-        return $query->get();
+        return $query->paginate(10);
     }
 
     //return default does not need where clauses so, but does still need restriction

@@ -22,11 +22,17 @@
 
                 <x-inputs.textarea inputName="description" :value="$wastelist" error="description"></x-inputs.textarea>
 
+                <label>Status:</label>
+                <select name="status">
+                    @foreach($statuses as $key => $option)
+                        <option @if(isset($wastelist->status) && $wastelist->status == $option) {{ "selected" }} @endif>{{ $option }}</option>
+                    @endforeach
+                </select>
             </div>
         </form>
 
         <div class="tile-all-columns center-column margin-top">
-            <button form="form_wastelist" type="submit" class="ph-button ph-button-important">Submit</button>
+            <button form="form_wastelist" type="submit" class="ph-button ph-button-important">@include('icons.save')</button>
         </div>
     </div>
 </div>

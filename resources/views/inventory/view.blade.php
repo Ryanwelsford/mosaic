@@ -78,6 +78,7 @@
             @endforeach
         </table>
         @endif
+        {{ $inventory->links('paginate.default', ["paginator" => $inventory, "search" => $search, "sort" => $sort]) }}
     </div>
     @endif
 

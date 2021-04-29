@@ -4,21 +4,22 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class FindModal extends Component
+class SearchForm extends Component
 {
     /**
      * Create a new component instance.
      *
      * @return void
      */
-
     public $model;
-    public $message;
+    public $action;
+    public $search;
 
-    public function __construct($model, $message = "Enter Product to Find")
+    public function __construct($model, $action, $search)
     {
         $this->model = $model;
-        $this->message = $message;
+        $this->action = $action;
+        $this->search = $search;
     }
 
     /**
@@ -28,6 +29,6 @@ class FindModal extends Component
      */
     public function render()
     {
-        return view('components.find-modal');
+        return view('components.search-form');
     }
 }

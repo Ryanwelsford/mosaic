@@ -1,5 +1,7 @@
 @props(["message" => $message, "action" => "closeDiv(event)"])
 
-<div class ="confirmation-banner confirmation-message">
-    <p> {{ $message }} <button onclick="{{$action}}" class="close-X">X</button></p>
+@if(isset($message) && $message != '')
+<div class ="confirmation-banner confirmation-message margin-bottom-2 full-width">
+    <h3>{{ $message }} <button onclick="closeDiv(event)" class="close-X">X</button></h3>
 </div>
+@endif

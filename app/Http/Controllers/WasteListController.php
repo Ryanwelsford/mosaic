@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Wastelist;
 use Illuminate\Http\Request;
 use App\Http\Helpers\ModelValidator;
+use App\Http\Helpers\ModelSearch\ModelSearchv4;
 use App\Http\Controllers\Types\AdminAccessController;
 
 /********************************************************
@@ -42,14 +43,15 @@ class WasteListController extends AdminAccessController
     public function store(Request $request)
     {
         $title = "New Waste List";
-
+        $statuses = ["Active", "Inactive"];
         //validate request ensure either an empty wastelist, an editable instance of a wastelist or a failed post form refilled with input details is returned
         $ModelValidator = new ModelValidator(Wastelist::class, $request->id, old());
         $wastelist = $ModelValidator->validate();
 
         return view("wastelist.new", [
             "title" => $title,
-            "wastelist" => $wastelist
+            "wastelist" => $wastelist,
+            "statuses" => $statuses
         ]);
     }
 
@@ -74,7 +76,7 @@ class WasteListController extends AdminAccessController
 
         //there is actually a fill function which can be used to fill all fillable waste list items in an associative array
         // "id" => $id etc
-        $wastelist->fillItem($id, $request->name, $request->description);
+        $wastelist->fillItem($id, $request->name, $request->description, $request->status);
 
         //save and return confirmation
         $wastelist->save();
@@ -98,27 +100,33 @@ class WasteListController extends AdminAccessController
     }
 
     //view all wastelists with options to edit and delete, need to add search and validation features in the future
-    public function view()
+    public function view(Request $request, $response = '')
     {
-        if (session("confirmation")) {
-            $message = session("confirmation");
-        } else {
-            $message = false;
+        $wastelist = new Wastelist;
+
+        $fields = $wastelist->getSearchable();
+        //remember to pass the search fields as a mapping of table to fields
+        $searchFields["wastelists"] = $fields;
+        $search = $request->search;
+        $sort = $request->sort;
+        if ($sort == null) {
+            $sort = "name";
         }
 
+        //so v3 does work with a passed restriction
+        $modelSearch = new ModelSearchv4(Wastelist::class, $searchFields, $searchFields);
+        $wastelists = $modelSearch->search($search, $sort, "desc");
 
-
-        $wastelists = Wastelist::orderBy('created_at', 'desc')->get();
         $title = "Display Waste Lists";
-        return view("wastelist.view", ["title" => $title, "wastelists" => $wastelists, "message" => $message]);
+        return view("wastelist.view", ["title" => $title, "wastelists" => $wastelists, "response" => $response, "search" => $search, "sort" => $sort, "searchFields" => $fields]);
     }
 
     //delete method for wastelists passed, should probably have archive here or softdeletes instead
-    public function destroy(Wastelist $wastelist)
+    public function destroy(Wastelist $wastelist, Request $request)
     {
         $wastelist->delete();
         $message = "Wastelist " . ucfirst($wastelist->name) . " has been successfully deleted";
         //return to view screen
-        return back()->with("confirmation", $message);
+        return $this->view($request, $message);
     }
 }

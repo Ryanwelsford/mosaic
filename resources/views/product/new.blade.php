@@ -109,11 +109,11 @@
         </form>
 
         <div class="main-tile-button-container">
-            <button id="previous" class="ph-button ph-button-standard" onclick="openTab(-1)">Previous</button>
-            <button id="next" class="ph-button ph-button-standard" onclick="openTab(1)">Next</button>
+            <button id="previous" class="ph-button ph-button-standard" onclick="openTab(-1)">@include('icons.previous')</button>
+            <button id="next" class="ph-button ph-button-standard" onclick="openTab(1)">@include('icons.next')</button>
         </div>
         <div class="main-tile-button-container center-column margin-top">
-            <button form="form_product" type="submit" class="ph-button ph-button-important">Submit</button>
+            <button form="form_product" type="submit" class="ph-button ph-button-important">@include('icons.save')</button>
         </div>
     </div>
 </div>

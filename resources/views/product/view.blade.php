@@ -9,31 +9,33 @@
 <div class="grid-container">
     <div class="main-tile tile-all-columns center-column">
         <form class="search-form grid-2-col-wide table-width-match" method="GET" action="{{ route("product.view") }}">
-            <label>Search Products  </label>
+            <label>Search Products </label>
             <div class="search-with-button">
                 <input name="search" type ="text" class=" "  id="search-bar" placeholder="Search here" value="@if(isset($search)){{$search}}@endif">
                 <button type ="submit" class="ph-button ph-button-standard">Search</button>
             </div>
         </form>
-    </div>
-    <div class="main-tile tile-all-columns center-column">
-        <h2>Product Details</h2>
-        @if(session("confirmation"))
-        <div class ="confirmation-banner confirmation-message table-fit margin-bottom-2">
-            <h3>{{ session("confirmation") }} <button onclick="closeDiv(event)" class="close-X">X</button></h3>
-        </div>
-        @endif
 
         @if($products->count() < 1 && !isset($search))
-            <p>No menus currently exist, create a new menu <a href="{{ route("product.new") }}">here</a></p>
+            <p>No products currently exist, create a new product <a href="{{ route("product.new") }}">here</a></p>
         @endif
 
         @if(isset($search))
-            <p>Displaying {{$products->count()}} results for... <span class="italics">{{ $search }}</span> @if(isset($sort)) {{ "sorted by ".$sort }} @endif</p>
+            <p>Displaying {{$products->count()}} of {{ $products->total() }} results for... <span class="italics">{{ $search }}</span> @if(isset($sort)) {{ "sorted by ".$sort }} @endif</p>
+        @endif
+    </div>
+    @if($products->count() >= 1)
+    <div class="main-tile tile-all-columns center-column">
+        <h2>Product Details</h2>
+
+
+        @if(isset($response) && $response != '')
+            <div class ="confirmation-banner confirmation-message margin-bottom-2 full-width">
+                <h3>{{ $response }} <button onclick="closeDiv(event)" class="close-X">X</button></h3>
+            </div>
         @endif
 
-
-        <table class="wide-table">
+        <table class="wide-table full-width reduced-table">
             <th>
                 <p class="mob-hidden">Product Name</p>
                 <p class="mobile-only">Details</p>
@@ -41,7 +43,7 @@
             <th class="mob-hidden">
                 Supplier Code
             </th>
-            <th class="mob-hidden">
+            <th>
                 Category
             </th>
             <th class="mob-hidden">
@@ -62,8 +64,9 @@
                         {{ $product->code }}
                     </td>
 
-                    <td class="mob-hidden">
+                    <td>
                         {{ $product->category }}
+                        <p class='mobile-only'>{{ $product->subcategory }}</p>
                     </td>
 
                     <td class="mob-hidden">
@@ -72,9 +75,9 @@
 
                     <td>
                         <div class="table-button-holder">
-                            <a href="{{ route('product.new', ['id' => $product->id]) }}"class="ph-button ph-button-standard table-button">Edit<img src="/images/icons/edit-48-black.png"></a>
+                            <a href="{{ route('product.new', ['id' => $product->id]) }}"class="ph-button ph-button-standard table-button">@include("icons.edit")</a>
                             <form method="POST" action="{{ route("product.destroy", $product) }}">
-                                <button class="ph-button ph-button-important table-button" type="submit">Delete</button>
+                                <button class="ph-button ph-button-important table-button" type="submit">@include("icons.delete")</button>
                                 @csrf
                                 @method('delete')
                             </form>
@@ -85,31 +88,13 @@
 
             @endforeach
         </table>
-    </div>
 
-    <section class="modal" id="search-modal">
-        <div class="modal-internal small-modal">
-            <div class="modal-title">Search Menus <button onclick="searchModal()" class="close-X">X</button></div>
-            <div class="modal-content vert-center">
-                <div class="modal-center">
-                    <form class="search-form grid-2-col-wide centered" method="GET" action="{{ route("product.view") }}">
-                        <label>Search Menus</label>
-                        <input name="search" value="@if(isset($search)){{$search}}@endif" type ="text" class=" "  id="search-bar" placeholder="Search here">
-                        <label>Sort by</label>
-                        <select name="sort">
-                            @foreach($searchFields as $field)
-                                <option value="{{ $field }}">{{str_replace("_", " ", $field)}}</option>
-                            @endforeach
-                        </select>
-                        <input type="submit" class="ph-button ph-button-standard tile-all-columns">
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
+        {{ $products->links('paginate.default', ["paginator" => $products, "search" => $search, "sort" => $sort]) }}
+    </div>
+    @endif
+    <x-tools.search-modal model="product" action='product.view' search="{{ $search }}" :fields="$searchFields"></x-tools.search-modal>
 
 </div>
-<x-top-button></x-top-button>
 <script>
 
     function redrawTable() {

@@ -8,7 +8,7 @@
 @section('content')
 <div class="grid-container">
     <div class="main-tile tile-all-columns center-column">
-        <h2>Admin Details</h2>
+
         <form class="search-form grid-2-col-wide table-width-match" method="GET" action="{{ route("admin.view") }}">
             <label>Search Admins</label>
             <div class="search-with-button">
@@ -17,19 +17,21 @@
             </div>
         </form>
 
-        @if(isset($response) && $response != '')
-            <div class ="confirmation-banner confirmation-message margin-bottom-2 full-width">
-                <h3>{{ $response }} <button onclick="closeDiv(event)" class="close-X">X</button></h3>
-            </div>
-        @endif
-
         @if($admins->count() < 1 && !isset($search))
             <p>No admins currently exist, create a new admin <a href="{{ route("admin.new") }}">here</a></p>
         @endif
 
         @if(isset($search))
-            <p>Displaying {{$admins->count()}} results for... <span class="italics">{{ $search }}</span> @if(isset($sort)) {{ "sorted by ".$sort }} @endif</p>
+            <p>Displaying {{$admins->count()}} of {{ $admins->total() }} results for... <span class="italics">{{ $search }}</span> @if(isset($sort)) {{ "sorted by ".$sort }} @endif</p>
         @endif
+    </div>
+    @if($admins->count() >= 1)
+    <div class="main-tile tile-all-columns center-column">
+        <h2>Admin Details</h2>
+
+        <x-confirmation-message :message="$response"></x-confirmation-message>
+        
+
 
         @if($admins->count() >= 1)
         <table class="wide-table full-width reduced-table">
@@ -62,10 +64,10 @@
 
                     <td>
                         <div class="table-button-holder">
-                            <a href="{{ route('admin.new', ['id' => $admin->id]) }}"class="ph-button ph-button-standard table-button">Edit</a>
+                            <a href="{{ route('admin.new', ['id' => $admin->id]) }}"class="ph-button ph-button-standard table-button">@include('icons.edit')</a>
 
                             <form method="POST" action="{{ route("admin.destroy", $admin) }}" class="table-button">
-                                <button class="ph-button ph-button-standard ph-button-important table-button" type="submit">Delete</button>
+                                <button class="ph-button ph-button-standard ph-button-important table-button" type="submit">@include('icons.delete')</button>
                                 @csrf
                                 @method('delete')
                             </form>
@@ -77,12 +79,13 @@
             @endforeach
         </table>
         @endif
+        {{ $admins->links('paginate.default', ["paginator" => $admins, "search" => $search, "sort" => $sort]) }}
+        @endif
     </div>
 
 
     <x-tools.search-modal model="Admins" action='admin.view' search="{{ $search }}" :fields="$searchFields"></x-tools.search-modal>
 
 </div>
-<x-top-button></x-top-button>
 
 @endsection

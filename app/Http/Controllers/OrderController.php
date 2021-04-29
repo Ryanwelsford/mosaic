@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Helpers\ModelSearch;
 use App\Http\Helpers\ModelSearchv3;
 use App\Http\Helpers\ModelValidator;
+use App\Http\Helpers\ModelSearch\ModelSearchv4;
 use App\Http\Controllers\Types\UserAccessController;
 
 //TODO
@@ -46,8 +47,9 @@ class OrderController extends UserAccessController
         $title = "Create An Order";
 
         //why does user have many stores...
-        $store = $this->user->stores()->get()->first();
-        $menus = Menu::orderby("updated_at")->get();
+        $store = $this->store;
+        //restrict possible orders to only active menus
+        $menus = Menu::orderby("updated_at", 'desc')->where('status', 'Active')->get();
 
         $modelValidator = new ModelValidator(Order::class, $request->id, old());
         $order = $modelValidator->validate();
@@ -205,7 +207,7 @@ class OrderController extends UserAccessController
         $store = $this->user->stores()->get()->first();
 
         //so v3 does work with a passed restriction
-        $modelSearch = new ModelSearchv3(Order::class, $searchFields, ["table" => "orders", "field" => "store_id", "value" => $store->id]);
+        $modelSearch = new ModelSearchv4(Order::class, $searchFields, $searchFields, ["table" => "orders", "field" => "store_id", "value" => $store->id]);
         $orders = $modelSearch->search($search, $sort, "desc");
 
 

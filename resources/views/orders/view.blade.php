@@ -25,7 +25,7 @@
             <p>Displaying {{$orders->count()}} results for... <span class="italics">{{ $search }}</span> @if(isset($sort)) {{ "sorted by ".$sort }} @endif</p>
         @endif
     </div>
-    
+
     @if($orders->count() >= 1)
     <div class="main-tile tile-all-columns center-column">
         <h2>Order Details</h2>
@@ -103,6 +103,7 @@
             @endforeach
         </table>
         @endif
+        {{ $orders->links('paginate.default', ["paginator" => $orders, "search" => $search, "sort" => $sort]) }}
     </div>
     @endif
 

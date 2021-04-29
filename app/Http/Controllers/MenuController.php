@@ -45,7 +45,7 @@ class MenuController extends AdminAccessController
             $title = "Edit Menu";
         }
 
-        $statuses = ["Active", "Inactive", "Archived"];
+        $statuses = ["Active", "Inactive"];
 
         //$output here is actually an array of arrays, so weird
 

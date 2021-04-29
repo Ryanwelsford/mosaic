@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Helpers\ModelSearchv3;
 use App\Http\Helpers\ModelValidator;
+use App\Http\Helpers\ModelSearch\ModelSearchv4;
 use App\Http\Controllers\Types\AdminAccessController;
 
 //CRUD of admin/core user class
@@ -95,11 +96,11 @@ class AdminController extends AdminAccessController
         $search = $request->search;
         $sort = $request->sort;
         if ($sort == null) {
-            $sort = "id";
+            $sort = "name";
         }
 
         //so v3 does work with a passed restriction
-        $modelSearch = new ModelSearchv3(User::class, $searchFields, ["table" => "users", "field" => "privelleges", "value" => "admin"]);
+        $modelSearch = new ModelSearchv4(User::class, $searchFields, $searchFields, ["table" => "users", "field" => "privelleges", "value" => "admin"]);
         $admins = $modelSearch->search($search, $sort, "desc");
 
         return view("admin.view", [

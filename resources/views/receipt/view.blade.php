@@ -29,11 +29,8 @@
     <div class="main-tile tile-all-columns center-column">
         <h2>Order Details</h2>
 
-        @if(isset($response) && $response != '')
-            <div class ="confirmation-banner confirmation-message margin-bottom-2 full-width">
-                <h3>{{ $response }} <button onclick="closeDiv(event)" class="close-X">X</button></h3>
-            </div>
-        @endif
+        <x-confirmation-message :message="$response"></x-confirmation-message>
+
 
         @if($receipts->count() >= 1)
         <table class="wide-table full-width reduced-table">
@@ -90,6 +87,7 @@
             @endforeach
         </table>
         @endif
+        {{ $receipts->links('paginate.default', ["paginator" => $receipts, "search" => $search, "sort" => $sort]) }}
     </div>
     @endif
     <x-tools.search-modal model="Reciepts" action='receiving.view' search="{{ $search }}" :fields="$searchFields"></x-tools.search-modal>

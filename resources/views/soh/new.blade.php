@@ -1,21 +1,26 @@
 @extends('layout')
 @section('title', $title)
 @section('tools')
-<button type="submit" form="form" class="bar-tool-button" onclick="openOrCloseModal('search-modal')" name="save" value="save"> @include("icons.book") </button>
+<button type="submit" form="form" class="bar-tool-button"> @include("icons.book") </button>
 <button class="bar-tool-button" onclick="openOrCloseModal('search-modal')" name="save" value="save">@include("icons.find")</button>
 @endsection
 @section('content')
-<form class="grid-container">
+<form class="grid-container" id="form" action="{{ route('soh.new') }}" method="POST">
     <div class="main-tile center-column tile-all-columns">
         <h2 class="tile-title tile-all-columns">Stock on Hand Details</h2>
         <div class="grid-2-col-wide centered full-width">
             <label>Store: {{ $store->store_name }}</label>
             <label>Created on: @if(isset($soh->created_at)){{ $soh->created_at->format("d m Y") }}@else {{ $today->format("d m Y") }}@endif</label>
             <label>Reference:</label>
-            <input type="text" name="reference" placeholder="Enter reference data here" value="@if(isset($soh->reference)){{$soh->reference}}@endif">
+            <div>
+                <input type="text" name="reference" placeholder="Enter reference data here" value="@if(isset($soh->reference)){{$soh->reference}}@endif">
+                @error('reference')
+                    <div class="small-error-text error-text">{{ $message }} </div>
+                @enderror
+            </div>
         </div>
     </div>
-    <div class="main-tile center-column tile-all-columns" id="form" action="{{ route('soh.new') }}" method="POST">
+    <div class="main-tile center-column tile-all-columns">
         <input type="hidden" name="id" value="@if(isset($soh->id)){{$soh->id}}@endif">
         @csrf
         <h2 class="tile-title tile-all-columns">Stock on Hand Count</h2>
@@ -64,7 +69,4 @@
 
 <x-tools.find-modal model="products"></x-tools.find-modal>
 
-<script>
-
-</script>
 @endsection

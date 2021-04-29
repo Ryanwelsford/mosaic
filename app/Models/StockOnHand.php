@@ -15,6 +15,8 @@ class StockOnHand extends Model
     ];
 
     protected $searchable = [
+        'id',
+        'reference',
         'created_at'
     ];
 

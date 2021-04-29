@@ -35,7 +35,7 @@
                 <h3>{{ $response }} <button onclick="closeDiv(event)" class="close-X">X</button></h3>
             </div>
         @endif
-        
+
         <table class="wide-table full-width reduced-table">
             <th>
                 <p class="mob-hidden">Menu Name</p>
@@ -96,6 +96,7 @@
 
             @endforeach
         </table>
+        {{ $menus->links('paginate.default', ["paginator" => $menus, "search" => $search, "sort" => $sort]) }}
         @endif
     </div>
     @endif

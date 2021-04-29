@@ -1070,6 +1070,27 @@ div.vert-scroll button {
     justify-content: flex-end;
     align-items: center;
 }
+
+ul.pagination {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    width: 100%;
+    display: flex;
+}
+ul.pagination a {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin: 0px 5px;
+}
+
+ul.pagination .left {
+    margin-right: auto;
+}
+
+ul.pagination .right {
+    margin-left: auto;
+}
 @media only screen and (max-width: 1400px) {
     .main-nav ul {
         font-size: 20px;
@@ -1254,8 +1275,7 @@ div.vert-scroll button {
         margin: 0px ;
     }
 
-    .table-button-holder form .table-button {
-        width: 100% !important;
+    .table-button-holder form .table-button {   
         padding: 0px;
     }
 

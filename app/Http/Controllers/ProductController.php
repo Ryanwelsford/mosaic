@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Helpers\ModelSearch;
 use App\Http\Helpers\ModelValidator;
+use App\Http\Helpers\ModelSearch\ModelSearchv4;
 use App\Http\Controllers\Types\AdminAccessController;
 
 class ProductController extends AdminAccessController
@@ -127,7 +128,7 @@ class ProductController extends AdminAccessController
     //todo add pagination ability to full list of product. add list of tabs seperating units then all for switching with selects
     //enable display of all products with their details
     //need to add a check to test what happens when there are 0 products to display
-    public function view(Request $request)
+    public function view(Request $request, $response = '')
     {
         // all products
         $product = new Product;
@@ -135,30 +136,38 @@ class ProductController extends AdminAccessController
 
         $title = "Display Products";
         $search = $request->search;
-        $sort = $request->sort;
-        $modelSearch = new ModelSearch(Product::class, $searchFields, "name");
-        $products = $modelSearch->search($search, $sort);
 
+        $sort = $request->sort;
+        if ($sort == null) {
+            $sort = "name";
+        }
+
+        $input["products"] = $searchFields;
+        $sortDirection = "desc";
+
+        $modelSearch = new ModelSearchv4(Product::class, $input, $input);
+        $products = $modelSearch->search($search, $sort, $sortDirection);
 
         return view("product.view", [
             "products" => $products,
             "title" => $title,
             "search" => $search,
             "sort" => $sort,
-            "searchFields" => $searchFields
+            "searchFields" => $searchFields,
+            "response" => $response
         ]);
     }
 
     //destroying a product should remove its units as well, although i believe cascade delete is already set?
     //soft deletes should be enabled in final version
-    public function destroy(Product $product)
+    public function destroy(Product $product, Request $request)
     {
         //remove product cascade delete removes all associated units as well.
         $message = "Product " . $product->name . " successfully deleted";
         $product->delete();
 
         //send back to previous page
-        return back()->with("confirmation", $message);
+        return $this->view($request, $message);
     }
 
     public function confirm(Product $product)

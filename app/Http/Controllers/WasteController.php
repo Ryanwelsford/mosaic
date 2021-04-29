@@ -33,7 +33,7 @@ class WasteController extends UserAccessController
     //pull information for ajax query.
     public function categoryReturn(Request $request)
     {
-        $products = Product::where('category', $request->category)->orderby('name', 'desc')->with("units")->get();
+        $products = Product::where('category', $request->category)->orderby('name', 'asc')->with("units")->get();
 
         $products = $products->toJson();
 
@@ -44,7 +44,7 @@ class WasteController extends UserAccessController
     {
         $title = "New Waste Entry";
         //change this to pull only active wastelists or something
-        $wasteLists = Wastelist::all();
+        $wasteLists = Wastelist::where('status', 'Active')->get();
 
         $productController = new ProductController();
         $categories = $productController->buildCategories();

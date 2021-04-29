@@ -7,6 +7,8 @@ use App\Models\Product;
 use App\Models\StockOnHand;
 use Illuminate\Http\Request;
 use App\Http\Helpers\ModelSearchv3;
+use App\Http\Helpers\ModelValidator;
+use App\Http\Helpers\ModelSearch\ModelSearchv4;
 use App\Http\Controllers\Types\UserAccessController;
 
 //maybe add a reference to SOH table ?
@@ -35,13 +37,19 @@ class StockOnHandController extends UserAccessController
     public function store(Request $request)
     {
         $title = "New Count";
-        $soh = new StockOnHand;
         $mappedProducts = [];
         $today = new Carbon();
 
         //if edit
-        if (isset($request->id)) {
-            $soh = StockOnHand::find($request->id);
+        $modelValidator = new ModelValidator(StockOnHand::class, $request->id, old());
+        $soh = $modelValidator->validate();
+
+        $old = old();
+
+        //remap products based on submissions
+        if (isset($old['product'])) {
+            $mappedProducts = $old['product'];
+        } else if (isset($request->id)) {
             $entered = $soh->products()->get();
             foreach ($entered as $product) {
                 $mappedProducts[$product->id] = $product->pivot->count;
@@ -62,6 +70,16 @@ class StockOnHandController extends UserAccessController
 
     public function saveCount(Request $request)
     {
+        $this->validate(
+            $request,
+            [
+                'reference' => ['required'],
+            ],
+            [
+                "reference.required" => "A reference must be entered to book"
+            ]
+        );
+
         $counts = $request->product;
         $remappedCounts = [];
 
@@ -116,7 +134,7 @@ class StockOnHandController extends UserAccessController
         $this->validate(
             $request,
             [
-                'sohList' => ['required']
+                'sohList' => ['required'],
             ],
             [
                 "sohList.required" => "At least one product must be selected to save"
@@ -139,8 +157,10 @@ class StockOnHandController extends UserAccessController
     public function view(Request $request, $response = "")
     {
         $title = "View Stock on Hand Counts";
+
         $sohs = new StockOnHand;
         $searchFields["stock_on_hands"] = $sohs->getSearchable();
+
         $search = $request->search;
         $sort = $request->sort;
         $sortDirection = "desc";
@@ -149,7 +169,7 @@ class StockOnHandController extends UserAccessController
             $sort = "id";
         }
 
-        $modelSearch = new ModelSearchv3(StockOnHand::class, $searchFields, ["table" => "stock_on_hands", "field" => "store_id", "value" => $this->store->id]);
+        $modelSearch = new ModelSearchv4(StockOnHand::class, $searchFields, $searchFields, ["table" => "stock_on_hands", "field" => "store_id", "value" => $this->store->id]);
         $sohs = $modelSearch->search($search, $sort, $sortDirection);
 
         return view("soh.view", [

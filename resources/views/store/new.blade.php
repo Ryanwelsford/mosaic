@@ -40,7 +40,7 @@
         </form>
 
         <div class="tile-all-columns center-column margin-top">
-            <button form="form_store" type="submit" class="ph-button ph-button-important">Submit</button>
+            <button form="form_store" type="submit" class="ph-button ph-button-important">@include('icons.save')</button>
         </div>
     </div>
 </div>

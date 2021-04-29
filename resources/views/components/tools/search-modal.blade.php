@@ -9,7 +9,7 @@
     <label>Sort by</label>
     <select name="sort">
         @foreach($fields as $field)
-            <option value="{{ $field }}">{{str_replace("_", " ", $field)}}</option>
+            <option value="{{ $field }}">{{ucwords(str_replace("_", " ", $field))}}</option>
         @endforeach
     </select>
     <input type="submit" class="ph-button ph-button-standard tile-all-columns">

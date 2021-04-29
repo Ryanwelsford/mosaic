@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Helpers\ModelSearchv3;
 use App\Http\Helpers\ModelValidator;
+use App\Http\Helpers\ModelSearch\ModelSearchv4;
 use App\Http\Controllers\Types\UserAccessController;
 
 class ReceivingController extends UserAccessController
@@ -43,7 +44,7 @@ class ReceivingController extends UserAccessController
         if (isset($request->id)) {
             $today = null;
         }
-        $menus = Menu::orderby("updated_at", 'desc')->get();
+        $menus = Menu::where("status", "Active")->orderby("updated_at", 'desc')->get();
 
         $modelValidator = new ModelValidator(Receipt::class, $request->id, old());
         $receipt = $modelValidator->validate();
@@ -176,7 +177,7 @@ class ReceivingController extends UserAccessController
         $store = $this->user->stores()->get()->first();
 
         //so v3 does work with a passed restriction
-        $modelSearch = new ModelSearchv3(Receipt::class, $searchFields, ["table" => "receipts", "field" => "store_id", "value" => $store->id]);
+        $modelSearch = new ModelSearchv4(Receipt::class, $searchFields, $searchFields, ["table" => "receipts", "field" => "store_id", "value" => $store->id]);
         $receipts = $modelSearch->search($search, $sort, $sortDirection);
         $today = Carbon::now();
 
