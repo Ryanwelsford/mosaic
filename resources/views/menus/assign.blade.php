@@ -35,9 +35,9 @@
                 @foreach($organisedProducts as $category => $subcategory)
 
                 @if($category == $defaultOpenTab)
-                <table class="wide-table" id="{{ $category }}">
+                <table class="wide-table full-width reduced-table" id="{{ $category }}">
                 @else
-                <table class="wide-table hidden-tab" id="{{ $category }}">
+                <table class="wide-table hidden-tab full-width reduced-table" id="{{ $category }}">
                 @endif
 
                 <th>
@@ -46,12 +46,6 @@
                 </th>
                 <th class="mob-hidden">
                     Supplier Code
-                </th>
-                <th class="mob-hidden">
-                    Category
-                </th>
-                <th class="mob-hidden">
-                    Subcategory
                 </th>
                 <th>
                     In Menu
@@ -69,14 +63,6 @@
 
                                 <td class="mob-hidden">
                                     {{ $product->code }}
-                                </td>
-
-                                <td class="mob-hidden">
-                                    {{ $product->category }}
-                                </td>
-
-                                <td class="mob-hidden">
-                                    {{ $product->subcategory }}
                                 </td>
 
                                 <td class=>
@@ -100,9 +86,9 @@
                 </table>
                 @endforeach
 
-                <div class="main-tile-button-container">
-                    <button id="previous" class="ph-button ph-button-standard" type="button" onclick="previousCategory()">Previous</button>
-                    <button id="next" class="ph-button ph-button-standard" type="button" onclick="nextCategory()">Next</button>
+                <div class="main-tile-button-container full-width">
+                    <button id="previous" class="ph-button ph-button-standard" type="button" onclick="previousCategory()">@include('icons.previous')</button>
+                    <button id="next" class="ph-button ph-button-standard" type="button" onclick="nextCategory()">@include('icons.next')</button>
                 </div>
                 <div class="main-tile-button-container center-column margin-top">
                     <button form="menuAssign" type="submit" class="ph-button ph-button-important">@include("icons.save")</button>

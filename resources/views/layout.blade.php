@@ -49,10 +49,9 @@
 
 
                 <ul id="product" class="main-nav-tab side-bar-tab">
-                    <li><a href="{{ route('product.new') }}">New</a></li>
-                    <li><a href="{{ route('product.view') }}">Edit</a></li>
-                    <li><a href="{{ route('product.view') }}">View</a></li>
-                    <li><a href="">Product Reports</a></li>
+                    <li><a href="{{ route('product.new') }}">New Product</a></li>
+                    <li><a href="{{ route('product.view') }}">Edit Product</a></li>
+                    <li><a href="{{ route('product.view') }}">View Product</a></li>
                 </ul>
 
             </li>
@@ -71,7 +70,6 @@
                     <li><a href="{{ route("menu.view") }}">Edit Menu</a></li>
                     <li><a href="{{ route("menu.view") }}">View Menus</a></li>
                     <li><a href="{{ route("menu.view") }}">Copy Menu</a></li>
-                    <li><a href="">Menu Reports</a></li>
                 </ul>
 
             </li>
@@ -106,7 +104,6 @@
                     <li><a href="{{ route("store.new") }}">New Store</a></li>
                     <li><a href="{{ route("store.view") }}">Edit Store</a></li>
                     <li><a href="{{ route("store.view") }}">View Stores</a></li>
-                    <li><a href="">Store Reports</a></li>
                 </ul>
 
             </li>
@@ -222,9 +219,9 @@
 
 
                 <ul id="stockonhand" class="main-nav-tab side-bar-tab">
-                    <li><a href="{{ route('soh.new') }}">New</a></li>
+                    <li><a href="{{ route('soh.new') }}">New Count</a></li>
                     <li><a href="{{ route('soh.assign') }}">Adjust Products</a></li>
-                    <li><a href="{{ route('soh.view') }}">View</a></li>
+                    <li><a href="{{ route('soh.view') }}">View Counts</a></li>
                     <li><a href="#">Reports</a></li>
                 </ul>
             </li>

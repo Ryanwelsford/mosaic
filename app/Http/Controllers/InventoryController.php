@@ -21,9 +21,9 @@ class InventoryController extends UserAccessController
         $inventory = Inventory::orderby('created_at', 'desc')->where('store_id', $this->store->id)->get()->first();
 
         $menuitems = [
-            ["title" => "Current Count", "anchor" => route("inventory.summary", [$inventory->id]), "img" => "/images/icons/summary-256.png"],
-            ["title" => "New Count", "anchor" => route("inventory.new"), "img" => "/images/icons/new-256.png"],
-            ["title" => "Edit Saved Count", "anchor" => route("inventory.view", ["search" => "saved"]), "img" => "/images/icons/edit-256.png"],
+            ["title" => "Current Count", "anchor" => route("inventory.summary", [$inventory->id]), "img" => "/images/icons/summary-256.png", "action" => "View"],
+            ["title" => "New Count", "anchor" => route("inventory.new"), "img" => "/images/icons/new-256.png", "action" => "Create"],
+            ["title" => "Edit Saved Count", "anchor" => route("inventory.view", ["search" => "saved"]), "img" => "/images/icons/edit-256.png", "action" => "Edit"],
             ["title" => "Previous Count Summaries", "anchor" => route("inventory.view"), "img" => "/images/icons/view-256.png"],
 
         ];

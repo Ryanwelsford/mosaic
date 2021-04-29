@@ -28,9 +28,9 @@ class StoreController extends AdminAccessController
         $viewRoute = route("store.view");
 
         $menuitems = [
-            ["title" => "New Store", "anchor" => $newRoute, "img" => "/images/icons/new-256.png"],
-            ["title" => "Edit Store", "anchor" => $viewRoute, "img" => "/images/icons/edit-256.png"],
-            ["title" => "Search Stores", "anchor" => $viewRoute, "img" => "/images/icons/search-256.png"]
+            ["title" => "New Store", "anchor" => $newRoute, "img" => "/images/icons/new-256.png", "action" => "Create"],
+            ["title" => "Edit Store", "anchor" => $viewRoute, "img" => "/images/icons/edit-256.png", "action" => "Edit"],
+            ["title" => "Search Stores", "anchor" => $viewRoute, "img" => "/images/icons/search-256.png", "action" => "Search"]
         ];
 
         return view('menu', [

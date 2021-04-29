@@ -112,18 +112,29 @@ class StockOnHandController extends UserAccessController
     {
         $title = "Assign SOH Products";
 
+        $productController = new ProductController();
+        $categories = $productController->buildCategories();
+
         $assignedProducts = $this->store->products()->get();
         $assignedmap = [];
         foreach ($assignedProducts as $product) {
             $assignedmap[$product->id] = $product;
         }
+        $defaultOpenTab = "Chilled";
+        $organisedProducts = [];
 
         $productList = Product::orderby('category')->orderby('subcategory')->orderby('name')->get();
 
+        foreach ($productList as $product) {
+            $organisedProducts[$product->category][$product->subcategory][] = $product;
+        }
         return view("soh.assign", [
             "title" => $title,
             "productList" => $productList,
-            "assignedMap" => $assignedmap
+            "assignedMap" => $assignedmap,
+            "categories" => $categories,
+            "organisedProducts" => $organisedProducts,
+            "defaultOpenTab" => $defaultOpenTab
         ]);
     }
 

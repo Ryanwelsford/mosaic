@@ -19,12 +19,22 @@
 
     <div class="main-tile">
         <h2>Cases by subcategory</h2>
+        @if($quantity == 0)
+        <label>No case information found</label>
+        @else
         <div id="piechart" class="chart center-column"></div>
+        @endif
+
     </div>
 
     <div class="main-tile">
         <h2>Value by subcategory</h2>
+        @if($quantity == 0)
+        <label>No value information found</label>
+        @else
         <div id="piechart2" class=" chart center-column"></div>
+        @endif
+
     </div>
 
     <div class="main-tile tile-all-columns center-column">

@@ -18,9 +18,9 @@ class AdminController extends AdminAccessController
 
 
         $menuitems = [
-            ["title" => "Create Admin", "anchor" => route("admin.new"), "img" => "/images/icons/new-256.png"],
-            ["title" => "Edit Admin", "anchor" => route("admin.view"), "img" => "/images/icons/edit-256.png"],
-            ["title" => "Search Admins", "anchor" => route("admin.view"), "img" => "/images/icons/search-256.png"]
+            ["title" => "Create Admin", "anchor" => route("admin.new"), "img" => "/images/icons/new-256.png", "action" => "Create"],
+            ["title" => "Edit Admin", "anchor" => route("admin.view"), "img" => "/images/icons/edit-256.png", "action" => "Edit"],
+            ["title" => "Search Admins", "anchor" => route("admin.view"), "img" => "/images/icons/search-256.png", "action" => "Search"]
         ];
 
         return view('menu', [

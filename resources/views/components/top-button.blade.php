@@ -1,5 +1,5 @@
 <section>
-    <button title="Scroll to top" onclick="scrollUpTop()" class="ph-button ph-button-important top-button">Top</button>
+    <button type="button" title="Scroll to top" onclick="scrollUpTop()" class="ph-button ph-button-important top-button">Top</button>
 </section>
 <script>
     window.onscroll = function() {

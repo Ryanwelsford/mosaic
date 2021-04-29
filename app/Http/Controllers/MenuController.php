@@ -24,11 +24,10 @@ class MenuController extends AdminAccessController
         $viewRoute = Route("menu.view");
 
         $menuitems = [
-            ["title" => "New " . $item, "anchor" => $newMenu, "img" => "/images/icons/new-256.png"],
-            ["title" => "Edit " . $item, "anchor" => $viewRoute, "img" => "/images/icons/edit-256.png"],
-            ["title" => "View " . $item . "s", "anchor" => $viewRoute, "img" => "/images/icons/view-256.png"],
-            ["title" => "Copy " . $item, "anchor" => $viewRoute, "img" => "/images/icons/copy-256.png"],
-            ["title" => $item . " Reports", "anchor" => "/test", "img" => "/images/icons/report-256.png"]
+            ["title" => "New " . $item, "anchor" => $newMenu, "img" => "/images/icons/new-256.png", "action" => "Create"],
+            ["title" => "Edit " . $item, "anchor" => $viewRoute, "img" => "/images/icons/edit-256.png", "action" => "Edit"],
+            ["title" => "View " . $item . "s", "anchor" => $viewRoute, "img" => "/images/icons/view-256.png", "action" => "View"],
+            ["title" => "Copy " . $item, "anchor" => $viewRoute, "img" => "/images/icons/copy-256.png", "action" => "Copy"],
         ];
 
         return view('menu', [

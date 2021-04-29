@@ -28,9 +28,9 @@ class WasteListController extends AdminAccessController
 
         //setup menu options with routes and icons
         $menuitems = [
-            ["title" => "New Waste List", "anchor" => $newRoute, "img" => "/images/icons/new-256.png"],
-            ["title" => "Edit Waste List", "anchor" => $viewRoute, "img" => "/images/icons/edit-256.png"],
-            ["title" => "View Waste Lists", "anchor" => $viewRoute, "img" => "/images/icons/view-256.png"]
+            ["title" => "New Waste List", "anchor" => $newRoute, "img" => "/images/icons/new-256.png", "action" => "Create"],
+            ["title" => "Edit Waste List", "anchor" => $viewRoute, "img" => "/images/icons/edit-256.png", "action" => "Edit"],
+            ["title" => "View Waste Lists", "anchor" => $viewRoute, "img" => "/images/icons/view-256.png", "action" => "View"]
         ];
 
         return view('menu', [

@@ -10,7 +10,7 @@
             <label>Starting from: {{ $starting_date->format('jS M Y') }}</label>
             <label>Ending at: {{ $ending_date->format('jS M Y') }}</label>
 
-            <label class="margin-top-2">Total forecast Value: £{{$forecast_total}}</label>
+            <label class="margin-top-2">Total forecast Value: £{{number_format($forecast_total, 0)}}</label>
         </div>
     </div>
 
@@ -28,7 +28,7 @@
                         <tr>
                             <td><a class=" ph-button ph-button-standard table-button center" href="{{ route("forecasting.week", [$value["date"]]) }}">Details</a></td>
                             <td>{{ $week_start }}</td>
-                            <td>£{{ $value["value"] }}</td>
+                            <td>£{{ number_format($value["value"],0) }}</td>
                         </tr>
                     @endforeach
                 </tr>
@@ -51,7 +51,7 @@
                 @foreach($forecasts as $forecast)
                     <tr>
                         <td>{{ $forecast->getDate()->format('l jS M Y') }}</td>
-                        <td>{{ $forecast->value }}</td>
+                        <td>{{ number_format($forecast->value,0) }}</td>
                     </tr>
                 @endforeach
             </table>
