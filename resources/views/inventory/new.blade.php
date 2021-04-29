@@ -21,7 +21,7 @@
             <thead>
                 <th class="mob-hidden">Code</th>
                 <th>Description</th>
-                <th>Category</th>
+                <th class="mob-hidden">Category</th>
                 <th>Count</th>
                 <th>Total</th>
             </thead>
@@ -44,7 +44,7 @@
                     <tr>
                         <td class="mob-hidden">{{ $product->code }}</td>
                         <td>{{ $product->name }}</td>
-                        <td>{{ $product->category }} - {{ $product->subcategory }}</td>
+                        <td class="mob-hidden">{{ $product->subcategory }}</td>
                         <td>
                             <div class="counter-holder">
                                 <input  data-count="{{ $product->units->quantity }}" type="number" class="table-input count-box" min="0" step="1" placeholder="Case: {{ $product->units->description }}">

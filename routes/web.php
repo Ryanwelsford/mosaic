@@ -147,8 +147,8 @@ Route::delete('/stockonhand/destroy/{soh}', [StockOnHandController::class, 'dest
 Route::get('/waste/home', [WasteController::class, 'home'])->name('waste.home');
 Route::get('/waste/new', [WasteController::class, 'store'])->name('waste.new');
 Route::get('/waste/view', [WasteController::class, 'view'])->name('waste.view');
-Route::Get('/waste/print', [WasteController::class, "print"])->name("waste.print");
-Route::Get('/waste/summary', [WasteController::class, "summary"])->name("waste.summary");
+Route::Get('/waste/print/{waste}', [WasteController::class, "print"])->name("waste.print");
+Route::Get('/waste/summary/{waste}', [WasteController::class, "summary"])->name("waste.summary");
 Route::post('/waste/new', [WasteController::class, 'save']);
 Route::post('/waste/category', [WasteController::class, 'categoryReturn']);
 Route::delete('/waste/view/{id}', [WasteController::class, 'destroy'])->name('waste.destroy');

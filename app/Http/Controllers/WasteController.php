@@ -19,9 +19,9 @@ class WasteController extends UserAccessController
         $title = "Waste Home";
 
         $menuitems = [
-            ["title" => "New Waste", "anchor" => route('waste.new'), "img" => "/images/icons/new-256.png"],
-            ["title" => "Edit Waste", "anchor" => route('waste.view'), "img" => "/images/icons/edit-256.png"],
-            ["title" => "View Waste", "anchor" => route('waste.view'), "img" => "/images/icons/view-256.png"],
+            ["title" => "New Waste", "anchor" => route('waste.new'), "img" => "/images/icons/new-256.png", "action" => "Create"],
+            ["title" => "Edit Waste", "anchor" => route('waste.view'), "img" => "/images/icons/edit-256.png", "action" => "Edit"],
+            ["title" => "Waste Summaries", "anchor" => route('waste.view'), "img" => "/images/icons/view-256.png", "action" => "View"],
             ["title" => "Waste Reports", "anchor" => "/test", "img" => "/images/icons/report-256.png"]
         ];
 
@@ -130,7 +130,7 @@ class WasteController extends UserAccessController
         $title = "Waste Confirmation";
         $heading = "Waste Successfully Booked";
         $text = "Waste has been created successfully for a total value of £" . number_format($sum, 2) . " and " . $quantity . " cases in total";
-        $anchor = route('waste.new');
+        $anchor = route('waste.print', [$waste->id]);
         return view("general.confirmation-print", ["title" => $title, "heading" => $heading, "text" => $text, "anchor" => $anchor]);
     }
 
@@ -166,17 +166,23 @@ class WasteController extends UserAccessController
         if ($sort == null) {
             $sort = "id";
         }
+
         $modelSearchv4 = new ModelSearchv4(Waste::class, $searchFields, $searchFields, ["table" => "wastes", "field" => "store_id", "value" => $this->store->id], $join);
         $wastes = $modelSearchv4->search($search, $sort, $sortDirection);
 
         $searchFields = array_merge($waste->getSearchable(), $wastelist->getSearchable());
+
         return view("waste.view", ["title" => $title, "wastes" => $wastes, "search" => $search, "sort" => $sort, "searchFields" => $searchFields, "response" => $response]);
     }
 
-    public function summary(Request $request)
+    public function summary(Waste $waste)
     {
+        if (!isset($waste->id) || is_null($waste)) {
+            return redirect()->route("waste.view");
+        }
+
         $title = "Waste Summary";
-        [$waste, $products, $sum, $quantity] = $this->wasteDetails($request->id);
+        [$waste, $products, $sum, $quantity] = $this->wasteDetails($waste->id);
         return view("waste.summary", ["title" => $title, "store" => $this->store, "waste" => $waste, "listing" => $products, "sum" => $sum, "quantity" => $quantity]);
     }
     public function wasteDetails($id)
@@ -188,10 +194,15 @@ class WasteController extends UserAccessController
 
         return [$waste, $products, $sum, $quantity];
     }
-    public function print(Request $request)
+    public function print(Waste $waste)
     {
+        if (!isset($waste->id) || is_null($waste)) {
+            return redirect()->route("waste.view");
+        }
+
+
         $title = "Waste Summary";
-        [$waste, $products, $sum, $quantity] = $this->wasteDetails($request->id);
+        [$waste, $products, $sum, $quantity] = $this->wasteDetails($waste->id);
 
         return view("waste.print", ["title" => $title, "store" => $this->store, "waste" => $waste, "listing" => $products, "sum" => $sum, "quantity" => $quantity]);
     }

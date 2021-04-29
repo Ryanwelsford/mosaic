@@ -12,7 +12,7 @@ use App\Models\Forecast;
 
 class ForecastingController extends UserAccessController
 {
-    public function home()
+    public function home(Request $request)
     {
 
         $title = "Forecasting Home";
@@ -29,6 +29,16 @@ class ForecastingController extends UserAccessController
             ["title" => "Weekly Forecast", "anchor" => route('forecasting.week', [$lastMonday->format('Y-m-d')]), "img" => "/images/icons/pound-256.png"],
             ["title" => "Four Week Forecast", "anchor" => route('forecasting.monthSelect'), "img" => "/images/icons/pound-256.png"],
         ];
+
+        if (isset($request->report)) {
+            $menuitems = [
+                ["title" => "Seven Day Forecast", "anchor" => route('forecasting.week', [$date->format('Y-m-d')]), "img" => "/images/icons/pound-256.png"],
+                ["title" => "Weekly Forecast", "anchor" => route('forecasting.week', [$lastMonday->format('Y-m-d')]), "img" => "/images/icons/pound-256.png"],
+                ["title" => "Four Week Forecast", "anchor" => route('forecasting.monthSelect'), "img" => "/images/icons/pound-256.png"],
+                ["title" => "New Forecast", "anchor" => $newFc, "img" => "/images/icons/new-256.png"],
+                ["title" => "Edit Forecast", "anchor" => $newFc, "img" => "/images/icons/edit-256.png"],
+            ];
+        }
 
         return view('menu', [
             "menuitems" => $menuitems,

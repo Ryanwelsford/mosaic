@@ -1,6 +1,10 @@
 @extends('layout')
 @section('title', $title)
 
+@section("tools")
+<button form="menuAssign" type="submit" class="bar-tool-button">@include("icons.save")</button>
+@endsection
+
 @section('content')
 <div class="grid-container">
     <div class="main-tile tile-all-columns center-column">
@@ -97,11 +101,11 @@
                 @endforeach
 
                 <div class="main-tile-button-container">
-                    <button id="previous" class="ph-button ph-button-standard" type="button" onclick="next()">Previous</button>
-                    <button id="next" class="ph-button ph-button-standard" type="button" onclick="previous()">Next</button>
+                    <button id="previous" class="ph-button ph-button-standard" type="button" onclick="previousCategory()">Previous</button>
+                    <button id="next" class="ph-button ph-button-standard" type="button" onclick="nextCategory()">Next</button>
                 </div>
                 <div class="main-tile-button-container center-column margin-top">
-                    <button form="menuAssign" type="submit" class="ph-button ph-button-important">Submit</button>
+                    <button form="menuAssign" type="submit" class="ph-button ph-button-important">@include("icons.save")</button>
                 </div>
 
     </form>
@@ -118,99 +122,6 @@
     subSelect.onchange = function(event) {
         scrollTable();
     }
-    function updateSelect() {
-
-        //test = Object.keys(categories)
-        let main, updated, current;
-
-        main = document.getElementById("mainSelect");
-        updated = document.getElementById("updatedSelect");
-
-        current = main.options[main.selectedIndex].value;
-
-        var selectList = Array(5);
-        //these should be alphabetical
-        selectList['Frozen'] = ["Toppings", "Cheese", "Starters", "extra"];
-        selectList['Dry'] = ["test", "test2"];
-        console.log(selectList);
-        if(current in selectList) {
-            //remove all current options.
-            while(updated.options.length > 0) {
-            updated.remove(0);
-            }
-
-        //create new options based on list
-            for(let o = 0; o <selectList[current].length; o++) {
-                newOption = document.createElement("option");
-                newOption.value = selectList[current][o];
-                newOption.text = selectList[current][o];
-
-                updated.appendChild(newOption);
-            }
-        }
-
-
-    }
-
-    function updateTable() {
-        //find teh current value of the main select
-        let main, current;
-
-        main = document.getElementById("mainSelect");
-
-        current = main.options[main.selectedIndex].value;
-
-        //get all tables
-        tables = document.getElementsByClassName("wide-table");
-        let toBeOpened;
-        //hide all tables
-        for (i = 0; i < tables.length; i++) {
-            tables[i].style.display = "none";
-
-            //get table required
-            if(tables[i].id == current) {
-                toBeOpened = tables[i];
-            }
-
-        }
-
-        //display required table
-        if(toBeOpened !== undefined) {
-            toBeOpened.style.display = "table";
-        }
-
-
-    }
-
-    function scrollTable() {
-        let main, updated, current;
-
-        //get select elements
-        main = document.getElementById("mainSelect");
-        updated = document.getElementById("updatedSelect");
-
-        //get concatenated table id
-        current = main.options[main.selectedIndex].value+updated.options[updated.selectedIndex].value
-
-        //find table row to be scrolled to
-        idToScroll = document.getElementById(current);
-
-        //scroll to table row
-        if(idToScroll !== null) {
-            console.log(idToScroll);
-            idToScroll.scrollIntoView({behavior: 'smooth'});
-        }
-    }
-
-    function next() {
-        console.log("next");
-    }
-
-    function previous() {
-
-    }
-
 
 </script>
-<x-top-button></x-top-button>
 @endsection

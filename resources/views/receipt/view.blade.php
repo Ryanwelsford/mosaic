@@ -7,8 +7,8 @@
 
 @section('content')
 <div class="grid-container">
+
     <div class="main-tile tile-all-columns center-column">
-        <h2>Order Details</h2>
         <form class="search-form grid-2-col-wide table-width-match" method="GET" action="{{ route("receiving.view") }}">
             <label>Search Receipts</label>
             <div class="search-with-button">
@@ -17,18 +17,22 @@
             </div>
         </form>
 
-        @if(isset($response) && $response != '')
-            <div class ="confirmation-banner confirmation-message margin-bottom-2 full-width">
-                <h3>{{ $response }} <button onclick="closeDiv(event)" class="close-X">X</button></h3>
-            </div>
+        @if(isset($search))
+            <p>Displaying {{$receipts->count()}} results for... <span class="italics">{{ $search }}</span> @if(isset($sort)) {{ "sorted by ".$sort }} @endif</p>
         @endif
 
         @if($receipts->count() < 1 && !isset($search))
             <p>No receipts currently exist, create a new receipt <a href="{{ route("receiving.new") }}">here</a></p>
         @endif
+    </div>
+    @if($receipts->count() >= 1)
+    <div class="main-tile tile-all-columns center-column">
+        <h2>Order Details</h2>
 
-        @if(isset($search))
-            <p>Displaying {{$receipts->count()}} results for... <span class="italics">{{ $search }}</span> @if(isset($sort)) {{ "sorted by ".$sort }} @endif</p>
+        @if(isset($response) && $response != '')
+            <div class ="confirmation-banner confirmation-message margin-bottom-2 full-width">
+                <h3>{{ $response }} <button onclick="closeDiv(event)" class="close-X">X</button></h3>
+            </div>
         @endif
 
         @if($receipts->count() >= 1)
@@ -70,9 +74,9 @@
                     <td>
                         <div class="table-button-holder">
                             <a href="{{ route('receiving.new', ['id' => $receipt->id]) }}"class="ph-button ph-button-standard table-button">@include("icons.edit")</a>
-                            <a href="{{ route('receiving.summary', [$receipt]) }}"class="ph-button ph-button-standard table-button">Summary <i class="fas fa-clipboard-list"></i></a>
+                            <a href="{{ route('receiving.summary', [$receipt]) }}"class="ph-button ph-button-standard table-button">@include("icons.summary")</a>
                             <form method="POST" action="{{ route("receiving.destroy", $receipt) }}" class="table-button">
-                                <button class="ph-button ph-button-standard ph-button-important table-button" type="submit">Delete</button>
+                                <button class="ph-button ph-button-standard ph-button-important table-button" type="submit">@include("icons.delete")</button>
                                 @csrf
                                 @method('delete')
                             </form>
@@ -87,10 +91,9 @@
         </table>
         @endif
     </div>
-
+    @endif
     <x-tools.search-modal model="Reciepts" action='receiving.view' search="{{ $search }}" :fields="$searchFields"></x-tools.search-modal>
 
 </div>
-<x-top-button></x-top-button>
 
 @endsection

@@ -39,7 +39,11 @@ class ReceivingController extends UserAccessController
         $title = "New Reciept";
         $store = $this->user->stores()->get()->first();
         $today = new Carbon();
-        $menus = Menu::orderby("updated_at")->get();
+
+        if (isset($request->id)) {
+            $today = null;
+        }
+        $menus = Menu::orderby("updated_at", 'desc')->get();
 
         $modelValidator = new ModelValidator(Receipt::class, $request->id, old());
         $receipt = $modelValidator->validate();
@@ -72,11 +76,7 @@ class ReceivingController extends UserAccessController
         );
 
         //TODO
-        $display = $request->display_mode;
         $view = "receipt.assign";
-        if ($display == true) {
-            $view = "receipt.full";
-        }
 
         //get menu product listings with the units required
         $menu = Menu::where("id", $request->menu_id)->get()->first();
@@ -178,6 +178,7 @@ class ReceivingController extends UserAccessController
         //so v3 does work with a passed restriction
         $modelSearch = new ModelSearchv3(Receipt::class, $searchFields, ["table" => "receipts", "field" => "store_id", "value" => $store->id]);
         $receipts = $modelSearch->search($search, $sort, $sortDirection);
+        $today = Carbon::now();
 
         return view("receipt.view", [
             "title" => $title,
@@ -185,7 +186,8 @@ class ReceivingController extends UserAccessController
             "searchFields" => $fields,
             "search" => $search,
             "sort" => $sort,
-            "response" => $response
+            "response" => $response,
+            "today" => $today
         ]);
     }
     public function confirm(Receipt $receipt)
@@ -270,7 +272,7 @@ class ReceivingController extends UserAccessController
     //delete reciept
     public function destroy(Receipt $receipt, Request $request)
     {
-        $response = "Sucessfully deleted order #" . $receipt->id;
+        $response = "Sucessfully deleted receipt #" . $receipt->id;
         $receipt->delete();
         return $this->view($request, $response);
     }

@@ -22,18 +22,34 @@
                     <tr>
                         <th>Name</th>
                         <th>Code</th>
-                        <th>Category</th>
                         <th>Subcategory</th>
                         <th>Options</th>
                     </tr>
                 </thead>
 
                 <tbody>
+                    @php
+                        $category = $productList[0]->category;
+                    @endphp
+
+                    <tr>
+                        <td colspan="100%"><h3 class="table-breaker">{{ $category }}</h3></td>
+                    </tr>
+
                     @foreach ($productList as $product)
+
+                    @if($product->category != $category)
+                    @php
+                        $category = $product->category;
+                    @endphp
+                    <tr>
+                        <td colspan="100%"><h3 class="table-breaker">{{ $category }}</h3></td>
+                    </tr>
+                    @endif
+
                     <tr>
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->code }}</td>
-                        <td>{{ $product->category }}</td>
                         <td>{{ $product->subcategory }}</td>
                         <td>
                             <label class="table-button-holder">
@@ -46,7 +62,7 @@
                                 </div>
                                 <label class="ph-checkbox-label">
                                     <input class="ph-checkbox" type="checkbox" name="sohList[]" value ="{{ $product->id }}" @if(isset($assignedMap[$product->id])){{ "checked" }}@endif>
-                                    <span onclick="updateText(this)"class="checkmark"></span>
+                                    <span onclick="updateText(this)"class="checkmark "></span>
                                 </label>
                             </label>
                         </td>

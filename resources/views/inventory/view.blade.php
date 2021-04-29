@@ -8,7 +8,6 @@
 @section('content')
 <div class="grid-container">
     <div class="main-tile tile-all-columns center-column">
-        <h2>Count Details</h2>
         <form class="search-form grid-2-col-wide table-width-match" method="GET" action="{{ route("inventory.view") }}">
             <label>Search Counts</label>
             <div class="search-with-button">
@@ -17,19 +16,26 @@
             </div>
         </form>
 
+        @if(isset($search))
+            <p>Displaying {{$inventory->count()}} results for... <span class="italics">{{ $search }}</span> @if(isset($sort)) {{ "sorted by ".$sort }} @endif</p>
+        @endif
+
+        @if($inventory->count() < 1 && !isset($search))
+            <p>No receipts currently exist, create a new receipt <a href="{{ route("inventory.new") }}">here</a></p>
+        @endif
+    </div>
+
+    @if($inventory->count() >= 1)
+    <div class="main-tile tile-all-columns center-column">
+        <h2>Count Details</h2>
+
         @if(isset($inventory) && $response != '')
             <div class ="confirmation-banner confirmation-message margin-bottom-2 full-width">
                 <h3>{{ $response }} <button onclick="closeDiv(event)" class="close-X">X</button></h3>
             </div>
         @endif
 
-        @if($inventory->count() < 1 && !isset($search))
-            <p>No receipts currently exist, create a new receipt <a href="{{ route("receiving.new") }}">here</a></p>
-        @endif
 
-        @if(isset($search))
-            <p>Displaying {{$inventory->count()}} results for... <span class="italics">{{ $search }}</span> @if(isset($sort)) {{ "sorted by ".$sort }} @endif</p>
-        @endif
 
         @if($inventory->count() >= 1)
         <table class="wide-table full-width reduced-table">
@@ -73,6 +79,7 @@
         </table>
         @endif
     </div>
+    @endif
 
     <x-tools.search-modal model="Inventory" action='inventory.view' search="{{ $search }}" :fields="$searchFields"></x-tools.search-modal>
 

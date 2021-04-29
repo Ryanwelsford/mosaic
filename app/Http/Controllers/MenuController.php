@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Helpers\ModelSearch;
 use App\Http\Helpers\ModelValidator;
 use App\Http\Controllers\ProductController;
+use App\Http\Helpers\ModelSearch\ModelSearchv4;
 use App\Http\Controllers\Types\AdminAccessController;
 
 //TODO create copy method to allow for a new menu to be created from a base menu, copying all the product mappings
@@ -174,28 +175,44 @@ class MenuController extends AdminAccessController
     }
 
     //will need to add menu when model created.
-    public function destroy(Menu $menu)
+    public function destroy(Menu $menu, Request $request)
     {
+        $response = "Successfully deleted menu #" . $menu->id . " " . $menu->name;
         $menu->delete();
 
-        return back();
+        return $this->view($request, $response);
     }
 
     //display all menus with options to edit, delete and copy eventually
-    public function view(Request $request)
+    public function view(Request $request, $response = "")
     {
         //TODO break this function down into a class
         $title = "View Menus";
         $menu = new Menu;
         $searchFields = $menu->searchable();
+
         $search = $request->search;
+
         $sort = $request->sort;
+        if ($sort == null) {
+            $sort = "id";
+        }
 
-        $modelSearch = new ModelSearch(Menu::class, $searchFields);
-        $menus = $modelSearch->search($search, $sort);
-        //$menus = $modelSearch->sortOnly($sort, "ASC");
+        $input["menus"] = $searchFields;
+        $sortDirection = "desc";
 
-        return view("menus.view", ['title' => $title, 'menus' => $menus, "search" => $search, "sort" => $sort, "searchFields" => $searchFields]);
+        $modelSearch = new ModelSearchv4(Menu::class, $input, $input);
+        $menus = $modelSearch->search($search, $sort, $sortDirection);
+        //dd($inventory);
+
+        return view("menus.view", [
+            'title' => $title,
+            'menus' => $menus,
+            "search" => $search,
+            "sort" => $sort,
+            "searchFields" => $searchFields,
+            "response" => $response
+        ]);
     }
 
     public function confirm(Menu $menu)

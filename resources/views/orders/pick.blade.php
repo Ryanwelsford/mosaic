@@ -2,9 +2,9 @@
 @section('title', $title)
 @section('tools')
 <div>
-    <button form="form_order" name="book" type="submit" class="bar-tool-button" value="book"><span class="mobile-hidden">Book</span> <i class="fas fa-book"></i></button>
-    <button form="form_order" class="bar-tool-button" name="save" value="save"><span class="mobile-hidden">Save</span> <i class="far fa-save"></i></button>
-    <button  class="bar-tool-button" onclick="searchModal()" name="save" value="save"><span class="mobile-hidden">Find</span> <i class="fas fa-search-location"></i></button>
+    <button form="form_order" name="book" type="submit" class="bar-tool-button" value="book">@include("icons.book")</button>
+    <button form="form_order" class="bar-tool-button" name="save" value="save">@include('icons.save')</button>
+    <button  class="bar-tool-button" onclick="searchModal()" name="save" value="save">@include("icons.find")</button>
 </div>
 @endsection
 @section('content')
@@ -24,10 +24,11 @@
                 <h2 class="tile-title tile-all-columns ">Order Details</h2>
                 <div class="grid-2-col-wide centered full-width">
                     <label>Status: {{ $order->status }}</label>
-                    <label>Store: {{ $store->name }}</label>
+                    <label>Store: {{ $store->store_name }}</label>
                     <label>Menu: {{ $menu->name }}</label>
                     <label>Delivery Date: {{ $order->delivery_date }}</label>
                 </div>
+                
                 <table class="wide-table full-width reduced-table" id="findable">
                     <th class="mob-hidden">Id</th>
                     <th>Code</th>
@@ -74,7 +75,7 @@
         </form>
 
         <div class="tile-all-columns center-column margin-top">
-                <button form="form_order" name="book" value="book" type="submit" class="ph-button ph-button-standard ph-button-important">Book Order <i class="fas fa-book"></i></button>
+                <button form="form_order" name="book" value="book" type="submit" class="ph-button ph-button-standard ph-button-important">@include('icons.book')</button>
         </div>
 
     </div>

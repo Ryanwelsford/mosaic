@@ -18,10 +18,10 @@ class StockOnHandController extends UserAccessController
         $title = "Stock on Hand Home";
 
         $menuitems = [
-            ["title" => "New Count", "anchor" => route('soh.new'), "img" => "/images/icons/new-256.png"],
-            ["title" => "Adjust Products", "anchor" => route('soh.assign'), "img" => "/images/icons/edit-256.png"],
-            ["title" => "View Counts", "anchor" => route('soh.view'), "img" => "/images/icons/view-256.png"],
-            ["title" => "Stock on Hand Reports", "anchor" => "/test", "img" => "/images/icons/report-256.png"]
+            ["title" => "New Count", "anchor" => route('soh.new'), "img" => "/images/icons/new-256.png", "action" => "Create"],
+            ["title" => "Adjust Products", "anchor" => route('soh.assign'), "img" => "/images/icons/edit-256.png", "action" => "edit"],
+            ["title" => "View Counts", "anchor" => route('soh.view'), "img" => "/images/icons/view-256.png", "action" => "view"],
+            ["title" => "Stock on Hand Reports", "anchor" => "#", "img" => "/images/icons/report-256.png"]
         ];
 
         return view('menu', [
@@ -172,7 +172,7 @@ class StockOnHandController extends UserAccessController
 
     //allow for the printing of a weeks worth of SOH data?
 
-    public function print() {
-
+    public function print()
+    {
     }
 }

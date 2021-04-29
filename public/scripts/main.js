@@ -322,6 +322,124 @@ var defaultOptions = {
   }
 
 
+  function updateSelect() {
+
+    //test = Object.keys(categories)
+    let main, updated, current;
+
+    main = document.getElementById("mainSelect");
+    updated = document.getElementById("updatedSelect");
+
+    current = main.options[main.selectedIndex].value;
+    //console.log(selectList)
+    //these should be alphabetical
+    if(current in selectList) {
+        //remove all current options.
+        while(updated.options.length > 0) {
+        updated.remove(0);
+        }
+
+    //create new options based on list
+        for(let o = 0; o <selectList[current].length; o++) {
+            newOption = document.createElement("option");
+            newOption.value = selectList[current][o];
+            newOption.text = selectList[current][o];
+
+            updated.appendChild(newOption);
+        }
+    }
+
+
+}
+
+function updateTable() {
+    //find teh current value of the main select
+    let main, current;
+
+    main = document.getElementById("mainSelect");
+
+    current = main.options[main.selectedIndex].value;
+
+    //get all tables
+    tables = document.getElementsByClassName("wide-table");
+    let toBeOpened;
+    //hide all tables
+    for (i = 0; i < tables.length; i++) {
+        tables[i].style.display = "none";
+
+        //get table required
+        if(tables[i].id == current) {
+            toBeOpened = tables[i];
+        }
+
+    }
+
+    //display required table
+    if(toBeOpened !== undefined) {
+        toBeOpened.style.display = "table";
+    }
+
+
+}
+
+function scrollTable() {
+    let main, updated, current;
+
+    //get select elements
+    main = document.getElementById("mainSelect");
+    updated = document.getElementById("updatedSelect");
+
+    //get concatenated table id
+    current = main.options[main.selectedIndex].value+updated.options[updated.selectedIndex].value
+
+    //find table row to be scrolled to
+    idToScroll = document.getElementById(current);
+
+    //scroll to table row
+    if(idToScroll !== null) {
+        console.log(idToScroll);
+        idToScroll.scrollIntoView({behavior: 'smooth'});
+    }
+}
+
+function nextCategory() {
+    let main, current;
+
+    main = document.getElementById("mainSelect");
+    updated = document.getElementById("updatedSelect");
+
+    current = main.options[main.selectedIndex].value;
+
+    let value = main.selectedIndex+1;
+    if(value == selectList.length-1) {
+        value = 0;
+    }
+    main.selectedIndex = value;
+
+    updateSelect();
+    updateTable();
+}
+
+function previousCategory() {
+    let main, current;
+
+    main = document.getElementById("mainSelect");
+    updated = document.getElementById("updatedSelect");
+
+    current = main.options[main.selectedIndex].value;
+
+    let value = main.selectedIndex-1;
+
+    if(value == -1) {
+        value = selectList.length-2;
+    }
+
+    main.selectedIndex = value;
+
+    updateSelect();
+    updateTable();
+}
+
 //functions that run on page load
 function setup() {
     setupTotals();

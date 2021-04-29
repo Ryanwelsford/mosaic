@@ -29,7 +29,7 @@
 
     <div class="main-tile tile-all-columns center-column">
         <div class="full-width">
-
+            <h2>Product Listings</h2>
             <table id="findable" class="wide-table full-width reduced-table" >
                 <th>Product Name</th>
                 <th>Value</th>

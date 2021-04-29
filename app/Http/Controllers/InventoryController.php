@@ -21,10 +21,11 @@ class InventoryController extends UserAccessController
         $inventory = Inventory::orderby('created_at', 'desc')->where('store_id', $this->store->id)->get()->first();
 
         $menuitems = [
-            ["title" => "New Count", "anchor" => route("inventory.new"), "img" => "/images/icons/new-256.png"],
             ["title" => "Current Count", "anchor" => route("inventory.summary", [$inventory->id]), "img" => "/images/icons/summary-256.png"],
-            ["title" => "View Count", "anchor" => route("inventory.view"), "img" => "/images/icons/view-256.png"],
-            ["title" => "Inventory Reports", "anchor" => "/test", "img" => "/images/icons/report-256.png"]
+            ["title" => "New Count", "anchor" => route("inventory.new"), "img" => "/images/icons/new-256.png"],
+            ["title" => "Edit Saved Count", "anchor" => route("inventory.view", ["search" => "saved"]), "img" => "/images/icons/edit-256.png"],
+            ["title" => "Previous Count Summaries", "anchor" => route("inventory.view"), "img" => "/images/icons/view-256.png"],
+
         ];
 
         return view('menu', [
@@ -179,17 +180,17 @@ class InventoryController extends UserAccessController
             $totalValue += ($product->pivot->quantity / $product->units->quantity) * $product->units->price;
 
             if (isset($catSummary[$product->subcategory])) {
-            $catSummary[$product->subcategory]["quantity"] += $product->pivot->quantity / $product->units->quantity;
-            $catSummary[$product->subcategory]["sum"] += ($product->pivot->quantity / $product->units->quantity) * $product->units->price;
-        } else {
-            $catSummary[$product->subcategory]["quantity"] = $product->pivot->quantity / $product->units->quantity;
-            $catSummary[$product->subcategory]["sum"] = ($product->pivot->quantity / $product->units->quantity) * $product->units->price;
-        }
+                $catSummary[$product->subcategory]["quantity"] += $product->pivot->quantity / $product->units->quantity;
+                $catSummary[$product->subcategory]["sum"] += ($product->pivot->quantity / $product->units->quantity) * $product->units->price;
+            } else {
+                $catSummary[$product->subcategory]["quantity"] = $product->pivot->quantity / $product->units->quantity;
+                $catSummary[$product->subcategory]["sum"] = ($product->pivot->quantity / $product->units->quantity) * $product->units->price;
+            }
         }
 
         [$chartData1, $chartData2] = $this->gatherChartData($catSummary);
 
-        
+
         $title = "Count Summary";
 
         return view("inventory.summary-category", [

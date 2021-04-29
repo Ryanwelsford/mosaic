@@ -1,8 +1,8 @@
 @extends('layout')
 @section('title', $title)
 @section("tools")
-<button class="bar-tool-button" type="button" onclick="openOrCloseModal('search-modal')" name="save" value="save">Add <i class="fas fa-plus-circle"></i></button>
-<button form="form" name="book" type="submit" class="bar-tool-button" value="book"><span class="mobile-hidden">Book</span> <i class="fas fa-book"></i></button>
+<button class="bar-tool-button" type="button" onclick="openOrCloseModal('search-modal')" name="save" value="save">@include('icons.add')</button>
+<button form="form" name="book" type="submit" class="bar-tool-button" value="book">@include("icons.book")</button>
 @endsection
 @section('content')
 
@@ -15,7 +15,7 @@
             <input type="hidden" name="id" value="@if(isset($wastes->id)){{$wastes->id}}@endif">
             <div class="right-content full-width margin-bottom-2">
                 <h3>Add Products to Waste </h3>
-                <button type="button" class="ph-button ph-button-standard margin-left-2" onclick="openOrCloseModal('search-modal')" name="save" value="save">Add <i class="fas fa-plus-circle"></i></button>
+                <button type="button" class="ph-button ph-button-standard margin-left-2" onclick="openOrCloseModal('search-modal')" name="save" value="save">@include("icons.add")</button>
             </div>
             <div class="grid-2-col-wide centered">
                 <label>Reference: @error('reference') <span class="error-text">*</span> @enderror</label>
@@ -69,7 +69,7 @@
         </form>
         </form>
         <div class="tile-all-columns center-column margin-top">
-                <button form="form" type="submit" class="ph-button ph-button-standard">Book Waste</button>
+                <button form="form" type="submit" class="ph-button ph-button-standard ph-button-important">@include("icons.book")</button>
         </div>
     </div>
 </div>

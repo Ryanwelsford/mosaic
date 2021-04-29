@@ -2,13 +2,12 @@
 @section('title', $title)
 
 @section("tools")
-    <button class="bar-tool-button" onclick="searchModal()"><span class="mobile-hidden">Search</span> <i class="fas fa-search"></i></button>
+    <button class="bar-tool-button" onclick="searchModal()">@include("icons.search")</button>
 @endsection
 
 @section('content')
 <div class="grid-container">
     <div class="main-tile tile-all-columns center-column">
-        <h2>Menu Details</h2>
         <form class="search-form grid-2-col-wide table-width-match" method="GET" action="{{ route("menu.view") }}">
             <label>Search Menus</label>
             <div class="search-with-button">
@@ -24,8 +23,19 @@
         @if(isset($search))
             <p>Displaying {{$menus->count()}} results for... <span class="italics">{{ $search }}</span> @if(isset($sort)) {{ "sorted by ".$sort }} @endif</p>
         @endif
+    </div>
+    @if($menus->count() >= 1)
+    <div class="main-tile tile-all-columns center-column">
+        <h2>Menu Details</h2>
 
         @if($menus->count() >= 1)
+
+        @if(isset($menus) && $response != '')
+            <div class ="confirmation-banner confirmation-message margin-bottom-2 full-width">
+                <h3>{{ $response }} <button onclick="closeDiv(event)" class="close-X">X</button></h3>
+            </div>
+        @endif
+        
         <table class="wide-table full-width reduced-table">
             <th>
                 <p class="mob-hidden">Menu Name</p>
@@ -69,12 +79,12 @@
 
                     <td>
                         <div class="table-button-holder">
-                            <a href="{{ route('menu.new', ['id' => $menu->id]) }}"class="ph-button ph-button-standard table-button">Edit<img src="/images/icons/edit-48-black.png"></a>
-                            <a href="{{ route('menu.new', ['copy_id' => $menu->id]) }}"class="ph-button ph-button-standard table-button">Copy<img src="/images/icons/copy-48-black.png"></a>
-                            <a href="{{ route('menu.assign', ['menu_id' => $menu->id]) }}" class="ph-button ph-button-standard table-button" type="submit">Add to<img src="/images/icons/add-list-48-black.png"></a>
+                            <a href="{{ route('menu.new', ['id' => $menu->id]) }}"class="ph-button ph-button-standard table-button">@include("icons.edit")</a>
+                            <a href="{{ route('menu.new', ['copy_id' => $menu->id]) }}"class="ph-button ph-button-standard table-button">@include("icons.copy")</a>
+                            <a href="{{ route('menu.assign', ['menu_id' => $menu->id]) }}" class="ph-button ph-button-standard table-button" type="submit">@include("icons.add")</a>
 
                             <form class="table-button" method="POST" action="{{ route("menu.destroy", $menu) }}">
-                                <button class="ph-button ph-button-standard ph-button-important table-button" type="submit">Delete</button>
+                                <button class="ph-button ph-button-standard ph-button-important table-button" type="submit">@include("icons.delete")</button>
                                 @csrf
                                 @method('delete')
                             </form>
@@ -88,29 +98,8 @@
         </table>
         @endif
     </div>
-
-    <section class="modal" id="search-modal">
-        <div class="modal-internal small-modal">
-            <div class="modal-title">Search Menus <button onclick="searchModal()" class="close-X">X</button></div>
-            <div class="modal-content vert-center">
-                <div class="modal-center">
-                    <form class="search-form grid-2-col-wide centered" method="GET" action="{{ route("menu.view") }}">
-                        <label>Search Menus</label>
-                        <input name="search" value="@if(isset($search)){{$search}}@endif" type ="text" class=" "  id="search-bar" placeholder="Search here">
-                        <label>Sort by</label>
-                        <select name="sort">
-                            @foreach($searchFields as $field)
-                                <option value="{{ $field }}">{{str_replace("_", " ", $field)}}</option>
-                            @endforeach
-                        </select>
-                        <input type="submit" class="ph-button ph-button-standard tile-all-columns">
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
+    @endif
+    <x-tools.search-modal model="menu" action='menu.view' search="{{ $search }}" :fields="$searchFields"></x-tools.search-modal>
 </div>
-<x-top-button></x-top-button>
 
 @endsection

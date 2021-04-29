@@ -23,7 +23,7 @@
 
                 <label>Receipt Date: </label>
                 <div>
-                    <input name="date" type="date" value="@if(isset($receipt->date)){{$receipt->getdate()->format("Y-m-d")}}@else{{$today->format("Y-m-d")}}@endif" placeholder="Enter a reference" min="{{$today->format("Y-m-d")}}">
+                    <input name="date" type="date" value="@if(isset($receipt->date)){{$receipt->getdate()->format("Y-m-d")}}@else{{$today->format("Y-m-d")}}@endif" placeholder="Enter a reference" min="@if(isset($today)){{$today->format("Y-m-d")}}@endif">
                 </div>
 
                 <label>Menu:</label>
@@ -32,20 +32,14 @@
                         <option value="{{$option->id}}"@if(isset($order->menu_id) && $order->menu_id == $option->id) {{ "selected" }} @endif>{{ ucwords($option->name) }}</option>
                     @endforeach
                 </select>
-
-                <label>Full Order Input Mode:</label>
-                <label class="ph-checkbox-label justify-right">
-                    <input class="ph-checkbox" type="checkbox" name="display_mode" value ="{{ true }}" >
-                    <span class="checkmark"></span>
-                </label>
             </div>
         </form>
 
         <div class="tile-all-columns center-column margin-top">
-                <button form="form_receiving" type="submit" class="ph-button ph-button-standard">Enter Receipt</button>
+                <button form="form_receiving" type="submit" class="ph-button ph-button-standard">Next</button>
         </div>
 
-        <p class="right-aligned">Looking to edit an receipt click <a href="{{route('menu.view')}}">here</a></p>
+        <p class="right-aligned">Looking to edit a receipt click <a href="{{route('receiving.view')}}">here</a></p>
     </div>
 </div>
 @endsection

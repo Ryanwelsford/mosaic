@@ -29,7 +29,7 @@ class OrderController extends UserAccessController
         $viewRoute = route("order.view");
         $menuitems = [
             ["title" => "New Order", "anchor" => route("order.new"), "img" => "/images/icons/new-256.png"],
-            ["title" => "New Automated Order", "anchor" => '#', "img" => "/images/icons/robot-256.png"],
+            //["title" => "New Automated Order", "anchor" => '#', "img" => "/images/icons/robot-256.png"],
             ["title" => "Edit Saved Order", "anchor" => route("order.view", ["search" => "Saved"]), "img" => "/images/icons/edit-256.png"],
             ["title" => "View All Orders", "anchor" => $viewRoute, "img" => "/images/icons/view-256.png"],
             ["title" => "Weekly Order Summary", "anchor" => route('order.weekSelect'), "img" => "/images/icons/report-256.png"]
@@ -396,7 +396,7 @@ class OrderController extends UserAccessController
         $title = "Select Week to View";
         $action = route('order.weekly');
         $heading = "Select Week";
-        $message = "Pick week to view order details";
+        $message = "Pick a week to view order details";
         return view("general.weekSelect", ["title" => $title, "action" => $action, "heading" => $heading, "message" => $message]);
     }
 }

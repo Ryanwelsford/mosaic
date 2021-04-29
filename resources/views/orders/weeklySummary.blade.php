@@ -5,6 +5,7 @@
 <div class="grid-container">
 
     <div class="main-tile">
+
         <h2>Orders Summary</h2>
         <div class="grid-2-col-wide display-flex">
             <label>Starting from: {{ $startDate->format('jS M Y') }}</label>
@@ -20,7 +21,7 @@
         @if(count($orders) > 0)
             <div id="piechart" class="chart center-column"></div>
         @else
-            <label >No order information available</label>
+            <label>No order information available</label>
         @endif
     </div>
 

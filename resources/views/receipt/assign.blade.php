@@ -51,10 +51,12 @@
                                 <td>{{$product->units->description}}</td>
                                 <td>£{{number_format($product->units->price,2)}}</td>
                                 <td>
+                                    @if(isset($product->pivot->quantity))
                                     <input name="product[{{$product->id}}]" class="table-input" type="number" min="0" step ="1"
-                                    value=@if(isset($product->pivot)){{$product->pivot->quantity}}@else{{$origin}}@endif
-
-                                    >
+                                    value="{{$product->pivot->quantity}}">
+                                    @else
+                                    <input name="product[{{$product->id}}]" value="0" type="number" class="table-input" min="0" step="1" >
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach
@@ -66,7 +68,7 @@
         </form>
 
         <div class="tile-all-columns center-column margin-top">
-                <button form="form" name="book" value="book" type="submit" class="ph-button ph-button-standard ph-button-important">Book Receipt <i class="fas fa-book"></i></button>
+                <button form="form" name="book" value="book" type="submit" class="ph-button ph-button-standard ph-button-important">@include("icons.book")</button>
         </div>
 
     </div>

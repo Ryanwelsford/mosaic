@@ -138,10 +138,10 @@
 
 
                 <ul id="inventory" class="main-nav-tab side-bar-tab">
+                    <li><a href="{{ route('inventory.latest') }}">Current Count</a></li>
                     <li><a href="{{ route('inventory.new') }}">New Count</a></li>
-                    <li><a href="{{ route('inventory.latest') }}">Latest Count</a></li>
-                    <li><a href="{{ route('inventory.view') }}">View Counts</a></li>
-                    <li><a href="">Inventory Reports</a></li>
+                    <li><a href="{{ route("inventory.view", ["search" => "saved"]) }}">Edit Counts</a></li>
+                    <li><a href="{{ route('inventory.view') }}">Count Summaries</a></li>
                 </ul>
 
             </li>
@@ -159,7 +159,7 @@
                     <li><a href="{{ route('order.new') }}">New Order</a></li>
                     <li><a href="{{ route('order.view', ["search" => "Saved"]) }}">Edit Order</a></li>
                     <li><a href="{{ route("order.view") }}">View Orders</a></li>
-                    <li><a href="">Order Reports</a></li>
+                    <li><a href="{{ route('order.weekSelect') }}">Weekly Summary</a></li>
                 </ul>
 
             </li>
@@ -192,7 +192,7 @@
                 <ul id="waste" class="main-nav-tab side-bar-tab">
                     <li><a href="{{ route('waste.new') }}">New Waste</a></li>
                     <li><a href="{{ route('waste.view') }}">View Wastes</a></li>
-                    <li><a href="">Waste Reports</a></li>
+                    <li><a href="{{ route('waste.view') }}">Waste Summaries</a></li>
                 </ul>
             </li>
 
@@ -204,13 +204,11 @@
                     </button>
                 </div>
 
-
                 <ul id="forecasting" class="main-nav-tab side-bar-tab">
                     <li><a href="{{ route("forecasting.date") }}">New Forecast</a></li>
-                    <li><a href="">Edit Forecast</a></li>
-                    <li><a href="">View Forecast</a></li>
-                    <li><a href="">Update Actuals</a></li>
-                    <li><a href="">Forecasting Reports</a></li>
+                    <li><a href="{{ route("forecasting.date") }}">Edit Forecast</a></li>
+                    <li><a href="{{ route('forecasting.home', ["report" => "true"]) }}">Weekly Reports</a></li>
+                    <li><a href="{{ route('forecasting.monthSelect') }}">Four Week Forecasts</a></li>
                 </ul>
             </li>
 
@@ -227,7 +225,7 @@
                     <li><a href="{{ route('soh.new') }}">New</a></li>
                     <li><a href="{{ route('soh.assign') }}">Adjust Products</a></li>
                     <li><a href="{{ route('soh.view') }}">View</a></li>
-                    <li><a href="">Reports</a></li>
+                    <li><a href="#">Reports</a></li>
                 </ul>
             </li>
 
