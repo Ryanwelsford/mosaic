@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Waste;
 use App\Models\Product;
 use App\Models\Wastelist;
@@ -22,7 +23,7 @@ class WasteController extends UserAccessController
             ["title" => "New Waste", "anchor" => route('waste.new'), "img" => "/images/icons/new-256.png", "action" => "Create"],
             ["title" => "Edit Waste", "anchor" => route('waste.view'), "img" => "/images/icons/edit-256.png", "action" => "Edit"],
             ["title" => "Waste Summaries", "anchor" => route('waste.view'), "img" => "/images/icons/view-256.png", "action" => "View"],
-            ["title" => "Waste Reports", "anchor" => "/test", "img" => "/images/icons/report-256.png"]
+            ["title" => "Weekly Waste Report", "anchor" => route('waste.date'), "img" => "/images/icons/report-256.png"]
         ];
 
         return view('menu', [
@@ -213,5 +214,113 @@ class WasteController extends UserAccessController
         $response = "Successfully deleted waste reference \"" . $waste->reference . "\"";
         $waste->delete();
         return $this->view($request, $response);
+    }
+
+    public function dateSelect()
+    {
+        $title = "Select Date";
+        $heading = "Select Week";
+        $label = "Pick which week to view waste data";
+        $route = route('waste.weekly');
+        return view('general.date-select', ["title" => $title, "heading" => $heading, "route" => $route, "label" => $label]);
+    }
+
+    public function weekly(Request $request)
+    {
+        //date check function within forecasting controller used as a guard clause
+        $fc = new ForecastingController();
+
+        //guard for malformed dates/ unset dates
+        if (!isset($request->date) || !$fc->checkIsAValidDate($request->date)) {
+            return redirect()->route("waste.home");
+        }
+        //build start and end times
+        $startDate = Carbon::parse($request->date)->startOfWeek();
+        $endDate = Carbon::parse($request->date)->endOfWeek();
+
+        //chain off a query
+        //you cant call the products() function as its a collection of Waste items not just a singular waste item
+        //therefore you have to loop through the waste entries and then call the products function
+        //im sure theres a better way to batch load them or something;
+        $wastes = Waste::where("store_id", $this->store->id)
+            ->whereBetween("created_at", [$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])
+            ->orderby("created_at", 'asc')
+            ->get();
+
+        $totalValue = 0;
+        $wasteDateMap = [];
+        $catMap = [];
+        foreach ($wastes as $waste) {
+            $products = $waste->products()->with("units")->get();
+            $wasteTotal = 0;
+            $wasteCases = 0;
+            foreach ($products as $product) {
+                $wasteTotal += $product->pivot->quantity * $product->units->price;
+                $wasteCases += $product->pivot->quantity;
+
+                if (!isset($catMap[$product->category])) {
+                    $catMap[$product->category] = 0;
+                }
+
+                $catMap[$product->category] += $product->pivot->quantity * $product->units->price;
+                //var_dump($catMap);
+            }
+            $wasteDateMap[$waste->created_at->format('D')][] = $wasteTotal;
+            $waste->total  = $wasteTotal;
+            $waste->quantity = $wasteCases;
+            $totalValue += $wasteTotal;
+        }
+
+        $chartData1 = $this->chartData1($wasteDateMap);
+        $chartData2 = $this->chartData2($catMap);
+
+        $title = "Weekly Summary";
+        return view('waste.weekly-summary', [
+            "title" => $title,
+            "startDate" => $startDate,
+            "endDate" => $endDate,
+            "totalValue" => $totalValue,
+            "wastes" => $wastes,
+            "chartData1" => $chartData1,
+            "chartData2" => $chartData2
+        ]);
+    }
+
+    //map data from days into correct format for google charts
+    public function chartData1($wasteDateMap)
+    {
+        $days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+        $chartData1 = [];
+        $chartData1[] = ["Day", "Pounds Wasted"];
+
+        //loop through days and check for instance in waste map, total up values for all waste entries
+        foreach ($days as $day) {
+            $value = 0;
+
+            if (isset($wasteDateMap[$day])) {
+                //allow for summing up of multiple days
+                foreach ($wasteDateMap[$day] as $each) {
+                    $value += $each;
+                }
+            }
+            //string list day to value of wastage
+            $chartData1[] = [$day, round($value)];
+        }
+
+        return json_encode($chartData1);
+    }
+
+    //map category to value within string list
+    public function chartData2($catMap)
+    {
+        $chartData2 = [];
+        $chartData2[] = ["Category", "Pounds Wasted"];
+
+        foreach ($catMap as $category => $value) {
+            $chartData2[] = [$category, $value];
+        }
+
+        return json_encode($chartData2);
     }
 }

@@ -189,7 +189,7 @@
                 <ul id="waste" class="main-nav-tab side-bar-tab">
                     <li><a href="{{ route('waste.new') }}">New Waste</a></li>
                     <li><a href="{{ route('waste.view') }}">View Wastes</a></li>
-                    <li><a href="{{ route('waste.view') }}">Waste Summaries</a></li>
+                    <li><a href="{{ route('waste.date') }}">Weekly Summary</a></li>
                 </ul>
             </li>
 
@@ -252,7 +252,12 @@
                 <div class="tools-section"> @yield('tools') </div>
             @else
             <div class="tools-section">
-                <a href="{{ route("order.home") }}" class="bar-tool-button">Home <i class="fas fa-home"></i></a>
+                @if($adminNav)
+                    <a href="{{ route("product.home") }}" class="bar-tool-button">Home <i class="fas fa-home"></i></a>
+                @else
+                    <a href="{{ route("inventory.home") }}" class="bar-tool-button">Home <i class="fas fa-home"></i></a>
+                @endif
+
             </div>
             @endif
 
@@ -264,8 +269,8 @@
 
             <div class ="user-section">
                 @auth
-                    <a href="#" class="bar-tool-button">{{ auth()->user()->getCorrectName() }} <i class="fas fa-user-cog"></i></a>
-                    <a class="bar-tool-button" href="{{ route('logout.index') }}">Logout <i class="fas fa-sign-in-alt"></i></a>
+                    <label class="bar-tool-button">{{ auth()->user()->getCorrectName() }}</label>
+                    <a class="bar-tool-button" href="{{ route('logout.index') }}">Logout <i class="fas fa-sign-out-alt"></i></a>
                 @endauth
 
                 @guest
@@ -290,7 +295,6 @@
                         <a href="{{ route('waste.home') }}"><button id="alt-waste" class="ph-button ph-button-standard modal-nav-button">Waste</button></a>
                         <a href="{{ route('forecasting.home') }}"><button id="alt-forecasting" class="ph-button ph-button-standard modal-nav-button">Forecasting</button></a>
                         <a href="{{ route('soh.home') }}"><button id="alt-soh" class="ph-button ph-button-standard modal-nav-button">SOH</button></a>
-                        <a href="{{ route('dates.home') }}"><button id="alt-dates" class="ph-button ph-button-standard modal-nav-button">Dates</button></a>
 
                         @else
                         <a href="{{ route('product.home') }}"><button id="alt-product" class="ph-button ph-button-standard modal-nav-button">Products</button></a>

@@ -6,13 +6,13 @@
 
 <div class="center-column">
     <div class="main-tile tile-all-columns center-column mono-tile">
-        <form method="GET" action="{{ route("forecasting.monthly") }}" id="form" class="center-column background-form">
+        <form method="GET" action="{{ $route}}" id="form" class="center-column background-form">
 
             <div class="grid-2-col-wide">
-                <h2 class="tile-title tile-all-columns ">Select Month</h2>
+                <h2 class="tile-title tile-all-columns ">{{ $heading }}</h2>
 
-                <label>Pick Month to view</label>
-                <input class="margin-top" name="date" type="date">
+                <label>{{ $label }}</label>
+                <input class="margin-top" name="date" type="date" required>
 
             </div>
         </form>

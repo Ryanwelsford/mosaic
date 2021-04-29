@@ -31,7 +31,8 @@ class Waste extends Model
         return $this->searchable;
     }
 
-    public function getCreated($string = '') {
+    public function getCreated($string = '')
+    {
         $carbon = new Carbon($string);
         return $carbon->format('d M Y');
     }

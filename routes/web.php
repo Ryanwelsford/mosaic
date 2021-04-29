@@ -152,6 +152,8 @@ Route::Get('/waste/summary/{waste}', [WasteController::class, "summary"])->name(
 Route::post('/waste/new', [WasteController::class, 'save']);
 Route::post('/waste/category', [WasteController::class, 'categoryReturn']);
 Route::delete('/waste/view/{id}', [WasteController::class, 'destroy'])->name('waste.destroy');
+Route::Get('/waste/date/select', [WasteController::class, "dateSelect"])->name("waste.date");
+Route::Get('/waste/weekly', [WasteController::class, "weekly"])->name("waste.weekly");
 
 //inventory routes
 Route::get('/inventory/home', [InventoryController::class, 'home'])->name('inventory.home');

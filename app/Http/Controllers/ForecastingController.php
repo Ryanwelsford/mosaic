@@ -56,6 +56,7 @@ class ForecastingController extends UserAccessController
         //add 6 as it is inclusive of the first day
         $weekAfterDate = Carbon::now()->next("monday")->addDays(6);
         $today = new Carbon();
+
         return view("forecast.new", [
             "title" => $title,
             "date" => $date,
@@ -63,6 +64,7 @@ class ForecastingController extends UserAccessController
             "today" => $today
         ]);
     }
+
     //TODO add ability to check dates to ensure a min has been achieved.
     public function store(Request $request)
     {
@@ -231,6 +233,11 @@ class ForecastingController extends UserAccessController
 
     public function monthSelect()
     {
-        return view("forecast.monthSelect", ["title" => "Select Month"]);
+        $title = "Select Month";
+        $heading = "Select Month";
+        $label = "Pick Month to view";
+        $route = route("forecasting.monthly");
+
+        return view("general.date-select", ["title" => $title, "heading" => $heading, "label" => $label, "route" => $route]);
     }
 }
