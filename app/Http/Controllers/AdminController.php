@@ -69,6 +69,7 @@ class AdminController extends AdminAccessController
         $text = "Admin " . $user->name . " has been created successfully.";
         $anchor = route("admin.new");
         $anchorText = " to create another admin.";
+
         return view("general.confirmation-custom", [
             "title" => $title,
             "heading" => $heading,

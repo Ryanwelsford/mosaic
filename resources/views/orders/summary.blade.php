@@ -46,7 +46,7 @@
             </table>
 
             <div class="tile-all-columns center-column margin-top">
-                <a href="{{ route('order.print', ["id" => $order->id]) }}" class="ph-button ph-button-standard">Print</a>
+                <a href="{{ route('order.print', ["id" => $order->id]) }}" class="ph-button ph-button-standard">@include('icons.print')</a>
             </div>
         </div>
     </div>

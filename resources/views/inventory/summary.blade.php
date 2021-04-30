@@ -59,7 +59,7 @@
 
 
             <div class="tile-all-columns center-column margin-top">
-                <a href="{{ route('inventory.print', [$inventory->id]) }}" class="ph-button ph-button-standard">Print</a>
+                <a target="_blank" href="{{ route('inventory.print', [$inventory->id]) }}" class="ph-button ph-button-standard">@include('icons.print')</a>
             </div>
         </div>
     </div>

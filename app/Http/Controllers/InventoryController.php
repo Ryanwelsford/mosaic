@@ -109,6 +109,7 @@ class InventoryController extends UserAccessController
         $text = "Count has been created successfully for a total value of £" . number_format($sum, 2) . " and " . $quantity . " cases in total";
         $anchor = route('inventory.summary', [$inventory->id]);
         $anchorText = " to view the count summary";
+
         return view("general.confirmation-custom", ["title" => $title, "heading" => $heading, "text" => $text, "anchor" => $anchor, "anchorText" => $anchorText]);
     }
 

@@ -19,7 +19,7 @@
     <div class="main-tile">
         <h2>Forecast by Day</h2>
         @if(count($forecasts) > 2)
-            <div id="piechart" class="chart center-column"></div>
+            <div id="linechart" class="chart center-column"></div>
         @else
             <label>Forecast information not available</label>
         @endif
@@ -63,7 +63,7 @@
     options.title = "Forecast by Day";
     options.curveType = 'function';
 
-    var chart = new google.visualization.LineChart(document.getElementById('piechart'));
+    var chart = new google.visualization.LineChart(document.getElementById('linechart'));
 
     chart.draw(data, options);
   }

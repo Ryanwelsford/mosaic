@@ -122,6 +122,7 @@ Route::get('/order/destroy', [OrderController::class, 'view']);
 Route::delete('/order/destroy/{order}', [OrderController::class, 'destroy'])->name('order.destroy');
 Route::get('/order/report/select', [OrderController::class, 'weekSelect'])->name('order.weekSelect');
 Route::get('/order/report/weekly', [OrderController::class, 'weeklyOrder'])->name('order.weekly');
+Route::get('/order/report/monthly', [OrderController::class, 'monthlySummary'])->name('order.monthly');
 
 //reciept routes
 Route::get('/receiving/home', [ReceivingController::class, 'home'])->name('receiving.home');

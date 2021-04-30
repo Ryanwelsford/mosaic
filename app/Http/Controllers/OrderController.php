@@ -29,11 +29,12 @@ class OrderController extends UserAccessController
         $title = "Order Home";
         $viewRoute = route("order.view");
         $menuitems = [
-            ["title" => "New Order", "anchor" => route("order.new"), "img" => "/images/icons/new-256.png"],
+            ["title" => "New Order", "anchor" => route("order.new"), "img" => "/images/icons/new-256.png", "action" => "Create"],
             //["title" => "New Automated Order", "anchor" => '#', "img" => "/images/icons/robot-256.png"],
-            ["title" => "Edit Saved Order", "anchor" => route("order.view", ["search" => "Saved"]), "img" => "/images/icons/edit-256.png"],
-            ["title" => "View All Orders", "anchor" => $viewRoute, "img" => "/images/icons/view-256.png"],
-            ["title" => "Weekly Order Summary", "anchor" => route('order.weekSelect'), "img" => "/images/icons/report-256.png"]
+            ["title" => "Edit Saved Order", "anchor" => route("order.view", ["search" => "Saved"]), "img" => "/images/icons/edit-256.png", "action" => "Edit"],
+            ["title" => "View All Orders", "anchor" => $viewRoute, "img" => "/images/icons/view-256.png", "action" => "View"],
+            ["title" => "Weekly Order Summary", "anchor" => route('order.weekSelect'), "img" => "/images/icons/report-256.png"],
+            ["title" => "Week to Week", "anchor" => route('order.weekSelect', ["month" => "true"]), "img" => "/images/icons/report-256.png"],
         ];
 
         return view('menu', [
@@ -187,6 +188,7 @@ class OrderController extends UserAccessController
         $text = "Order has been created successfully for a total value of £" . number_format($sum, 2) . " and " . $quantity . " cases in total";
 
         $anchor = route('order.print', ['id' => $order->id]);
+
         return view("general.confirmation-print", ["title" => $title, "heading" => $heading, "text" => $text, "anchor" => $anchor]);
     }
 
@@ -348,11 +350,7 @@ class OrderController extends UserAccessController
 
 
         $title = "Weekly Order Summary";
-        $orders = Order::where("store_id", $this->store->id)
-            ->where("status", "Booked")
-            ->whereBetween("delivery_date", [$startofweek->format('Y-m-d'), $endofweek->format('Y-m-d')])
-            ->get();
-        //dd($orders);
+        $orders = $this->pullOrders($startofweek, $endofweek);
 
         $sum = 0;
         $quantity = 0;
@@ -382,6 +380,18 @@ class OrderController extends UserAccessController
         ]);
     }
 
+    public function pullOrders($startDate, $endDate)
+    {
+
+        $orders = Order::where("store_id", $this->store->id)
+            ->where("status", "Booked")
+            ->whereBetween("delivery_date", [$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])
+            ->orderby("delivery_date", 'asc')
+            ->get();
+
+        return $orders;
+    }
+
     public function chartData($catSummary)
     {
         $data = [];
@@ -393,12 +403,109 @@ class OrderController extends UserAccessController
         return json_encode($data);
     }
 
-    public function weekSelect()
+    public function weekSelect(Request $request)
     {
-        $title = "Select Week to View";
-        $action = route('order.weekly');
-        $heading = "Select Week";
-        $message = "Pick a week to view order details";
+
+        if (isset($request->month)) {
+            $action = route('order.monthly');
+            $word = "Month";
+        } else {
+            $action = route('order.weekly');
+            $word = "Week";
+        }
+
+        $title = "Select " . $word . " to View";
+        $heading = "Select " . $word;
+        $message = "Pick a " . strtolower($word) . " to view order details";
+
         return view("general.weekSelect", ["title" => $title, "action" => $action, "heading" => $heading, "message" => $message]);
+    }
+
+    //pull and map data for a monthly summary of orders
+    public function monthlySummary(Request $request)
+    {
+        $fc = new ForecastingController();
+        //create current date or passed date
+        if (isset($request->date) && $fc->checkIsAValidDate($request->date)) {
+            $startofmonth = Carbon::parse($request->date)->startOfMonth();
+            $endofmonth = Carbon::parse($request->date)->endOfMonth();
+        } else {
+            $startofmonth = Carbon::now()->startOfMonth();
+            $endofmonth = Carbon::now()->endOfMonth();
+        }
+
+
+        $title = "Monthly Order Details";
+        $orders = $this->pullOrders($startofmonth, $endofmonth);
+
+        //setup base data
+        $sum = 0;
+        $chartData1 = [];
+        $chartData1[] = ["Date", "Value"];
+        $catSum = [];
+        //step through orders
+        foreach ($orders as $order) {
+            $sum += $order->total;
+            //map delivery date to order value for each order
+            $chartData1[] = [$order->getDeliveryDate()->format('d-m-y'), $order->total];
+
+            //pull product and quantity for each order
+            $products = $order->products()->with("units")->get();
+            foreach ($products as $product) {
+                //if order value isnt set yet set to 0
+                if (!isset($catSum[$order->getDeliveryDate()->format('d-m-y')][$product->category])) {
+                    $catSum[$order->getDeliveryDate()->format('d-m-y')][$product->category] = 0;
+                }
+                //map order date to category totals
+                $catSum[$order->getDeliveryDate()->format('d-m-y')][$product->category] += ($product->units->price * $product->pivot->quantity);
+            }
+        }
+
+        $chartData2 = $this->chartData2($catSum);
+        $chartData1 = json_encode($chartData1);
+
+        return view("orders.monthly", [
+            "title" => $title,
+            "startDate" => $startofmonth,
+            "endDate" => $endofmonth,
+            "totalValue" => $sum,
+            "orders" => $orders,
+            "chartData1" => $chartData1,
+            "chartData2" => $chartData2
+        ]);
+    }
+
+    public function chartData2($catSum)
+    {
+        //dd($catSum);
+        $chartData2 = [];
+        //pull category information
+        $chartData2[] = ["Date", "Chilled", "Dry", "Frozen", "Other"];
+        $pc = new ProductController;
+        $categories = $pc->buildCategories();
+
+
+        foreach ($catSum as $date => $category) {
+            //set base date for column
+            $stringArray = [$date];
+
+            //loop through categories, allows for zeros to be set in otherwise empty category in order
+            foreach ($categories as $name => $array) {
+
+                //if category exists in order map to value otherwise 0
+                if (isset($catSum[$date][$name])) {
+                    $value = $catSum[$date][$name];
+                } else {
+                    $value = 0;
+                }
+                //build array up for entire order
+                $stringArray[] = $value;
+            }
+
+            //add order details to main chart array
+            $chartData2[] = $stringArray;
+        }
+
+        return json_encode($chartData2);
     }
 }

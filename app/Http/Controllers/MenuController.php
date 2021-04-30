@@ -220,6 +220,7 @@ class MenuController extends AdminAccessController
         $heading = "Menu Successfully Created";
         $text = "Menu has been created successfully";
         $anchor = route('menu.new');
+        
         return view("general.confirmation", ["title" => $title, "heading" => $heading, "text" => $text, "anchor" => $anchor]);
     }
 }

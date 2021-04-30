@@ -38,6 +38,7 @@
         <h3 class="centered">No forecast information found</h3>
         @endif
     </div>
+
     <div class="main-tile tile-all-columns">
         <div class="full-width center-column">
             <h2 class="tile-title tile-all-columns ">Forecast by Day</h2>
