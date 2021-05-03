@@ -17,6 +17,7 @@ use App\Http\Controllers\ReceivingController;
 use App\Http\Controllers\WasteListController;
 use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\auth\LogoutController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ForecastingController;
 use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\StockOnHandController;
@@ -142,7 +143,9 @@ Route::post('/stockonhand/new', [StockOnHandController::class, 'saveCount']);
 Route::get('/stockonhand/assign', [StockOnHandController::class, 'assign'])->name('soh.assign');
 Route::post('/stockonhand/assign', [StockOnHandController::class, 'saveAssigned']);
 Route::get('/stockonhand/view', [StockOnHandController::class, 'view'])->name('soh.view');
+Route::Get('/stockonhand/date/select', [StockOnHandController::class, "dateSelect"])->name("soh.date");
 Route::delete('/stockonhand/destroy/{soh}', [StockOnHandController::class, 'destroy'])->name('soh.destroy');
+Route::get('/stockonhand/summary', [StockOnHandController::class, 'weeklySummary'])->name('soh.weekly');
 
 //waste routes
 Route::get('/waste/home', [WasteController::class, 'home'])->name('waste.home');
@@ -166,3 +169,7 @@ Route::get('/inventory/latest', [InventoryController::class, 'routeToLatest'])->
 Route::get('/inventory/print/{inventory}', [InventoryController::class, 'print'])->name('inventory.print');
 Route::get('/inventory/summary/{inventory}/{category}', [InventoryController::class, 'countDive'])->name('inventory.depth');
 Route::delete('/inventory/view/{inventory}', [InventoryController::class, 'destroy'])->name('inventory.destroy');
+
+
+//dashboard routes
+Route::get('/inventory/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');

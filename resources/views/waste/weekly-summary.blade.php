@@ -27,11 +27,11 @@
 
     <div class="main-tile">
         <h2>Waste by Category</h2>
-
+        @if($wastes->count() > 0)
             <div id="piechart" class="chart center-column"></div>
-
+        @else
             <h3 class="centered">No order information available</h3>
-
+        @endif
     </div>
 
     <div class="main-tile tile-all-columns">

@@ -255,7 +255,7 @@
                     @if($adminNav)
                         <a href="{{ route("product.home") }}" class="bar-tool-button">Home <i class="fas fa-home"></i></a>
                     @else
-                        <a href="{{ route("inventory.home") }}" class="bar-tool-button">Home <i class="fas fa-home"></i></a>
+                        <a href="{{ route("dashboard.index") }}" class="bar-tool-button">Dashboard <i class="fas fa-home"></i></a>
                     @endif
 
                 </div>
@@ -285,7 +285,7 @@
             <!--need to create admin modal as well-->
             <section class="modal" id="mobile-modal-nav">
                 <div class="modal-internal">
-                    <div class="modal-title">Dashboard <button onclick="OpenModalNav(event)" class="close-X">X</button></div>
+                    <div class="modal-title">Navigation <button onclick="OpenModalNav(event)" class="close-X">X</button></div>
                     <div class="modal-content">
                         <div class="grid-2-col modal-center">
                             @if(!$adminNav)

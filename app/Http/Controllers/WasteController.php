@@ -247,6 +247,25 @@ class WasteController extends UserAccessController
             ->orderby("created_at", 'asc')
             ->get();
 
+        [$totalValue, $wasteDateMap, $catMap] = $this->wasteCalc($wastes);
+
+        $chartData1 = $this->chartData1($wasteDateMap);
+        $chartData2 = $this->chartData2($catMap);
+
+        $title = "Weekly Summary";
+        return view('waste.weekly-summary', [
+            "title" => $title,
+            "startDate" => $startDate,
+            "endDate" => $endDate,
+            "totalValue" => $totalValue,
+            "wastes" => $wastes,
+            "chartData1" => $chartData1,
+            "chartData2" => $chartData2
+        ]);
+    }
+
+    public function wasteCalc($wastes)
+    {
         $totalValue = 0;
         $wasteDateMap = [];
         $catMap = [];
@@ -271,19 +290,7 @@ class WasteController extends UserAccessController
             $totalValue += $wasteTotal;
         }
 
-        $chartData1 = $this->chartData1($wasteDateMap);
-        $chartData2 = $this->chartData2($catMap);
-
-        $title = "Weekly Summary";
-        return view('waste.weekly-summary', [
-            "title" => $title,
-            "startDate" => $startDate,
-            "endDate" => $endDate,
-            "totalValue" => $totalValue,
-            "wastes" => $wastes,
-            "chartData1" => $chartData1,
-            "chartData2" => $chartData2
-        ]);
+        return [$totalValue, $wasteDateMap, $catMap];
     }
 
     //map data from days into correct format for google charts

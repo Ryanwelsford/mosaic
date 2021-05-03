@@ -151,6 +151,45 @@ main {
     border-radius: 15px;
     height: 100%;
 }
+.flex-tile {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-tile p {
+    align-self: flex-end;
+}
+.highlight-box {
+    border: 1px white solid;
+    padding: 2px 0px;
+    border-radius: 15px;
+    background-color: rgb(220, 39, 62);
+    margin: auto auto 2px auto;
+    width: 310px;
+    font-size: 1.2rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.dash-grid {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    justify-content: center;
+    align-items: center;
+    row-gap: 1.0rem;
+}
+.dash-grid .highlight-box {
+    margin: 0px auto;
+}
+.column-flexed {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
 .chart {
     width: 100%;
     margin: auto;
@@ -744,6 +783,7 @@ h3.centered {
     align-self: flex-end;
     position: relative;
     bottom: 0;
+    margin-top: 1rem;
   }
 
 .footer p {
@@ -958,16 +998,6 @@ input[type=number], input[type=date] {
     padding: 3px 3px;
     text-align: center;
 }
-.scrollable-table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-}
-
-.scrollable-table tbody {
-    display: table;
-    width: 100%;
-}
 .reduced-table td, .reduced-table th {
     padding: 3px 3px;
     margin: 0px;
@@ -1100,6 +1130,9 @@ ul.pagination .right {
     }
     .tile-1-3, .tile-2-4 {
         grid-column: auto;
+    }
+    .dash-grid {
+        grid-template-columns: 1fr;
     }
     .login-box {
         width: 30%;
@@ -1275,7 +1308,7 @@ ul.pagination .right {
         margin: 0px ;
     }
 
-    .table-button-holder form .table-button {   
+    .table-button-holder form .table-button {
         padding: 0px;
     }
 
@@ -1305,6 +1338,18 @@ ul.pagination .right {
     table td, table th, table tr, table, table input{
         padding: 0px;
         font-size: 16px;
+    }
+
+    .scrollable-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        border: none;
+    }
+
+    .scrollable-table tbody {
+        display: table;
+        width: 100%;
     }
 }
 

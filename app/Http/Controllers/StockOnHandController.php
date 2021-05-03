@@ -23,7 +23,7 @@ class StockOnHandController extends UserAccessController
             ["title" => "New Count", "anchor" => route('soh.new'), "img" => "/images/icons/new-256.png", "action" => "Create"],
             ["title" => "Adjust Products", "anchor" => route('soh.assign'), "img" => "/images/icons/edit-256.png", "action" => "edit"],
             ["title" => "View Counts", "anchor" => route('soh.view'), "img" => "/images/icons/view-256.png", "action" => "view"],
-            ["title" => "Stock on Hand Reports", "anchor" => "#", "img" => "/images/icons/report-256.png"]
+            ["title" => "Weekly Summary", "anchor" => route('soh.date'), "img" => "/images/icons/report-256.png"]
         ];
 
         return view('menu', [
@@ -102,8 +102,8 @@ class StockOnHandController extends UserAccessController
             "title" => "Confirmation",
             "heading" => "Count Success",
             "text" => "Count input successfully",
-            "anchorText" => "to view stock on hand reports",
-            "anchor" => "#"
+            "anchorText" => "to view the weekly totals",
+            "anchor" => route("soh.weekly", ["date" => $soh->created_at->format('Y-m-d')])
         ]);
     }
 
@@ -205,5 +205,101 @@ class StockOnHandController extends UserAccessController
 
     public function print()
     {
+    }
+
+    public function weeklySummary(Request $request)
+    {
+        $fc = new ForecastingController();
+
+        //if date check fails run dates for this week only
+        if (!$fc->checkIsAValidDate($request->date)) {
+            $startDate = Carbon::now()->startOfWeek();
+            $endDate = Carbon::now()->endOfWeek();
+        } else {
+            //valid passed date generate those dates
+            $startDate = Carbon::parse($request->date)->startOfWeek();
+            $endDate = Carbon::parse($request->date)->endOfWeek();
+        }
+        $title = "Weekly Stock on Hand";
+
+        $counts = StockOnHand::where("store_id", $this->store->id)
+            ->whereBetween('created_at', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])
+            ->orderby('created_at', 'asc')
+            ->get();
+
+        $countMap = [];
+        $productMap = [];
+        foreach ($counts as $count) {
+            $products = $count->products()->with("units")->get();
+
+            foreach ($products as $product) {
+
+                if (!isset($counter[$product->id][$count->created_at->format('D')])) {
+                    $countMap[$product->id][$count->created_at->format('D')] = 0;
+                }
+
+                $countMap[$product->id][$count->created_at->format('D')] += ($product->pivot->count / $product->units->quantity);
+
+                $productMap[$product->id] = $product;
+            }
+
+            //var_dump($countMap);
+        }
+
+
+        //dd($counts);
+        $days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+        $chartData1 = $this->chartData($countMap, $productMap, $days);
+
+        return view("soh.weekly", [
+            "title" => $title,
+            "startDate" => $startDate,
+            "endDate" => $endDate,
+            "counts" => $counts,
+            "countMap" => $countMap,
+            "productMap" => $productMap,
+            "days" => $days,
+            "chartData1" => $chartData1
+        ]);
+    }
+
+    public function chartData($countMap, $productMap, $days)
+    {
+
+        $chartData1 = [];
+
+        $headers[] = "Day";
+        foreach ($productMap as $pid => $product) {
+            $headers[] = $product->name;
+        }
+
+        $chartData1[] = $headers;
+
+        foreach ($days as $day) {
+            $tempArray = [];
+            $tempArray[] = $day;
+
+            foreach ($productMap as $pid => $product) {
+                if (isset($countMap[$pid][$day])) {
+                    $tempArray[] = $countMap[$pid][$day];
+                } else {
+                    $tempArray[] = 0;
+                }
+            }
+            //dd($tempArray);
+            $chartData1[] = $tempArray;
+        }
+
+        return json_encode($chartData1);
+    }
+
+    public function dateSelect()
+    {
+        $title = "Select Week";
+        $heading = "Select Week";
+        $text = "Pick week to view stock on hand data";
+        $action = route("soh.weekly");
+
+        return view('general.date-select', ["title" => $title, "heading" => $heading, "label" => $text, "route" => $action]);
     }
 }

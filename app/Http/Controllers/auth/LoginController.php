@@ -55,7 +55,7 @@ class LoginController extends Controller
             if ($user->isAdmin()) {
                 return redirect()->route('product.home');
             } else {
-                return redirect()->route('inventory.home');
+                return redirect()->route('dashboard.index');
             }
         } else {
             //login failed

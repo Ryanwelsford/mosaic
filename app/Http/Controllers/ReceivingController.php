@@ -20,11 +20,11 @@ class ReceivingController extends UserAccessController
 
         $title = "Receiving Home";
 
+        //add a report if possible?
         $menuitems = [
             ["title" => "New Receipt", "anchor" => route("receiving.new"), "img" => "/images/icons/new-256.png"],
             ["title" => "Edit receipt", "anchor" => route("receiving.view"), "img" => "/images/icons/edit-256.png"],
             ["title" => "View receipts", "anchor" => route("receiving.view"), "img" => "/images/icons/view-256.png"],
-            ["title" => "Receipt Reports", "anchor" => "/test", "img" => "/images/icons/report-256.png"]
         ];
 
         return view('menu', [

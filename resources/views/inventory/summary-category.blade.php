@@ -18,7 +18,7 @@
     </div>
 
     <div class="main-tile">
-        <h2>Cases by subcategory</h2>
+        <h2>Cases by Subcategory</h2>
         @if($quantity == 0)
         <label>No case information found</label>
         @else
@@ -28,7 +28,7 @@
     </div>
 
     <div class="main-tile">
-        <h2>Value by subcategory</h2>
+        <h2>Value by Subcategory</h2>
         @if($quantity == 0)
         <label>No value information found</label>
         @else

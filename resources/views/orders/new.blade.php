@@ -34,7 +34,7 @@
                 <input type="hidden" name="order[status]" value="@if(isset($order->status)){{$order->status}}@else{{"Inactive"}}@endif">
 
                 <label>Store:</label>
-                <label>{{ $store->name }}</label>
+                <label>{{ $store->store_name }}</label>
                 <input type="hidden" name="order[store_id]" value="@if(isset($order->store_id)){{$order->store_id}}@else{{$store->id}}@endif">
 
                 <label>Menu:</label>

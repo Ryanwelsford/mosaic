@@ -37,7 +37,7 @@
                 @foreach($forecasts as $forecast)
                     <tr>
                         <td>{{ $forecast->getDate()->format('l jS M Y') }}</td>
-                        <td>{{ number_format($forecast->value, 0) }}</td>
+                        <td>£{{ number_format($forecast->value, 0) }}</td>
                     </tr>
                 @endforeach
             </table>
