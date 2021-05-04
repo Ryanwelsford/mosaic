@@ -12,8 +12,8 @@
 
                 <x-inputs.hidden name="id" :value="$store"></x-inputs.hidden>
 
-                <x-label-error label="store_name"></x-label-error>
-                <x-inputs.text inputName="store_name" error="name" :value="$store"></x-inputs.text>
+                <x-label-error label="Store Name" error="store_name"></x-label-error>
+                <x-inputs.text inputName="store_name" error="store_name" :value="$store"></x-inputs.text>
 
                 <x-label-error label="Hut Number" error="number" ></x-label-error>
                 <x-inputs.number inputName="number" error="number" :value="$store"></x-inputs.number>
@@ -31,10 +31,22 @@
                 <h2 class="tile-title tile-all-columns">Login Information</h2>
 
                 <x-label-error label="password"></x-label-error>
-                <x-inputs.text inputName="password" error="password" :value="$store" type="password"></x-inputs.text>
+                <div id="password-holder" class="group-input">
+                    <button onclick="revealPassword('password-holder')" class="input-internal" type="button"><i class="far fa-eye"></i></button>
+                    <input type="password" name="password" class="@error('password') {{ "input-error" }}@enderror">
+                    @error('password')
+                        <div class="small-error-text error-text">{{ $message }}</div>
+                    @enderror
+                </div>
 
                 <x-label-error label="Confirm Password" error="password_confirmation"></x-label-error>
-                <x-inputs.text inputName="password_confirmation" error="password_confirmation" :value="$store" type="password"></x-inputs.text>
+                <div id="password_confirmation" class="group-input">
+                    <button onclick="revealPassword('password_confirmation')" class="input-internal" type="button"><i class="far fa-eye"></i></button>
+                    <input type="password" name="password_confirmation" class="@error('password') {{ "input-error" }}@enderror">
+                    @error('password_confirmation')
+                        <div class="small-error-text error-text">{{ $message }}</div>
+                    @enderror
+                </div>
 
             </div>
         </form>

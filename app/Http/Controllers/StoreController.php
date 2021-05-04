@@ -120,7 +120,7 @@ class StoreController extends AdminAccessController
 
     //display stores in number desc order alongside the user information
     //model search v2 is a tad broken
-    public function view(Request $request)
+    public function view(Request $request, $response = '')
     {
         //order by number from high to low, query pulls user information aswell
         //$stores = Store::orderBy('number', 'desc')->with("users")->get();
@@ -146,7 +146,7 @@ class StoreController extends AdminAccessController
 
         //$searchFields[] = "email";
 
-        return view("store.view", ["title" => $title, "stores" => $stores, "search" => $search, "sort" => $sort, "searchFields" => $searchFields]);
+        return view("store.view", ["title" => $title, "stores" => $stores, "search" => $search, "sort" => $sort, "searchFields" => $searchFields, "response" => $response]);
     }
 
     //delete store as required
@@ -154,12 +154,16 @@ class StoreController extends AdminAccessController
     //TODO add confirmation message to store deletion as per receipt del
 
     //now passes an id not the object due to search changes
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
         $store = Store::find($id);
-        $store->delete();
+        $user = User::find($store->user_id);
+        $response = "Store number ". $store->number." deleted successfully";
 
-        return back();
+        //delete store rather than user to ensure user details are fully removed as well, this cascades through and deletes store details
+        $user->delete();
+
+        return $this->view($request, $response);
     }
 
 

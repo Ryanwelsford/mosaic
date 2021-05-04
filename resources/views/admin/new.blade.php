@@ -22,8 +22,8 @@
 
                 <x-label-error label="password"></x-label-error>
                 <div id="password-holder" class="group-input">
-                    <button onclick="revealPassword('password-holder')" class="input-internal @error('password') {{ "input-error" }}@enderror" type="button"><i class="far fa-eye"></i></button>
-                    <input type="password" name="password">
+                    <button onclick="revealPassword('password-holder')" class="input-internal" type="button"><i class="far fa-eye"></i></button>
+                    <input type="password" name="password" class="@error('password') {{ "input-error" }}@enderror">
                     @error('password')
                         <div class="small-error-text error-text">{{ $message }}</div>
                     @enderror
@@ -32,7 +32,7 @@
                 <x-label-error label="Confirm Password" error="password_confirmation"></x-label-error>
                 <div id="password_confirmation" class="group-input">
                     <button onclick="revealPassword('password_confirmation')" class="input-internal" type="button"><i class="far fa-eye"></i></button>
-                    <input type="password" name="password_confirmation">
+                    <input type="password" name="password_confirmation" class="@error('password') {{ "input-error" }}@enderror">
                     @error('password_confirmation')
                         <div class="small-error-text error-text">{{ $message }}</div>
                     @enderror

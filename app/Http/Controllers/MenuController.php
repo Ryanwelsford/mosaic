@@ -51,12 +51,17 @@ class MenuController extends AdminAccessController
         $modelValidator = new ModelValidator(Menu::class, $request->id, old());
         $menu = $modelValidator->validate();
 
+        if (!empty(old())) {
+            $old = old();
+            $menu = (object) $old['menu'];
+        }
+
         if (isset($request->copy_id)) {
             $menuCopy = Menu::where('id', $request->copy_id)->get()->first();
         } else {
             $menuCopy = false;
         }
-
+        //dd($menu);
         return view('menus.new', [
             "title" => $title,
             "menu" => $menu,
@@ -220,7 +225,7 @@ class MenuController extends AdminAccessController
         $heading = "Menu Successfully Created";
         $text = "Menu has been created successfully";
         $anchor = route('menu.new');
-        
+
         return view("general.confirmation", ["title" => $title, "heading" => $heading, "text" => $text, "anchor" => $anchor]);
     }
 }

@@ -92,7 +92,7 @@ class ProductController extends AdminAccessController
         //therefore is an edit
         if (isset($id)) {
             $product = Product::find($id);
-            $unit = $product->units()->get();
+            $unit = $product->units()->get()->first();
         }
 
 
