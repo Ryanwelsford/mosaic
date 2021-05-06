@@ -16,14 +16,18 @@
     </div>
     <div class="main-tile tile-2-4">
         <h2>Product Daily Counts</h2>
+        @if(count($countMap) > 0)
         <div id="linechart" class="chart center-column"></div>
+        @else
+        <h3 class="centered">No Stock on hand information has been entered</h3>
+        @endif
     </div>
 
 
     <div class="main-tile tile-all-columns">
         <div class="full-width center-column">
             <h2 class="tile-title tile-all-columns ">Entry Details</h2>
-            @if(true)
+            @if(count($countMap) > 0)
             <table id="findable" class="wide-table full-width reduced-table scrollable-table">
                 <tr>
                     <th></th>
@@ -46,14 +50,14 @@
                     <td>{{ $productMap[$pid]->name }}</td>
 
                     @foreach($days as $day)
-                        <td>@if(isset($map[$day])) {{ round($map[$day],2) }}@else {{ "No Entry" }} @endif</td>
+                        <td>@if(isset($map[$day])) {{ number_format(round($map[$day],2), 2) }}@else {{ "No Entry" }} @endif</td>
                     @endforeach
                 </tr>
                 @endforeach
             </table>
 
             @else
-            <h3 class="centered">No order information found</h3>
+            <h3 class="centered">No Stock on hand information found</h3>
             @endif
         </div>
     </div>

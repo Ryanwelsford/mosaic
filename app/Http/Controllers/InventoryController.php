@@ -18,7 +18,7 @@ class InventoryController extends UserAccessController
 
         $title = "Inventory Home";
         //pull latest count for this store
-        $inventory = Inventory::orderby('created_at', 'desc')->where('store_id', $this->store->id)->get()->first();
+        $inventory = Inventory::orderby('created_at', 'desc')->where('store_id', $this->store->id)->where('status', 'Booked')->get()->first();
 
         if (is_null($inventory)) {
             $menuitems = [
@@ -115,7 +115,7 @@ class InventoryController extends UserAccessController
         [$catSummary, $quantity, $sum] = $this->fullCalc($inventory->products()->orderby('category', 'asc')->with("units")->get());
 
         $heading = "Count Successfully " . $inventory->status;
-        $text = "Count has been created successfully for a total value of £" . number_format($sum, 2) . " and " . $quantity . " cases in total";
+        $text = "Count has been created successfully for a total value of £" . number_format($sum, 2) . " and " . number_format($quantity, 2) . " cases in total";
         $anchor = route('inventory.summary', [$inventory->id]);
         $anchorText = " to view the count summary";
 
@@ -179,7 +179,11 @@ class InventoryController extends UserAccessController
             return redirect()->route('inventory.view');
         }
 
-        $productMappings = $inventory->products()->where("category", $category)->orderby('subcategory', 'desc')->with("units")->get();
+        $productMappings = $inventory->products()
+            ->where("category", $category)
+            ->orderby('subcategory', 'desc')
+            ->with("units")
+            ->get();
 
         $totalValue = 0;
         $totalQuantity = 0;

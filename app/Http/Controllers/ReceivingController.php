@@ -48,6 +48,8 @@ class ReceivingController extends UserAccessController
 
         $modelValidator = new ModelValidator(Receipt::class, $request->id, old());
         $receipt = $modelValidator->validate();
+
+        
         //dd($receipt);
         return view('receipt.new', ["title" => $title, "today" => $today, "menus" => $menus, "receipt" => $receipt]);
     }

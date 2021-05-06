@@ -169,7 +169,7 @@ class ModelSearchv4
     }
 
     //fire query builder return results
-    private function executeQuery($query)
+    private function executeQuery($query)   
     {
         //dd($query->toSql());
         return $query->paginate(10);

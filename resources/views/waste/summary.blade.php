@@ -45,7 +45,7 @@
 
 
             <div class="tile-all-columns center-column margin-top">
-                <a target="_blank" href="{{ route('waste.print', [$waste->id]) }}" class="ph-button ph-button-standard">Print</a>
+                <a target="_blank" href="{{ route('waste.print', [$waste->id]) }}" class="ph-button ph-button-standard">@include('icons.print')</a>
             </div>
         </div>
     </div>

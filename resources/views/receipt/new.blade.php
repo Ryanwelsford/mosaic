@@ -23,7 +23,7 @@
 
                 <label>Receipt Date: </label>
                 <div>
-                    <input name="date" type="date" value="@if(isset($receipt->date)){{$receipt->getdate()->format("Y-m-d")}}@else{{$today->format("Y-m-d")}}@endif" placeholder="Enter a reference" min="@if(isset($today)){{$today->format("Y-m-d")}}@endif">
+                    <input name="date" type="date" value="@if(isset($receipt->date) && (!$receipt instanceof stdClass)){{$receipt->getdate()->format("Y-m-d")}}@else{{$today->format("Y-m-d")}}@endif" placeholder="Enter a reference" min="@if(isset($today)){{$today->format("Y-m-d")}}@endif">
                 </div>
 
                 <label>Menu:</label>

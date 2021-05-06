@@ -34,7 +34,7 @@ class OrderController extends UserAccessController
             ["title" => "Edit Saved Order", "anchor" => route("order.view", ["search" => "Saved"]), "img" => "/images/icons/edit-256.png", "action" => "Edit"],
             ["title" => "View All Orders", "anchor" => $viewRoute, "img" => "/images/icons/view-256.png", "action" => "View"],
             ["title" => "Weekly Order Summary", "anchor" => route('order.weekSelect'), "img" => "/images/icons/report-256.png"],
-            ["title" => "Week to Week", "anchor" => route('order.weekSelect', ["month" => "true"]), "img" => "/images/icons/report-256.png"],
+            ["title" => "Monthly Order Details", "anchor" => route('order.weekSelect', ["month" => "true"]), "img" => "/images/icons/report-256.png"],
         ];
 
         return view('menu', [

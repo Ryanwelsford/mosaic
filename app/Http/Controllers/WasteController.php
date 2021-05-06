@@ -54,10 +54,10 @@ class WasteController extends UserAccessController
         $wastes = $modelValidator->validate();
         $results = $resultsMap = false;
         //form validation has failed user input
-        if (!empty(old())) {
+        $old = old();
+        if (!empty(old()) && isset($old['product'])) {
             $products = Product::query();
 
-            $old = old();
             $resultsMap = $old['product'];
             //setup where clauses for each previously entered product
             foreach ($resultsMap as $pid => $quantity) {

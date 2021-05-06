@@ -11,9 +11,9 @@
         <div class="grid-2-col-wide centered full-width">
             <label>Store: {{ $store->store_name }}</label>
             <label>Created on: @if(isset($soh->created_at)){{ $soh->created_at->format("d m Y") }}@else {{ $today->format("d m Y") }}@endif</label>
-            <label>Reference:</label>
+            <label>Reference: @error('reference') <span class="error-text">*</span> @enderror</label>
             <div>
-                <input type="text" name="reference" placeholder="Enter reference data here" value="@if(isset($soh->reference)){{$soh->reference}}@endif">
+                <input type="text" name="reference" class="@error('reference') input-error @enderror" placeholder="Enter reference data here" value="@if(isset($soh->reference)){{$soh->reference}}@endif">
                 @error('reference')
                     <div class="small-error-text error-text">{{ $message }} </div>
                 @enderror

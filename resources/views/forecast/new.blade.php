@@ -5,10 +5,10 @@
 
 
 <div class="center-column">
-    <div class="main-tile tile-all-columns center-column mono-tile">
+    <div class="main-tile tile-all-columns center-column ">
         <form method="GET" action="{{ route("forecasting.new") }}" id="form_menu" class="center-column background-form">
 
-            <div class="grid-2-col-wide active-tab tab">
+            <div class="grid-2-col-wide center-column">
                 <h2 class="tile-title tile-all-columns ">Select Date Range</h2>
 
 

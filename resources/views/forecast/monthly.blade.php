@@ -26,7 +26,7 @@
                 <tr>
                     @foreach($weekly as $week_start => $value)
                         <tr>
-                            <td><a class=" ph-button ph-button-standard table-button center" href="{{ route("forecasting.week", [$value["date"]]) }}">Details</a></td>
+                            <td><a class=" ph-button ph-button-standard table-button center" href="{{ route("forecasting.week", [$value["date"]]) }}">@include('icons.summary')</a></td>
                             <td>{{ $week_start }}</td>
                             <td>£{{ number_format($value["value"],0) }}</td>
                         </tr>
@@ -52,7 +52,7 @@
                 @foreach($forecasts as $forecast)
                     <tr>
                         <td>{{ $forecast->getDate()->format('l jS M Y') }}</td>
-                        <td>{{ number_format($forecast->value,0) }}</td>
+                        <td>£{{ number_format($forecast->value,0) }}</td>
                     </tr>
                 @endforeach
             </table>

@@ -59,12 +59,12 @@
                     <td>{{ $each->status }}</td>
                     <td>
                         <div class="table-button-holder">
-                            <a href="{{ route('inventory.summary', $each->id) }}"class="ph-button ph-button-standard table-button">Summary <i class="fas fa-clipboard-list"></i></a>
+                            <a href="{{ route('inventory.summary', $each->id) }}"class="ph-button ph-button-standard table-button">@include('icons.summary')</a>
                             @if($each->status == "Saved")
-                                <a href="{{ route('inventory.new', ['id' => $each->id]) }}"class="ph-button ph-button-standard table-button">Edit</a>
+                                <a href="{{ route('inventory.new', ['id' => $each->id]) }}"class="ph-button ph-button-standard table-button">@include('icons.edit')</a>
 
                                 <form method="POST" action="{{ route("inventory.destroy", $each) }}" class="table-button">
-                                    <button class="ph-button ph-button-standard ph-button-important table-button" type="submit">Delete</button>
+                                    <button class="ph-button ph-button-standard ph-button-important table-button" type="submit">@include('icons.delete')</button>
                                     @csrf
                                     @method('delete')
                                 </form>
