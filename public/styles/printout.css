@@ -1,3 +1,5 @@
+/*this CSS is entirely for the printouts, used to override various features of the main CSS*/
+
 body.printout {
     background-color: white;
     color: black;
@@ -33,6 +35,3 @@ body.printout {
     border: 2px solid black;
 }
 
-a {
-    
-}

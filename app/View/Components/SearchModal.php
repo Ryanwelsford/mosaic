@@ -4,6 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
+//setup entire model for searching based on nav model
 class SearchModal extends Component
 {
     /**

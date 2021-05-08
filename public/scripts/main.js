@@ -113,7 +113,7 @@ function scrollUpTop() {
         }
     }
 
-
+//close the div that X is contained within used when closing dialog boxes
 function closeDiv(event, type="DIV") {
 
     let parentElement, clickedElement = event.target;
@@ -126,6 +126,7 @@ function closeDiv(event, type="DIV") {
     parentElement.remove();
 }
 
+//setup nav with highlights dependant on whihc controller you are within
 function setupNav() {
     let comps, url = window.location.pathname;
     className = "active";
@@ -152,6 +153,7 @@ function setupNav() {
         parentLi = ul.parentNode;
         anchor = parentLi.getElementsByTagName("a");
 
+        //add to main navigation
         if(anchor.length > 0) {
             anchor = anchor[0];
             anchor.classList.add(className);
@@ -159,6 +161,7 @@ function setupNav() {
 
         mobileNav = document.getElementById("alt-"+controller);
 
+        //add to mobile nav
         if(mobileNav != null) {
             mobileNav.classList.add(className);
         }
@@ -173,6 +176,7 @@ function centerOn(id, highlight = true) {
         element.classList.add("highlight");
     }
 }
+//open or close any model box
 function openOrCloseModal(id) {
     let modal = document.getElementById(id);
     if(modal.style.display == "flex") {
@@ -310,7 +314,7 @@ function updateDivText(div) {
     }
 
 }
-
+//options for chart classes
 var defaultOptions = {
     'backgroundColor': '#d3d3d3',
     "titleTextStyle": {
@@ -321,7 +325,7 @@ var defaultOptions = {
     'height': 310
   }
 
-
+  //update select fields when main select is changes
   function updateSelect() {
 
     //test = Object.keys(categories)
@@ -402,6 +406,8 @@ function scrollTable() {
     }
 }
 
+//these two should really just be one function
+//move to next category when selected
 function nextCategory() {
     let main, current;
 
@@ -420,6 +426,7 @@ function nextCategory() {
     updateTable();
 }
 
+//move to previous category when selected
 function previousCategory() {
     let main, current;
 
@@ -440,29 +447,38 @@ function previousCategory() {
     updateTable();
 }
 
+//ajax query pull category information from database and display within modal
     function loadCategories(event) {
         var $search = event.target.value;
         var _token = document.getElementById("_token").value;
         let response;
         document.getElementById("error").innerText = "";
 
+        //setup http request object
         var xhttp = new XMLHttpRequest();
+        //give object instructions on response
         xhttp.onreadystatechange = function() {
+            //when success
             if (this.readyState == 4 && this.status == 200) {
+                //gather the json repsonse
                 response = JSON.parse(this.response);
                 div = document.getElementById("productContainer");
+                //remove all current content
                 removeContent(div);
-
+                //foreach row returned build a respinse
                 for(var i =0; i < response.length; i++) {
                     buildResponse(response[i]);
                 }
 
             }
+            //when fail
+            //should maybe jsut be an else statement?
             else if (this.status == 500) {
                 document.getElementById("error").innerText = "An error has occured";
             }
         };
 
+        //send http request object
         xhttp.open("POST", "category", true);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhttp.responseType = 'json';
@@ -470,27 +486,32 @@ function previousCategory() {
 
     }
 
+    //create the rows within modal
     function buildResponse(response) {
         div = document.getElementById("productContainer");
         createContent(div, response);
     }
 
+    //build button and lavevl with assocaited classes
     function createContent(div, product) {
         let label = document.createElement('label');
         let button = document.createElement('button');
         button.type = "button";
         button.classList = "ph-button ph-button-standard ph-button-small";
         button.innerText = "Add";
+        //add event listener to add product to background form
         button.addEventListener("click", function(e) {
             addProduct(product);
         });
         label.innerHTML = product["name"];
 
+        //add to div
         div.appendChild(label);
         div.appendChild(button);
     }
 
     //https://stackoverflow.com/questions/3955229/remove-all-child-elements-of-a-dom-node-in-javascript
+    //delete all content of given node
     function removeContent(node) {
         //createa range of elements of a given node and delete them all
         var range = document.createRange();
@@ -498,10 +519,13 @@ function previousCategory() {
         range.deleteContents();
     }
 
+    //setup a build row for product entry with all data and input/delete
     function addProduct(productData) {
+        //setup vars
         let tbody = document.getElementById("form").getElementsByTagName("tbody")[0];
         let tr, nameTd, codeTd, caseTd, priceTd, quantityTd, input, closeButton;
 
+        //create all required content
         tr = document.createElement("tr");
         nameTd = tdCreator(productData.name);
         codeTd = tdCreator(productData.code, "mob-hidden");
@@ -512,17 +536,23 @@ function previousCategory() {
 
         input = inputCreator(productData.id);
         closeButton = closeButtonCreator();
+
+        //attach content to row
         tr.appendChild(nameTd);
         tr.appendChild(codeTd);
         tr.appendChild(caseTd);
         tr.appendChild(priceTd);
         tr.appendChild(quantityTd);
+        //attach input and delete to correct td
         quantityTd.appendChild(input);
         quantityTd.appendChild(closeButton);
+
+        //attach to table
         tbody.appendChild(tr);
 
     }
 
+    //create the indivdual box required
     function tdCreator(productInfo, classList = '') {
         td = document.createElement("td");
         td.classList = classList;
@@ -530,11 +560,13 @@ function previousCategory() {
         return td
     }
 
+    //create the input for entry
     function inputCreator(productid) {
         input = document.createElement("input");
         input.name = "product["+productid+"]";
         input.type = "number";
         input.classList = "table-input total-box";
+        //change the step?
         input.min = "0";
         input.step = "1";
         input.value = "0";
@@ -542,10 +574,12 @@ function previousCategory() {
         return input;
     }
 
+    //setup and create a class button allows for removal of waste producys
     function closeButtonCreator() {
         let button = document.createElement("button")
         button.classList = "ph-button ph-button-standard ph-button-rounded";
         button.type = "button";
+        //associate to the close div function put pass teh parent element in this case TR, always caps for whatever erason
         button.addEventListener("click", function(event) {
             closeDiv(event, "TR");
         })

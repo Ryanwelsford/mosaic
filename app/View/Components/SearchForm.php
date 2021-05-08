@@ -4,6 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
+//setup search form fields for component
 class SearchForm extends Component
 {
     /**

@@ -4,6 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
+//add product component class used within waste entry
 class AddProduct extends Component
 {
     /**
