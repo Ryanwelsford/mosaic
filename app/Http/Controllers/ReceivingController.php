@@ -135,7 +135,7 @@ class ReceivingController extends UserAccessController
         }
 
         $productMappings = $request->product;
-
+        dd($productMappings);
         $organisedMappings = [];
         $store = $this->user->stores()->get()->first();
 

@@ -90,6 +90,12 @@ class ProductController extends AdminAccessController
             'case.description' => ['required'],
             'case.price' => ['required'],
             'case.quantity' => ['required']
+        ], [
+            "name.unique" => "The name entered is already in use, please enter a unique name",
+            "code.unique" => "The code entered is already in use, please enter a unique code",
+            "case.description.required" => "The case description field is required",
+            "case.price.required" => "The case price field is required",
+            "case.quantity.required" => "The case quantity field is required"
         ]);
 
         //create product

@@ -65,6 +65,8 @@ class WasteListController extends AdminAccessController
         $this->validate($request, [
             'name' => ['required', \Illuminate\Validation\Rule::unique('wastelists')->ignore($id)],
             'description' => 'required'
+        ], [
+            "name.unique" => "The name entered is already in use, please enter a unique name"
         ]);
 
         $wastelist = new Wastelist;

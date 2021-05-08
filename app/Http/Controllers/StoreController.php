@@ -70,6 +70,12 @@ class StoreController extends AdminAccessController
             'password_confirmation' => 'required',
             'address1' => 'required',
             'postcode' => 'required'
+        ], [
+            "password_confirmation.required" => "The password confirmation field is required",
+            "number.unique" => "The store number entered is already in use",
+            "store_name.required" => "The store name field is required",
+            "address1" => "At least one address field is required",
+            "number.required" => "The hut number field is required"
         ]);
 
         //create instances of store and user
@@ -160,7 +166,7 @@ class StoreController extends AdminAccessController
     {
         $store = Store::find($id);
         $user = User::find($store->user_id);
-        $response = "Store number ". $store->number." deleted successfully";
+        $response = "Store number " . $store->number . " deleted successfully";
 
         //delete store rather than user to ensure user details are fully removed as well, this cascades through and deletes store details
         $user->delete();

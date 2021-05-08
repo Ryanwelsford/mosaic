@@ -64,6 +64,9 @@
                     @endforeach
 
                 </table>
+                @error('product')
+                    <div class="small-error-text error-text">{{ $message }} </div>
+                @enderror
             </div>
         </form>
 

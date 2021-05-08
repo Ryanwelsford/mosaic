@@ -97,7 +97,7 @@ class MenuController extends AdminAccessController
             ],
             $messages = [
                 'menu.name.required' => 'The name field is required',
-                'menu.name.unique' => 'The menu name has been taken, please enter a new name'
+                'menu.name.unique' => 'The menu name is already in use, please enter a new name'
             ]
         );
 

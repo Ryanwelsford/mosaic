@@ -54,6 +54,8 @@ class AdminController extends AdminAccessController
             'password' => 'required|confirmed',
             'password_confirmation' => 'required',
             'email' => 'required'
+        ], [
+            "password_confirmation.required" => "The password confirmation field is required"
         ]);
 
         $user = new User;
