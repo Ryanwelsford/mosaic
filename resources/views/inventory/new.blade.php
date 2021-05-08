@@ -58,9 +58,9 @@
                         </td>
                         <td class="total-td">
                             @if(isset($mappedProducts[$product->id]))
-                                <input name="product[{{$product->id}}]" type="number" class="table-input total-box" min="0" step="1" value="{{$mappedProducts[$product->id]}}">
+                                <input name="product[{{$product->id}}]" type="number" class="table-input total-box" min="0" step="0.01" value="{{$mappedProducts[$product->id]}}">
                             @else
-                                <input name="product[{{$product->id}}]" type="number" class="table-input total-box" min="0" step="1" value="0">
+                                <input name="product[{{$product->id}}]" type="number" class="table-input total-box" min="0" step="0.01" value="0">
                             @endif
                         </td >
                     </tr>

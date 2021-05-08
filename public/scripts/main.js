@@ -568,7 +568,7 @@ function previousCategory() {
         input.classList = "table-input total-box";
         //change the step?
         input.min = "0";
-        input.step = "1";
+        input.step = "0.01";
         input.value = "0";
 
         return input;
