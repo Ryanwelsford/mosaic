@@ -111,6 +111,7 @@ class OrderController extends UserAccessController
         $order = new Order;
         $order->fillItemArray($orderDetails);
 
+        //reorganise products into an array mapping category and subcategory to prd allows for looping and organising by product in tabs
         $organisedProducts = [];
         foreach ($products as $product) {
             $organisedProducts[$product->category][$product->subcategory][] = $product;
@@ -129,10 +130,12 @@ class OrderController extends UserAccessController
         ]);
     }
 
+    //save/book order entry
     public function save(Request $request)
     {
         $status = "Booked";
 
+        //dependant on if save or book button clicked
         if (isset($request->save)) {
             $status = "Saved";
         }
@@ -175,6 +178,7 @@ class OrderController extends UserAccessController
         return $this->confirm($order, $sum, $quantity);
     }
 
+    //display confirmation of order creation with sum and quantity data
     public function confirm(Order $order, $sum, $quantity)
     {
         if ($order->status == "book") {
@@ -192,7 +196,7 @@ class OrderController extends UserAccessController
         return view("general.confirmation-print", ["title" => $title, "heading" => $heading, "text" => $text, "anchor" => $anchor]);
     }
 
-    //TODO add pagination ability to queries either through larvel pagination or not
+    //display table structure for orders, with pagination and full search/sort features
     public function view(Request $request, $response = "")
     {
         $title = "View Orders";
@@ -223,10 +227,11 @@ class OrderController extends UserAccessController
         ]);
     }
 
-
+    //display order summary page
     public function summary(Request $request)
     {
 
+        //guard against malformed orders
         if (!is_null($this->orderGuard($request->id))) {
             return $this->orderGuard($request->id);
         }
@@ -245,6 +250,7 @@ class OrderController extends UserAccessController
         ]);
     }
 
+    //delete unbooked order from system
     public function destroy(Order $order, Request $request)
     {
         $response = "Sucessfully deleted order #" . $order->id;
@@ -252,6 +258,7 @@ class OrderController extends UserAccessController
         return $this->view($request, $response);
     }
 
+    //calc sum and quantity only
     private function calc($values)
     {
         $quantity = 0;
@@ -264,6 +271,7 @@ class OrderController extends UserAccessController
         return [$sum, $quantity];
     }
 
+    //sum up order information into a category map and sum/quantity totals
     private function fullCalc($values)
     {
         $quantity = 0;
@@ -283,6 +291,7 @@ class OrderController extends UserAccessController
         return [$sum, $quantity, $catSummary];
     }
 
+    //based on order get relevent product listings
     private function orderDetails($request)
     {
 
@@ -306,6 +315,7 @@ class OrderController extends UserAccessController
         return [$order, $store, $menu, $listing, $sum, $quantity];
     }
 
+    //allow for printout of order information
     public function print(Request $request)
     {
         if (!is_null($this->orderGuard($request->id))) {
@@ -314,6 +324,7 @@ class OrderController extends UserAccessController
 
         $title = "Order Printout";
 
+        //gather details and pass to printable view
         [$order, $store, $menu, $listing, $sum, $quantity] = $this->orderDetails($request);
 
         return view("orders.print", [
@@ -327,6 +338,7 @@ class OrderController extends UserAccessController
         ]);
     }
 
+    //prevent access to order when incorrectly passed
     private function orderGuard($id)
     {
         $order = Order::find($id);
@@ -336,30 +348,36 @@ class OrderController extends UserAccessController
         }
     }
 
+    //summaries weekly orders for charting
     public function weeklyOrder(Request $request)
     {
+        //use forecasting controller for some date checking functionality
         $fc = new ForecastingController();
         //create current date or passed date
         if (isset($request->date) && $fc->checkIsAValidDate($request->date)) {
             $startofweek = Carbon::parse($request->date)->startOfWeek();
             $endofweek = Carbon::parse($request->date)->endOfWeek();
         } else {
+            //if date field is not set instead return the current weeks information
             $startofweek = Carbon::now()->startOfWeek();
             $endofweek = Carbon::now()->endOfWeek();
         }
 
 
         $title = "Weekly Order Summary";
+        //gather this weeks orders
         $orders = $this->pullOrders($startofweek, $endofweek);
 
         $sum = 0;
         $quantity = 0;
         $catSummary = [];
+        //map order sums and quantities for each order
         foreach ($orders as $order) {
             [$oSum, $oQuantity, $summary] = $this->fullCalc($order->products()->with("units")->get());
             $sum += $oSum;
             $quantity += $oQuantity;
 
+            //use summary information to map category to value
             foreach ($summary as $category => $value) {
                 if (!isset($catSummary[$category])) {
                     $catSummary[$category] = 0;
@@ -380,6 +398,7 @@ class OrderController extends UserAccessController
         ]);
     }
 
+    //get order details based on input dates
     public function pullOrders($startDate, $endDate)
     {
 
@@ -392,6 +411,7 @@ class OrderController extends UserAccessController
         return $orders;
     }
 
+    //map category to toal value of said category
     public function chartData($catSummary)
     {
         $data = [];
@@ -403,6 +423,7 @@ class OrderController extends UserAccessController
         return json_encode($data);
     }
 
+    //date selection tools same view different wording and route
     public function weekSelect(Request $request)
     {
 
@@ -461,6 +482,7 @@ class OrderController extends UserAccessController
             }
         }
 
+        //chart data for google charts
         $chartData2 = $this->chartData2($catSum);
         $chartData1 = json_encode($chartData1);
 
@@ -475,6 +497,7 @@ class OrderController extends UserAccessController
         ]);
     }
 
+    //so chart data based on category for display with order summaries
     public function chartData2($catSum)
     {
         //dd($catSum);
@@ -506,6 +529,7 @@ class OrderController extends UserAccessController
             $chartData2[] = $stringArray;
         }
 
+        //has to be in json format for the javascript usage
         return json_encode($chartData2);
     }
 }

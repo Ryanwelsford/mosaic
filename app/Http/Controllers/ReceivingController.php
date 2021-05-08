@@ -49,7 +49,7 @@ class ReceivingController extends UserAccessController
         $modelValidator = new ModelValidator(Receipt::class, $request->id, old());
         $receipt = $modelValidator->validate();
 
-        
+
         //dd($receipt);
         return view('receipt.new', ["title" => $title, "today" => $today, "menus" => $menus, "receipt" => $receipt]);
     }
@@ -159,6 +159,7 @@ class ReceivingController extends UserAccessController
 
         return $this->confirm($receipt);
     }
+
     //display list of created reciepts with view, delete, print options
     public function view(Request $request, $response = "")
     {
@@ -168,6 +169,8 @@ class ReceivingController extends UserAccessController
         $fields = $receipts->getSearchable();
         //remember to pass the search fields as a mapping of table to fields
         $searchFields["receipts"] = $fields;
+
+        //setup search vars
         $search = $request->search;
         $sort = $request->sort;
         $sortDirection = "desc";
@@ -178,9 +181,10 @@ class ReceivingController extends UserAccessController
 
         $store = $this->user->stores()->get()->first();
 
-        //so v3 does work with a passed restriction
+        //restrict to view only the logged stores receipts
         $modelSearch = new ModelSearchv4(Receipt::class, $searchFields, $searchFields, ["table" => "receipts", "field" => "store_id", "value" => $store->id]);
         $receipts = $modelSearch->search($search, $sort, $sortDirection);
+
         $today = Carbon::now();
 
         return view("receipt.view", [
@@ -193,6 +197,8 @@ class ReceivingController extends UserAccessController
             "today" => $today
         ]);
     }
+
+    //confirm receipt creation
     public function confirm(Receipt $receipt)
     {
 
@@ -206,6 +212,7 @@ class ReceivingController extends UserAccessController
         return view("general.confirmation-print", ["title" => $title, "heading" => $heading, "text" => $text, "anchor" => $anchor]);
     }
 
+    //calc reciept totals
     public function calc($values)
     {
         $quantity = 0;
@@ -213,6 +220,7 @@ class ReceivingController extends UserAccessController
 
         foreach ($values as $each) {
             $quantity += $each->pivot->quantity;
+            //doesnt need divide as receipts are case only
             $sum += $each->pivot->quantity * $each->units->price;
         }
 
@@ -222,6 +230,7 @@ class ReceivingController extends UserAccessController
     //single reciept summary in printable
     public function print(Receipt $receipt)
     {
+        //gather receipt information
         [$listing, $store, $sum, $quantity] = $this->receiptDetails($receipt);
 
         $title = "Receipt Summary";
@@ -239,7 +248,7 @@ class ReceivingController extends UserAccessController
     //view a single reciept summary
     public function summary(Receipt $receipt)
     {
-
+        //gather receipt information
         [$listing, $store, $sum, $quantity] = $this->receiptDetails($receipt);
 
         $title = "Receipt Summary";
@@ -254,11 +263,13 @@ class ReceivingController extends UserAccessController
         ]);
     }
 
+    //full receipt infomration
     private function receiptDetails(Receipt $receipt)
     {
-
+        //get associated products
         $listing = $receipt->products()->with("units")->get();
 
+        //map receipt data to new array
         $store = $receipt->store()->get()->first();
         $newListing = [];
         foreach ($listing as $each) {
@@ -267,6 +278,7 @@ class ReceivingController extends UserAccessController
             }
         }
 
+        //get total information of reciept
         $listing = $newListing;
         [$sum, $quantity] = $this->calc($listing);
 

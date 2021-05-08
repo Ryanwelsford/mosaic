@@ -10,8 +10,11 @@ use App\Http\Helpers\ModelValidator;
 use App\Http\Helpers\ModelSearch\ModelSearchv4;
 use App\Http\Controllers\Types\AdminAccessController;
 
+//product controller allows for the crud applications of the product class
+//this in turn in the base model for the entire system
 class ProductController extends AdminAccessController
 {
+    //home page display for the product class
     public function home()
     {
 
@@ -31,12 +34,16 @@ class ProductController extends AdminAccessController
         ]);
     }
 
+    //display new product creation form
     public function store(Request $request)
     {
+        //get category data
         $categories = $this->buildCategories();
 
+        //nolonger requird i believe
         $encoded = json_encode($categories);
 
+        //get the instance of the product class required
         $modelValidator = new ModelValidator(Product::class, $request->id, old());
         $product = $modelValidator->validate();
         $case = $pack = null;
@@ -69,12 +76,14 @@ class ProductController extends AdminAccessController
         );
     }
 
+    //save product entry
     public function save(Request $request)
     {
         //validate the form submission will need to find a way to prevent the unique rule from firing if the id is matched
 
         $id = $request->id;
 
+        //provide rules for validation
         $this->validate($request, [
             'name' => ['required', \Illuminate\Validation\Rule::unique('products')->ignore($id)],
             'code' => ['required', \Illuminate\Validation\Rule::unique('products')->ignore($id), 'numeric'],
@@ -112,6 +121,7 @@ class ProductController extends AdminAccessController
         return $this->confirm($product);
     }
 
+    //build up the category listings used by many other classes, changes here must also change JS script
     public function buildCategories()
     {
         //changes here need to be reflectd in js script
@@ -124,18 +134,17 @@ class ProductController extends AdminAccessController
         return $categories;
     }
 
-    //todo add pagination ability to full list of product. add list of tabs seperating units then all for switching with selects
-    //enable display of all products with their details
-    //need to add a check to test what happens when there are 0 products to display
+    //allow for searability of products class
     public function view(Request $request, $response = '')
     {
-        // all products
+        // setup product searchable fields
         $product = new Product;
         $searchFields = $product->getSearchable();
 
         $title = "Display Products";
         $search = $request->search;
 
+        //setup search bars
         $sort = $request->sort;
         if ($sort == null) {
             $sort = "name";
@@ -144,6 +153,7 @@ class ProductController extends AdminAccessController
         $input["products"] = $searchFields;
         $sortDirection = "desc";
 
+        //allow for all product data to be returned
         $modelSearch = new ModelSearchv4(Product::class, $input, $input);
         $products = $modelSearch->search($search, $sort, $sortDirection);
 
@@ -169,6 +179,7 @@ class ProductController extends AdminAccessController
         return $this->view($request, $message);
     }
 
+    //confirmation page for product creations
     public function confirm(Product $product)
     {
         $title = "Product Confirmation";

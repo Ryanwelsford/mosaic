@@ -7,6 +7,7 @@ use App\Models\Store;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+//base forecast model
 class Forecast extends Model
 {
     use HasFactory;
@@ -19,7 +20,7 @@ class Forecast extends Model
         'date'
     ];
 
-
+    //refil class with new data
     public function fillItem($id, $store_id, $date, $value)
     {
         $this->id = $id;
@@ -28,11 +29,14 @@ class Forecast extends Model
         $this->value = $value;
     }
 
+    //return query builder of store
     public function stores()
     {
         return $this->belongsTo(Store::class, "store_id", "id");
     }
 
+    //get date in carbon format
+    //could be replaced by cast field
     public function getDate() {
         $date = Carbon::parse($this->date);
         return $date;

@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+//very short controller based on very few required functions, simply display short messages on login entry
+
 class GeneralController extends Controller
 {
+    //displayed when incorrect user type attempts access to non-user type area
     public function restricted()
     {
         $title = "Access Restricted";
@@ -14,10 +17,11 @@ class GeneralController extends Controller
         return view("general.restricted", ["title" => $title, "heading" => $heading, "text" => $text]);
     }
 
+    //displayed if user is logged in while attempting to reach login page
     public function welcome()
     {
 
-        if(is_null(auth()->user())) {
+        if (is_null(auth()->user())) {
             return redirect()->route('logout.index');
         }
 

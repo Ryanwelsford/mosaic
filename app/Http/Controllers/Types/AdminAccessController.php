@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
+#this control serves as the basis for all admin only areas of mosaic
+#any user sign in or non-user access should be redirected preventing access
 class AdminAccessController extends Controller
 {
 

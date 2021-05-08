@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+//unfinished controller the intention was to allow for pdf upload of shelf life chart, and creation of long term tracking of dates through a calendar concept
 class DatesController extends Controller
 {
 
     //provide a menu homepage for controller
-    public function home() {
+    public function home()
+    {
 
         $title = "Dates Home";
 
@@ -23,6 +25,6 @@ class DatesController extends Controller
         return view('menu', [
             "menuitems" => $menuitems,
             "title" => $title
-            ]);
+        ]);
     }
 }

@@ -6,6 +6,7 @@ use App\Models\Product;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+//base inventory model
 class Inventory extends Model
 {
     use HasFactory;
@@ -15,22 +16,30 @@ class Inventory extends Model
         'store_id',
         'status'
     ];
+    //return searchable fields
     protected $searchable = ['id', 'status', 'created_at'];
 
-    public function getSearchable() {
+    public function getSearchable()
+    {
         return $this->searchable;
     }
-    public function fillItem($id, $store_id, $status) {
+    //refill class
+    public function fillItem($id, $store_id, $status)
+    {
         $this->id = $id;
         $this->store_id = $store_id;
         $this->status = $status;
     }
 
-    public function store() {
+    //get store this inventory belongs to
+    public function store()
+    {
         return $this->belongsTo(Store::class);
     }
 
-    public function products() {
+    //get all associated products
+    public function products()
+    {
         return $this->belongsToMany(Product::class)->withPivot("quantity");
     }
 }

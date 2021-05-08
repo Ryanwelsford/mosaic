@@ -9,6 +9,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+//an expansion of the base user class in laravel
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
@@ -53,11 +54,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    //get store information
     public function stores()
     {
         return $this->hasMany(Store::class);
     }
 
+    //dependant on class type admin/store gat the associated name
     public function getCorrectName()
     {
         if ($this->isAdmin()) {
@@ -67,6 +70,7 @@ class User extends Authenticatable
         }
     }
 
+    //refil class for saving
     public function fillItem($id, $username, $email, $password, $privelleges)
     {
         $this->id = $id;
@@ -76,6 +80,7 @@ class User extends Authenticatable
         $this->privelleges = $privelleges;
     }
 
+    //test if class is an stance of admin type
     public function isAdmin()
     {
         $output = false;
@@ -86,6 +91,7 @@ class User extends Authenticatable
         return $output;
     }
 
+    //inverse ensure is a version of store type
     public function isStore()
     {
         $output = false;

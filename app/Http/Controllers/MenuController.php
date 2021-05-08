@@ -12,13 +12,19 @@ use App\Http\Controllers\ProductController;
 use App\Http\Helpers\ModelSearch\ModelSearchv4;
 use App\Http\Controllers\Types\AdminAccessController;
 
-//TODO create copy method to allow for a new menu to be created from a base menu, copying all the product mappings
+/***********************************
+ *This class exists for the purpose of controlling menu inputs
+ *Menus are supposed to act as product limitations for orders, this in turn prevents various issues for incorrect order placement
+ *
+ *************************************/
 class MenuController extends AdminAccessController
 {
+    //display core menu home page
     public function home()
     {
         $item = "Menu";
 
+        //setup menu items
         $title = $item . " Home";
         $newMenu = Route("menu.new");
         $viewRoute = Route("menu.view");
@@ -36,6 +42,7 @@ class MenuController extends AdminAccessController
         ]);
     }
 
+    //display menu creation page
     public function store(Request $request)
     {
 
@@ -44,19 +51,23 @@ class MenuController extends AdminAccessController
             $title = "Edit Menu";
         }
 
+        //setup statuses
         $statuses = ["Active", "Inactive"];
 
         //$output here is actually an array of arrays, so weird
-
+        //pull menu information based on edit etc
         $modelValidator = new ModelValidator(Menu::class, $request->id, old());
         $menu = $modelValidator->validate();
 
+        //pull old menu when form fails setup is bizzare but works
         if (!empty(old())) {
             $old = old();
             $menu = (object) $old['menu'];
         }
 
+        //sets up copying feature using the same form as before
         if (isset($request->copy_id)) {
+            //map passed id to new menu products
             $menuCopy = Menu::where('id', $request->copy_id)->get()->first();
         } else {
             $menuCopy = false;
@@ -70,8 +81,10 @@ class MenuController extends AdminAccessController
         ]);
     }
 
+    //save new menu
     public function save(Request $request)
     {
+        //pull form data
         $id = $request->menu['id'];
         $menu = (object) $request->menu;
 
@@ -90,16 +103,15 @@ class MenuController extends AdminAccessController
 
         $menu = new Menu;
 
+        //find if iedit
         if (isset($id)) {
             $menu = Menu::find($id);
         }
 
+        //fill and save data
         $menu->fillArrayItem($request->menu);
 
         $menu->save();
-
-        //TODO add send to menu listings to add products to menu
-
 
         //if copying a menu send to copy then confirm
         if (isset($request->copy_id)) {
@@ -111,6 +123,7 @@ class MenuController extends AdminAccessController
         }
     }
 
+    //pull copied menu data and map to new menu, gives admins an avenue to recreate a menu easily
     public function copy(Menu $menu, Menu $copy)
     {
         $menuListings = [];
@@ -123,22 +136,26 @@ class MenuController extends AdminAccessController
         return $this->confirm($menu);
     }
 
+    //pull up assign screen whihc allows selection of products to be placed inside a menu.
     public function assign(Menu $menu, Request $request)
     {
+        //get category array
         $productController = new ProductController();
         $categories = $productController->buildCategories();
 
-
+        //guard against malformed url
         if ($menu == null) {
             return redirect(route("menu.new"));
         }
 
+        //pull mmenu data
         if (isset($request->menu_id)) {
             $menu = Menu::find($request->menu_id);
         }
-
+        //pull related products is this here for no reason?
         $menu->products()->get();
 
+        //remap products from id to set or not
         $menuListings = [];
         foreach ($menu->products()->get() as $list) {
             $menuListings[$list->id] = "set";
@@ -150,6 +167,7 @@ class MenuController extends AdminAccessController
         $organisedProducts = [];
         $defaultOpenTab = "Chilled";
 
+        //remap products based on category and subcat for usage in view
         foreach ($products as $product) {
             $organisedProducts[$product->category][$product->subcategory][] = $product;
         }
@@ -187,14 +205,16 @@ class MenuController extends AdminAccessController
         return $this->view($request, $response);
     }
 
-    //display all menus with options to edit, delete and copy eventually
+    //display all menus with options to edit, delete add and copy
     public function view(Request $request, $response = "")
     {
-        //TODO break this function down into a class
+        //TODO the overall function down into a single class as it generally always works the same way
         $title = "View Menus";
         $menu = new Menu;
+        //get search values
         $searchFields = $menu->searchable();
 
+        //setup vars
         $search = $request->search;
 
         $sort = $request->sort;
@@ -205,6 +225,7 @@ class MenuController extends AdminAccessController
         $input["menus"] = $searchFields;
         $sortDirection = "desc";
 
+        //search with basic version, no need for restriction or join.
         $modelSearch = new ModelSearchv4(Menu::class, $input, $input);
         $menus = $modelSearch->search($search, $sort, $sortDirection);
         //dd($inventory);
@@ -219,6 +240,7 @@ class MenuController extends AdminAccessController
         ]);
     }
 
+    //confirm successful creation of menu
     public function confirm(Menu $menu)
     {
         $title = "Menu Confirmation";

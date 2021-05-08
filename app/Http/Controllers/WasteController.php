@@ -12,8 +12,11 @@ use App\Http\Helpers\ModelValidator;
 use App\Http\Helpers\ModelSearch\ModelSearchv4;
 use App\Http\Controllers\Types\UserAccessController;
 
+//waste controller allows for the entry of products that have been discarded for any number of reasons
+//also provides reports on those entries
 class WasteController extends UserAccessController
 {
+    //display waste home page with links
     public function home()
     {
 
@@ -31,30 +34,38 @@ class WasteController extends UserAccessController
             "title" => $title
         ]);
     }
+
     //pull information for ajax query.
+    //called by javascript returns products in given category and their relative units
     public function categoryReturn(Request $request)
     {
         $products = Product::where('category', $request->category)->orderby('name', 'asc')->with("units")->get();
 
+        //has to be returned in this format
         $products = $products->toJson();
 
         return response()->json($products);
     }
-    //TODO edit does not work yet!
+
+    //allow for the creation/edit of class
     public function store(Request $request)
     {
         $title = "New Waste Entry";
         //change this to pull only active wastelists or something
         $wasteLists = Wastelist::where('status', 'Active')->get();
 
+        //get categories
         $productController = new ProductController();
         $categories = $productController->buildCategories();
 
+        //get class instance
         $modelValidator = new ModelValidator(Waste::class, $request->id, old());
         $wastes = $modelValidator->validate();
+
         $results = $resultsMap = false;
         //form validation has failed user input
         $old = old();
+        //fixes for form failures
         if (!empty(old()) && isset($old['product'])) {
             $products = Product::query();
 
@@ -81,8 +92,10 @@ class WasteController extends UserAccessController
         ]);
     }
 
+    //save waste entry
     public function save(Request $request)
     {
+        //ensure at least 1 entry is submitted and that the references are filled
         $this->validate(
             $request,
             [
@@ -97,13 +110,16 @@ class WasteController extends UserAccessController
 
         $waste = new Waste;
 
+        //if edit
         if (isset($request->id)) {
             $waste = Waste::find($request->id);
         }
 
+        //save waste
         $waste->fillItem($request->id, $request->reference, $request->wastelist_id, $this->store->id);
         $waste->save();
 
+        //remap product quantites into syncable format
         $products = $request->product;
         $organisedMappings = [];
         foreach ($products as $product_id => $quantity) {
@@ -117,11 +133,13 @@ class WasteController extends UserAccessController
             }
         }
 
+        //save waste product mappings
         $waste->products()->sync($organisedMappings);
 
         return $this->confirm($waste);
     }
 
+    //display success messages
     public function confirm(Waste $waste)
     {
 
@@ -135,6 +153,7 @@ class WasteController extends UserAccessController
         return view("general.confirmation-print", ["title" => $title, "heading" => $heading, "text" => $text, "anchor" => $anchor]);
     }
 
+    //calc waste values
     public function calc($values)
     {
         $quantity = 0;
@@ -149,17 +168,20 @@ class WasteController extends UserAccessController
     }
 
 
-
+    //allow for searching of waste class
     public function view(Request $request, $response = '')
     {
         $title = "Search Wastes";
         $waste = new Waste;
         $wastelist = new Wastelist;
+        //waste list and waste are required
         $searchFields = [
             "wastes" => $waste->getSearchable(),
             "wastelists" => $wastelist->getSearchable()
         ];
+        //setup join
         $join = ["wastelists" => ["wastelists.id", "wastes.wastelist_id"]];
+        //get search vars
         $search = $request->search;
         $sort = $request->sort;
         $sortDirection = "desc";
@@ -168,14 +190,17 @@ class WasteController extends UserAccessController
             $sort = "id";
         }
 
+        //restrict to only display logged stores data with join
         $modelSearchv4 = new ModelSearchv4(Waste::class, $searchFields, $searchFields, ["table" => "wastes", "field" => "store_id", "value" => $this->store->id], $join);
         $wastes = $modelSearchv4->search($search, $sort, $sortDirection);
 
+        //produce single array for page display
         $searchFields = array_merge($waste->getSearchable(), $wastelist->getSearchable());
 
         return view("waste.view", ["title" => $title, "wastes" => $wastes, "search" => $search, "sort" => $sort, "searchFields" => $searchFields, "response" => $response]);
     }
 
+    //display a single summary for waste details
     public function summary(Waste $waste)
     {
         if (!isset($waste->id) || is_null($waste)) {
@@ -186,6 +211,8 @@ class WasteController extends UserAccessController
         [$waste, $products, $sum, $quantity] = $this->wasteDetails($waste->id);
         return view("waste.summary", ["title" => $title, "store" => $this->store, "waste" => $waste, "listing" => $products, "sum" => $sum, "quantity" => $quantity]);
     }
+
+    //gatjer waste information for the passed in waste entry
     public function wasteDetails($id)
     {
 
@@ -195,6 +222,7 @@ class WasteController extends UserAccessController
 
         return [$waste, $products, $sum, $quantity];
     }
+    //display summary in printable format
     public function print(Waste $waste)
     {
         if (!isset($waste->id) || is_null($waste)) {
@@ -208,6 +236,7 @@ class WasteController extends UserAccessController
         return view("waste.print", ["title" => $title, "store" => $this->store, "waste" => $waste, "listing" => $products, "sum" => $sum, "quantity" => $quantity]);
     }
 
+    //delete waste entry
     public function destroy($id, Request $request)
     {
         $waste = Waste::find($id);
@@ -247,6 +276,7 @@ class WasteController extends UserAccessController
             ->orderby("created_at", 'asc')
             ->get();
 
+        //get waste data and chart
         [$totalValue, $wasteDateMap, $catMap] = $this->wasteCalc($wastes);
 
         $chartData1 = $this->chartData1($wasteDateMap);
@@ -264,19 +294,23 @@ class WasteController extends UserAccessController
         ]);
     }
 
+    //get total ifnromation and category map for waste input
     public function wasteCalc($wastes)
     {
         $totalValue = 0;
         $wasteDateMap = [];
         $catMap = [];
+        //step through waste
         foreach ($wastes as $waste) {
             $products = $waste->products()->with("units")->get();
             $wasteTotal = 0;
             $wasteCases = 0;
+            //step through products in waste
             foreach ($products as $product) {
                 $wasteTotal += $product->pivot->quantity * $product->units->price;
                 $wasteCases += $product->pivot->quantity;
 
+                //remap values based on category
                 if (!isset($catMap[$product->category])) {
                     $catMap[$product->category] = 0;
                 }
@@ -284,6 +318,7 @@ class WasteController extends UserAccessController
                 $catMap[$product->category] += $product->pivot->quantity * $product->units->price;
                 //var_dump($catMap);
             }
+            //map waste date to value
             $wasteDateMap[$waste->created_at->format('D')][] = $wasteTotal;
             $waste->total  = $wasteTotal;
             $waste->quantity = $wasteCases;
@@ -324,6 +359,7 @@ class WasteController extends UserAccessController
         $chartData2 = [];
         $chartData2[] = ["Category", "Pounds Wasted"];
 
+        //map as category to valye of category input
         foreach ($catMap as $category => $value) {
             $chartData2[] = [$category, $value];
         }

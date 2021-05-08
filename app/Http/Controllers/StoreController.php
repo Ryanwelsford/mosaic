@@ -135,11 +135,13 @@ class StoreController extends AdminAccessController
             "users" => ["email"]
         ];
 
+        //join users to store data
         $title = "Display Stores";
         $join = [
             "users" => ["users.id", "stores.user_id"]
         ];
 
+        //so this version will allow for searching of user and store classes
         $modelSearchv4 = new ModelSearchv4(Store::class, $searchArray, $searchArray, [], $join);
         $stores = $modelSearchv4->search($search, $sort);
 

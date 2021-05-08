@@ -10,6 +10,8 @@ use App\Models\StockOnHand;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+//products are the core component of this build
+//has the most relationships by far
 class Product extends Model
 {
     use HasFactory;
@@ -22,6 +24,7 @@ class Product extends Model
         'subcategory'
     ];
 
+    //return searchables
     protected $searchable = [
         'id',
         'name',
@@ -30,11 +33,18 @@ class Product extends Model
         'subcategory'
     ];
 
+    public function getSearchable()
+    {
+        return $this->searchable;
+    }
+    //gather assocaited units
+    //this needs fixing should only ever return a single row now
     public function units()
     {
         return $this->hasOne(Unit::class);
     }
 
+    //refil product entry for saving
     public function fillItem($id, $name, $code, $category, $subcategory)
     {
         $this->id = $id;
@@ -44,21 +54,19 @@ class Product extends Model
         $this->subcategory = $subcategory;
     }
 
+    //get associated menu of a given product
     public function menus()
     {
         return $this->belongsToMany(Menu::class);
     }
 
-    public function getSearchable()
-    {
-        return $this->searchable;
-    }
-
+    //get associated orders of a given product with quanitties
     public function orders()
     {
         return $this->belongsToMany(Order::class)->withPivot("quantity");
     }
 
+    //get associated receipts with quantites
     public function receipts()
     {
         return $this->belongsToMany(Receipt::class)->withPivot("quantity");
@@ -67,19 +75,25 @@ class Product extends Model
     //this may need to have the belongsToMany aspect updated due to the key being called soh_id rather than stock_on_hand_id
     public function stockOnHands()
     {
+        //return stock on hands that include this product along with input data
         return $this->belongsToMany(StockOnHand::class)->withPivot("count");
     }
 
+    //get a list of stores that have this product assigned in soh
     public function stores()
     {
         return $this->belongsToMany(Store::class);
     }
 
-    public function wastes() {
+    //return associatd wastes that have this product along with quantity
+    public function wastes()
+    {
         return $this->belongsToMany(Waste::class)->withPivot("quantity");
     }
 
-    public function inventories() {
+    //get associated inventories with quantites
+    public function inventories()
+    {
         return $this->belongsToMany(Inventory::class)->withPivot("quantity");
     }
 }

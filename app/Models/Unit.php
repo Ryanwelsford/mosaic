@@ -21,11 +21,13 @@ class Unit extends Model
     ];
 
 
+    //get product that the unit belongs to
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 
+    //redudnant class now based on unit class changes
     public function splitUnit()
     {
         $case = [
@@ -42,17 +44,21 @@ class Unit extends Model
         return [$case, $pack];
     }
 
+    //used by inputs to pull correct data
     public function packQuantity()
     {
 
+        //if pack exists return its quantity based on overall case quantity
         if ($this->pack != "none") {
             $packQ = $this->quantity / $this->pack_quantity;
             return $packQ;
         } else {
+            //otherwise just reutrn case data
             return $this->quantity;
         }
     }
 
+    //refill for saving
     public function fillItem($case, $pack, $id)
     {
         $this->product_id = $id;

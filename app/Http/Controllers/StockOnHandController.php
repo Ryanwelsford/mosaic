@@ -12,8 +12,11 @@ use App\Http\Helpers\ModelSearch\ModelSearchv4;
 use App\Http\Controllers\Types\UserAccessController;
 
 //maybe add a reference to SOH table ?
+//stock on hand allows for the control of which products are counted on a daily basis
+//also provides access to daily coutnign reports
 class StockOnHandController extends UserAccessController
 {
+    //display home page meny
     public function home()
     {
 
@@ -33,7 +36,7 @@ class StockOnHandController extends UserAccessController
     }
 
     //count form will need to pull assigned store products
-    //TODO tools to nothing atm
+
     public function store(Request $request)
     {
         $title = "New Count";
@@ -68,8 +71,10 @@ class StockOnHandController extends UserAccessController
         ]);
     }
 
+    //save input count
     public function saveCount(Request $request)
     {
+        //validate ensure reference is entered
         $this->validate(
             $request,
             [
@@ -83,19 +88,23 @@ class StockOnHandController extends UserAccessController
         $counts = $request->product;
         $remappedCounts = [];
 
+        //remap count info into syncable format
         foreach ($counts as $key => $count) {
             $remappedCounts[$key] = ["count" => $count];
         }
 
         $soh = new StockOnHand;
 
+        //if edit
         if (isset($request->id)) {
             $soh = StockOnHand::find($request->id);
         }
 
+        //save soh info
         $soh->fillItem($request->id, $this->store->id, $request->reference);
         $soh->save();
 
+        //save product count data
         $soh->products()->sync($remappedCounts);
 
         return view('general.confirmation-custom', [
@@ -112,17 +121,22 @@ class StockOnHandController extends UserAccessController
     {
         $title = "Assign SOH Products";
 
+        //get categories
         $productController = new ProductController();
         $categories = $productController->buildCategories();
 
+        //get current products
         $assignedProducts = $this->store->products()->get();
+
         $assignedmap = [];
+        //remap into an array of id to product data
         foreach ($assignedProducts as $product) {
             $assignedmap[$product->id] = $product;
         }
         $defaultOpenTab = "Chilled";
         $organisedProducts = [];
 
+        //pull all products and remap based on cat/subcat for display
         $productList = Product::orderby('category')->orderby('subcategory')->orderby('name')->get();
 
         foreach ($productList as $product) {
@@ -138,6 +152,7 @@ class StockOnHandController extends UserAccessController
         ]);
     }
 
+    //validate the assigned products features
     public function saveAssigned(Request $request)
     {
         //no validation required i suppose, maybe check at least 1 product?
@@ -153,6 +168,7 @@ class StockOnHandController extends UserAccessController
         );
         $sohList = $request->sohList;
 
+        //resync products
         $this->store->products()->sync($sohList);
         //confirm
 
@@ -165,13 +181,16 @@ class StockOnHandController extends UserAccessController
         ]);
     }
 
+    //allow for the searchability of soh features
     public function view(Request $request, $response = "")
     {
         $title = "View Stock on Hand Counts";
 
+        //gather searchable fields
         $sohs = new StockOnHand;
         $searchFields["stock_on_hands"] = $sohs->getSearchable();
 
+        //setup vars
         $search = $request->search;
         $sort = $request->sort;
         $sortDirection = "desc";
@@ -180,6 +199,7 @@ class StockOnHandController extends UserAccessController
             $sort = "id";
         }
 
+        //create search class and restrict to store level access only
         $modelSearch = new ModelSearchv4(StockOnHand::class, $searchFields, $searchFields, ["table" => "stock_on_hands", "field" => "store_id", "value" => $this->store->id]);
         $sohs = $modelSearch->search($search, $sort, $sortDirection);
 
@@ -207,8 +227,10 @@ class StockOnHandController extends UserAccessController
     {
     }
 
+    //weekly count data summed and displayed
     public function weeklySummary(Request $request)
     {
+        //get fc to validate dates
         $fc = new ForecastingController();
 
         //if date check fails run dates for this week only
@@ -222,6 +244,7 @@ class StockOnHandController extends UserAccessController
         }
         $title = "Weekly Stock on Hand";
 
+        //get stock on hand infrmation
         $counts = StockOnHand::where("store_id", $this->store->id)
             ->whereBetween('created_at', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])
             ->orderby('created_at', 'asc')
@@ -229,11 +252,14 @@ class StockOnHandController extends UserAccessController
 
         $countMap = [];
         $productMap = [];
+
+        //remap count data, gather products
         foreach ($counts as $count) {
             $products = $count->products()->with("units")->get();
 
             foreach ($products as $product) {
 
+                //map daily entry to value in total
                 if (!isset($counter[$product->id][$count->created_at->format('D')])) {
                     $countMap[$product->id][$count->created_at->format('D')] = 0;
                 }
@@ -263,18 +289,21 @@ class StockOnHandController extends UserAccessController
         ]);
     }
 
+    //build soh chart data in google chart format
     public function chartData($countMap, $productMap, $days)
     {
 
         $chartData1 = [];
 
         $headers[] = "Day";
+        //build headers array of each prodyct in turn
         foreach ($productMap as $pid => $product) {
             $headers[] = $product->name;
         }
 
         $chartData1[] = $headers;
 
+        //by day go through and gather count data for each product in map
         foreach ($days as $day) {
             $tempArray = [];
             $tempArray[] = $day;
@@ -290,6 +319,7 @@ class StockOnHandController extends UserAccessController
             $chartData1[] = $tempArray;
         }
 
+        //return encoded
         return json_encode($chartData1);
     }
 

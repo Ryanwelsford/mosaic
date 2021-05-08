@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
+#This controller class serves as a means to only allow store level accesss
+#any other user type or non-user access should be redirected t prevent user clashes and other issues
 class UserAccessController extends Controller
 {
 
